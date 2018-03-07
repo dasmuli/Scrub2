@@ -40,12 +40,58 @@ function init_data()
 	console.log("init_data done");
 }
 
-function create_card_html()
+function create_card_html(title)
 {
 	return `
-	<blaze-accordion-pane header=\"Click meee also\">
-	  To toggle other panes
-	</blaze-accordion-pane>
+	<blaze-accordion-pane header="`+title+`">
+   <div class="o-grid o-grid--no-gutter o-grid--demo o-grid--wrap">
+	<div class="o-grid__cell o-grid__cell--width-fixed" style={{width: '20px'}}>
+	 <div class="o-grid-text">
+	   <select class="c-field">
+		  <option>1</option>
+		  <option>2</option>
+		  <option>3</option>
+		  <option>5</option>
+		  <option>8</option>
+		  <option>13</option>
+		  <option>20</option>
+		  <option>40</option>
+		  <option>100</option>
+		</select>
+	 </div>
+   </div>
+   <div class="o-grid__cell o-grid__cell--width-fixed  o-grid__cell--center" style={{width: '20px'}}>
+	 <div class="o-grid-text">
+	   <i class="material-icons" style="font-size:1em;">rowing</i>
+	 </div>
+	</div>
+  <div class="o-grid__cell">
+	<div class="o-grid-text u-right">
+		<button type="button" class="c-button"><i class="material-icons" style="font-size:1em;">note_add</i></button>
+		<button type="button" class="c-button"><i class="material-icons" style="font-size:1em;">delete</i></button>
+		<button type="button" class="c-button"><i class="material-icons" style="font-size:1em;">swap_vert</i></button>
+		<button type="button" class="c-button"><i class="material-icons" style="font-size:1em;">assignment_turned_in</i></button>
+		<button type="button" class="c-button"><i class="material-icons" style="font-size:1em;">save</i></button>
+		<!--
+		<button type="button" class="c-button"><i class="material-icons" style="font-size:1em;">build</i></button>
+		-->
+    </div>
+  </div>
+  <div class="o-grid__cell o-grid__cell--width-100">
+    <div class="o-grid-text">
+	  <textarea class="c-field" placeholder="Type in here..."></textarea>
+	</div>
+  </div>
+  <div class="o-grid__cell o-grid__cell--width-100">
+    <div class="o-grid-text">
+      <div class="o-field o-field--icon-left">
+	    <i class="material-icons c-icon" style="font-size:1em;">title</i>
+	    <input class="c-field" type="text">
+	  </div>
+	</div>
+  </div>
+</div>
+  </blaze-accordion-pane>
 	`;
 }
 
@@ -60,15 +106,18 @@ function append_html(el, str) {
 function update_data_view()
 {
 	let main_data_el = document.getElementById('open_cards_id');
-	let string_html_data = create_card_html();
-	append_html(main_data_el, string_html_data);
 	document.getElementById('main_data').append("Data inc");
 	for(i = 0; i < main_doc.open_cards.length; i++)
 	{
-		var innerDiv = document.createElement('div');
-		innerDiv.innerHTML = main_doc.open_cards[i].title;
+		let string_html_data = 
+		  create_card_html(
+		    main_doc.open_cards[i].title
+			);
+		append_html(main_data_el, string_html_data);
+		//var innerDiv = document.createElement('div');
+		//innerDiv.innerHTML = main_doc.open_cards[i].title;
 		// The variable iDiv is still good... Just append to it.
-		 document.getElementById('main_data').appendChild(innerDiv);
+		 //document.getElementById('main_data').appendChild(innerDiv);
 	}
 }
 
