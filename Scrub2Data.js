@@ -6,7 +6,7 @@ function init_data()
 	main_doc = Automerge.init();
 	let serialData =
 		localStorage.getItem("SerializedAutomergeData");
-	if(true/*serialData == undefined*/)
+	if(serialData == undefined)
 	{
 		console.log("Created new doc");
 
@@ -40,10 +40,10 @@ function init_data()
 	console.log("init_data done");
 }
 
-function create_card_html(title)
+function create_card_html(card)
 {
 	return `
-	<blaze-accordion-pane header="`+title+`">
+	<blaze-accordion-pane header="`+card.title+`">
    <div class="o-grid o-grid--no-gutter o-grid--demo o-grid--wrap">
 	<div class="o-grid__cell o-grid__cell--width-fixed" style={{width: '20px'}}>
 	 <div class="o-grid-text">
@@ -105,19 +105,14 @@ function append_html(el, str) {
 
 function update_data_view()
 {
-	let main_data_el = document.getElementById('open_cards_id');
-	document.getElementById('main_data').append("Data inc");
+	let open_cards_view = document.getElementById('open_cards_id');
 	for(i = 0; i < main_doc.open_cards.length; i++)
 	{
 		let string_html_data = 
 		  create_card_html(
-		    main_doc.open_cards[i].title
+		    main_doc.open_cards[i]
 			);
-		append_html(main_data_el, string_html_data);
-		//var innerDiv = document.createElement('div');
-		//innerDiv.innerHTML = main_doc.open_cards[i].title;
-		// The variable iDiv is still good... Just append to it.
-		 //document.getElementById('main_data').appendChild(innerDiv);
+		append_html(open_cards_view, string_html_data);
 	}
 }
 
