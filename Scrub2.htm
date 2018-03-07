@@ -1,0 +1,231 @@
+ <!DOCTYPE html>
+<html>
+<head>
+<!-- Dependencies: Blaze for UI, google icons, google chart, automerge, stdlib? -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="https://unpkg.com/blaze/scss/dist/blaze.min.css">
+	<script src="https://unpkg.com/blaze@4.0.0-6/atoms/dist/blaze-atoms.js"></script>
+	<link rel="stylesheet" type="text/css" href="scrub2.css">
+	<script src="automerge.js"></script>
+    <script src="Scrub2Data.js"></script>
+	<meta charset="UTF-8">
+	<title>Scrub2</title>
+</head>
+
+<body>
+
+<!-- Top menue -->
+
+<ul class="c-nav c-nav--inline c-nav--fixed u-high">
+  <li class="c-nav__item"><i class="material-icons" style="font-size:1em;">mode_edit</i></li>
+  <li class="c-nav__item"><i class="material-icons" style="font-size:1em;">trending_down</i></li>
+  <li class="c-nav__item"><i class="material-icons" style="font-size:1em;">assignment_turned_in</i></li>
+  <li class="c-nav__item c-nav__item--right"></i><i class="material-icons" style="font-size:1em;">help</i></li>
+  <li class="c-nav__item c-nav__item--right"><i class="material-icons" style="font-size:1em;">settings</i></li>
+  <li class="c-nav__item c-nav__item--right"><i class="material-icons" style="font-size:1em;">storage</i></li>
+  <li class="c-nav__item c-nav__item--right"><i class="material-icons" style="font-size:1em;">vertical_align_top</i></li>
+</ul>
+
+<!-- Main 3 row layout, center is used for main content. -->
+<div class="o-grid o-grid--no-gutter o-grid--demo">
+
+<!-- Left empty grid cell -->
+<div class="o-grid__cell o-grid__cell--width-0 o-grid__cell--width-15@medium o-grid__cell--width-33@xlarge">
+</div>
+
+<!-- Main content grid cell -->
+<div class="o-grid__cell o-grid__cell--width-100 o-grid__cell--width-70@medium o-grid__cell--width-33@xlarge">
+<!-- Save some space for menue when scrolled all the way up. If not, menue hides elements. -->
+<p style="margin-bottom:4em;"></p>
+<blaze-accordion>
+  <blaze-accordion-pane header="Click me">
+    Description of click me.
+	<button type="button" class="c-button"><i class="material-icons" style="font-size:1em;">build</i></button>
+	<button type="button" class="c-button"><i class="material-icons" style="font-size:1em;">swap_vert</i></button>
+	<label class="c-toggle">
+      <input type="checkbox" checked>
+	  <div class="c-toggle__track">
+        <div class="c-toggle__handle">
+	    </div>
+      </div>
+     <i class="material-icons" style="font-size:1em;">check</i>
+	 Done
+    </label>
+  </blaze-accordion-pane>
+  <blaze-accordion-pane header="Click me also">
+   <div class="o-grid o-grid--no-gutter o-grid--demo o-grid--wrap">
+	<div class="o-grid__cell o-grid__cell--width-fixed" style={{width: '20px'}}>
+	 <div class="o-grid-text">
+	   <select class="c-field">
+		  <option>1</option>
+		  <option>2</option>
+		  <option>3</option>
+		  <option>5</option>
+		  <option>8</option>
+		  <option>13</option>
+		  <option>20</option>
+		  <option>40</option>
+		  <option>100</option>
+		</select>
+	 </div>
+   </div>
+   <div class="o-grid__cell o-grid__cell--width-fixed  o-grid__cell--center" style={{width: '20px'}}>
+	 <div class="o-grid-text">
+	   <i class="material-icons" style="font-size:1em;">rowing</i>
+	 </div>
+	</div>
+  <div class="o-grid__cell">
+	<div class="o-grid-text u-right">
+		<button type="button" class="c-button"><i class="material-icons" style="font-size:1em;">note_add</i></button>
+		<button type="button" class="c-button"><i class="material-icons" style="font-size:1em;">delete</i></button>
+		<button type="button" class="c-button"><i class="material-icons" style="font-size:1em;">swap_vert</i></button>
+		<button type="button" class="c-button"><i class="material-icons" style="font-size:1em;">assignment_turned_in</i></button>
+		<button type="button" class="c-button"><i class="material-icons" style="font-size:1em;">save</i></button>
+		<!--
+		<button type="button" class="c-button"><i class="material-icons" style="font-size:1em;">build</i></button>
+		-->
+    </div>
+  </div>
+  <div class="o-grid__cell o-grid__cell--width-100">
+    <div class="o-grid-text">
+	  <textarea class="c-field" placeholder="Type in here..."></textarea>
+	</div>
+  </div>
+  <div class="o-grid__cell o-grid__cell--width-100">
+    <div class="o-grid-text">
+      <div class="o-field o-field--icon-left">
+	    <i class="material-icons c-icon" style="font-size:1em;">title</i>
+	    <input class="c-field" type="text">
+	  </div>
+	</div>
+  </div>
+</div>
+  </blaze-accordion-pane>
+  <blaze-accordion-pane header="Click me">
+    This is an expanded accordion
+  </blaze-accordion-pane>
+  <div class="o-grid o-grid--demo o-grid--wrap">
+	<div class="o-grid__cell o-grid__cell--width-fixed style={{width: '20px'}}">
+	 <div class="o-grid-text">
+	  <button type="button" class="c-button">
+		<i class="material-icons" style="font-size:1em;">note_add</i>
+		<i class="material-icons" style="font-size:1em;">subdirectory_arrow_right</i>
+	  </button>
+	 </div>
+    </div>
+	<div class="o-grid__cell">
+	</div>
+	<div class="o-grid__cell o-grid__cell--width-fixed style={{width: '20px'}}">
+	 <div class="o-grid-text u-right">
+	  <button type="button" class="c-button">
+		<i class="material-icons" style="font-size:1em;">block</i>
+	  </button>
+     </div>
+	</div>
+   </div>
+  <blaze-accordion-pane header="Click me also">
+    To toggle other panes
+  </blaze-accordion-pane>
+  <blaze-accordion-pane header="Click me">
+    This is an expanded accordion
+  </blaze-accordion-pane>
+  <blaze-accordion-pane header="Click me also">
+    To toggle other panes
+  </blaze-accordion-pane>
+  <blaze-accordion-pane header="Click me">
+    This is an expanded accordion
+  </blaze-accordion-pane>
+  <blaze-accordion-pane header="Click me also">
+    To toggle other panes
+  </blaze-accordion-pane>
+  <blaze-accordion-pane header="Click me">
+    This is an expanded accordion
+  </blaze-accordion-pane>
+  <blaze-accordion-pane header="Click me also">
+    To toggle other panes
+  </blaze-accordion-pane>
+  <blaze-accordion-pane header="Click me">
+    This is an expanded accordion
+  </blaze-accordion-pane>
+  <blaze-accordion-pane header="Click me also">
+    To toggle other panes
+  </blaze-accordion-pane>
+  <blaze-accordion-pane header="Click me">
+    This is an expanded accordion
+  </blaze-accordion-pane>
+  <blaze-accordion-pane header="Click me also">
+    To toggle other panes
+  </blaze-accordion-pane>
+  <blaze-accordion-pane header="Click me">
+    This is an expanded accordion
+  </blaze-accordion-pane>
+  <blaze-accordion-pane header="Click me also">
+    To toggle other panes
+  </blaze-accordion-pane>
+  <blaze-accordion-pane header="Click me">
+    This is an expanded accordion
+  </blaze-accordion-pane>
+  <blaze-accordion-pane header="Click me also">
+    To toggle other panes
+  </blaze-accordion-pane>
+  </blaze-accordion-pane>
+  <blaze-accordion-pane header="Click me">
+    This is an expanded accordion
+  </blaze-accordion-pane>
+  <blaze-accordion-pane header="Click me also">
+    To toggle other panes
+  </blaze-accordion-pane>
+  </blaze-accordion-pane>
+  <blaze-accordion-pane header="Click me">
+    This is an expanded accordion
+  </blaze-accordion-pane>
+  <blaze-accordion-pane header="Click me also">
+    To toggle other panes
+  </blaze-accordion-pane>
+  </blaze-accordion-pane>
+  <blaze-accordion-pane header="Click me">
+    This is an expanded accordion
+  </blaze-accordion-pane>
+  <blaze-accordion-pane header="Click me also">
+    To toggle other panes
+  </blaze-accordion-pane>
+  </blaze-accordion-pane>
+  <blaze-accordion-pane header="Click me">
+    This is an expanded accordion
+  </blaze-accordion-pane>
+  <blaze-accordion-pane header="Click me also">
+    To toggle other panes
+  </blaze-accordion-pane>
+  </blaze-accordion-pane>
+  <blaze-accordion-pane header="Click me">
+    This is an expanded accordion
+  </blaze-accordion-pane>
+  <blaze-accordion-pane header="Click me also">
+    To toggle other panes
+  </blaze-accordion-pane>
+  </blaze-accordion-pane>
+  <blaze-accordion-pane header="Click me">
+    This is an expanded accordion
+  </blaze-accordion-pane>
+  <blaze-accordion-pane header="Click me also">
+    To toggle other panes
+  </blaze-accordion-pane>
+</blaze-accordion>
+
+   <div id="main_data">
+	</div>
+
+<!-- Clearly indicate the end -->
+<p style="margin-bottom:1em;"></p>
+
+</div> <!-- main grid cell -->
+
+<!-- Right empty grid cell -->
+<div class="o-grid__cell o-grid__cell--width-0 o-grid__cell--width-15@medium o-grid__cell--width-33@xlarge">
+</div>
+
+</div> <!-- grid -->
+
+</body>
+
+</html> 
