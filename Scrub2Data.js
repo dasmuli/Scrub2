@@ -42,7 +42,11 @@ function init_data()
 
 function create_card_html()
 {
-	return "<blaze-accordion-pane header=\"Click meee also\">To toggle other panes</blaze-accordion-pane>\";";
+	return `
+	<blaze-accordion-pane header=\"Click meee also\">
+	  To toggle other panes
+	</blaze-accordion-pane>
+	`;
 }
 
 function append_html(el, str) {
