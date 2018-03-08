@@ -83,6 +83,9 @@ function on_click_edit(element)
 		set_property_for_class_in_children(
 		 card_origin,'.writeable-on-editmode',
 		 'readOnly',true)
+		 set_property_for_class_in_children(
+		 card_origin,'.remove-disabled-on-editmode',
+		 'disabled',true)
 	}
 	else // turn edit mode on
 	{
@@ -93,6 +96,9 @@ function on_click_edit(element)
 		set_property_for_class_in_children(
 		 card_origin,'.writeable-on-editmode',
 		 'readOnly',false)
+		set_property_for_class_in_children(
+		 card_origin,'.remove-disabled-on-editmode',
+		 'disabled',false)
 	}
 	console.log("Click");
 }
@@ -106,22 +112,23 @@ function create_card_html(card)
 	 <div class="o-grid-text">
 	   <select class="c-field">
 		  <option class="remove-disabled-on-editmode" 
-		  disabled="disabled">1</option>
+		    disabled="disabled">1</option>
 		  <option class="remove-disabled-on-editmode" 
-		  disabled="disabled">2</option>
+		    disabled="disabled">2</option>
 		  <option class="remove-disabled-on-editmode" 
-		  disabled="disabled">3</option>
+		    disabled="disabled">3</option>
 		  <option class="remove-disabled-on-editmode" 
-		  disabled="disabled" selected>5</option>
+		    disabled="disabled" selected>5</option>
 		  <option class="remove-disabled-on-editmode" 
-		  disabled="disabled">8</option>
+		    disabled="disabled">8</option>
 		  <option class="remove-disabled-on-editmode" 
-		  disabled="disabled">13</option>
-		  <option disabled="disabled">20</option>
+		    disabled="disabled">13</option>
+		  <option class="remove-disabled-on-editmode"  
+		    disabled="disabled">20</option>
 		  <option class="remove-disabled-on-editmode" 
-		  disabled="disabled">40</option>
+		    disabled="disabled">40</option>
 		  <option class="remove-disabled-on-editmode" 
-		  disabled="disabled">100</option>
+		    disabled="disabled">100</option>
 		</select>
 	 </div>
    </div>
