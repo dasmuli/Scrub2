@@ -20,19 +20,11 @@ function init_data()
 		  doc.open_cards.push({title: 'Click me', description: 'Add description...',done: false, date_added:'now', date_finished:'later',points:'0'})
 		})
 		
-		/* massive data test */
-		for(i = 0; i< 10; i++)
-		{
-			main_doc = Automerge.change(main_doc, 'Add card', doc => {
-			  doc.open_cards.push({title: 'Doc'+i, done: false})
-			})
-		}
-		
 		serialData = Automerge.save(main_doc);
 		
 		localStorage.setItem("SerializedAutomergeData", serialData);
 	}
-	else
+	else // Load from storage
 	{
 		console.log("Loaded from storage");
 		main_doc = Automerge.load(serialData);
@@ -40,23 +32,63 @@ function init_data()
 	console.log("init_data done");
 }
 
+function set_property_for_class_in_children(parentelem,classname,
+											property,value)
+{
+	let list = parentelem.querySelectorAll(classname);
+	for(var i = 0; i <list.length; i++)
+	{
+		list[i].style[property] = value;
+	}
+}
+
+function on_click_edit(element)
+{
+	//find base card div element
+	let card_origin = find_ancestor(element,"card-origin");
+	if(element.classList.contains("c-button--active"))
+	{
+		// turn edit mode off
+		element.classList.remove("c-button--active");
+		set_property_for_class_in_children(
+		 card_origin,'.unhide-on-edit-mode',
+		 'visibility','hidden')
+	}
+	else // turn edit mode on
+	{
+		element.classList.add("c-button--active");
+		set_property_for_class_in_children(
+		 card_origin,'.unhide-on-edit-mode',
+		 'visibility','visible')
+	}
+	console.log("Click");
+}
+
 function create_card_html(card)
 {
 	return `
-	<blaze-accordion-pane header="`+card.title+`">
+	<blaze-accordion-pane header="`+card.title+`" class="card-origin">
    <div class="o-grid o-grid--no-gutter o-grid--demo o-grid--wrap">
 	<div class="o-grid__cell o-grid__cell--width-fixed" style={{width: '20px'}}>
 	 <div class="o-grid-text">
 	   <select class="c-field">
-		  <option>1</option>
-		  <option>2</option>
-		  <option>3</option>
-		  <option>5</option>
-		  <option>8</option>
-		  <option>13</option>
-		  <option>20</option>
-		  <option>40</option>
-		  <option>100</option>
+		  <option class="remove-disabled-on-editmode" 
+		  disabled="disabled">1</option>
+		  <option class="remove-disabled-on-editmode" 
+		  disabled="disabled">2</option>
+		  <option class="remove-disabled-on-editmode" 
+		  disabled="disabled">3</option>
+		  <option class="remove-disabled-on-editmode" 
+		  disabled="disabled" selected>5</option>
+		  <option class="remove-disabled-on-editmode" 
+		  disabled="disabled">8</option>
+		  <option class="remove-disabled-on-editmode" 
+		  disabled="disabled">13</option>
+		  <option disabled="disabled">20</option>
+		  <option class="remove-disabled-on-editmode" 
+		  disabled="disabled">40</option>
+		  <option class="remove-disabled-on-editmode" 
+		  disabled="disabled">100</option>
 		</select>
 	 </div>
    </div>
@@ -67,25 +99,46 @@ function create_card_html(card)
 	</div>
   <div class="o-grid__cell">
 	<div class="o-grid-text u-right">
-		<button type="button" class="c-button"><i class="material-icons" style="font-size:1em;">note_add</i></button>
-		<button type="button" class="c-button"><i class="material-icons" style="font-size:1em;">delete</i></button>
-		<button type="button" class="c-button"><i class="material-icons" style="font-size:1em;">swap_vert</i></button>
-		<button type="button" class="c-button"><i class="material-icons" style="font-size:1em;">assignment_turned_in</i></button>
-		<button type="button" class="c-button"><i class="material-icons" style="font-size:1em;">save</i></button>
-		<!--
-		<button type="button" class="c-button"><i class="material-icons" style="font-size:1em;">build</i></button>
-		-->
+		<button type="button" class="c-button unhide-on-edit-mode"
+		  style="visibility:hidden"><i 
+		  class="material-icons" 
+		  style="font-size:1em;">note_add</i></button>
+		<button type="button" class="c-button unhide-on-edit-mode"
+		  style="visibility:hidden"><i 
+		  class="material-icons" 
+		  style="font-size:1em;">delete</i></button>
+		<button type="button" class="c-button unhide-on-edit-mode"
+		  style="visibility:hidden"><i 
+		  class="material-icons" 
+		  style="font-size:1em;">swap_vert</i></button>
+		<button type="button" class="c-button unhide-on-edit-mode"
+		  style="visibility:hidden">
+		    <i class="material-icons" 
+		    style="font-size:1em;">
+		     assignment_turned_in
+		   </i>
+		</button>
+		<button type="button" class="c-button"  
+		 onclick="on_click_edit(this)">
+		  <i class="material-icons" 
+		    style="font-size:1em;">
+		    build
+		  </i>
+		</button>
     </div>
   </div>
   <div class="o-grid__cell o-grid__cell--width-100">
     <div class="o-grid-text">
-	  <textarea class="c-field" placeholder="Type in here..."></textarea>
+	  <textarea class="c-field writeable-on-editmode"
+	  placeholder="Type in here..." readonly></textarea>
 	</div>
   </div>
   <div class="o-grid__cell o-grid__cell--width-100">
     <div class="o-grid-text">
-      <div class="o-field o-field--icon-left">
-	    <i class="material-icons c-icon" style="font-size:1em;">title</i>
+      <div class="o-field o-field--icon-left unhide-on-edit-mode" 
+	  style="visibility:hidden">
+	    <i class="material-icons c-icon" 
+		style="font-size:1em;">title</i>
 	    <input class="c-field" type="text">
 	  </div>
 	</div>
@@ -101,6 +154,11 @@ function append_html(el, str) {
   while (div.children.length > 0) {
     el.appendChild(div.children[0]);
   }
+}
+
+function find_ancestor (el, cls) {
+    while ((el = el.parentElement) && !el.classList.contains(cls));
+    return el;
 }
 
 function update_data_view()
