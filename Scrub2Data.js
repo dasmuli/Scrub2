@@ -32,13 +32,40 @@ function init_data()
 	console.log("init_data done");
 }
 
-function set_property_for_class_in_children(parentelem,classname,
+function set_style_property_for_class_in_children(parentelem,classname,
 											property,value)
 {
 	let list = parentelem.querySelectorAll(classname);
 	for(var i = 0; i <list.length; i++)
 	{
 		list[i].style[property] = value;
+	}
+}
+
+function set_property_for_class_in_children(parentelem,classname,
+											property,value)
+{
+	let list = parentelem.querySelectorAll(classname);
+	for(var i = 0; i <list.length; i++)
+	{
+		list[i][property] = value;
+	}
+}
+
+function add_or_delete_property_for_class_in_children(
+    parentelem,classname,property,add)
+{
+	let list = parentelem.querySelectorAll(classname);
+	for(var i = 0; i <list.length; i++)
+	{
+		if(add)
+		{
+		  list[i][property] = '';
+		}
+		else
+		{
+		  delete list[i][property];
+		}
 	}
 }
 
@@ -50,16 +77,22 @@ function on_click_edit(element)
 	{
 		// turn edit mode off
 		element.classList.remove("c-button--active");
-		set_property_for_class_in_children(
+		set_style_property_for_class_in_children(
 		 card_origin,'.unhide-on-edit-mode',
 		 'visibility','hidden')
+		set_property_for_class_in_children(
+		 card_origin,'.writeable-on-editmode',
+		 'readOnly',true)
 	}
 	else // turn edit mode on
 	{
 		element.classList.add("c-button--active");
-		set_property_for_class_in_children(
+		set_style_property_for_class_in_children(
 		 card_origin,'.unhide-on-edit-mode',
 		 'visibility','visible')
+		set_property_for_class_in_children(
+		 card_origin,'.writeable-on-editmode',
+		 'readOnly',false)
 	}
 	console.log("Click");
 }
@@ -130,7 +163,7 @@ function create_card_html(card)
   <div class="o-grid__cell o-grid__cell--width-100">
     <div class="o-grid-text">
 	  <textarea class="c-field writeable-on-editmode"
-	  placeholder="Type in here..." readonly></textarea>
+	  placeholder="Description..." readOnly></textarea>
 	</div>
   </div>
   <div class="o-grid__cell o-grid__cell--width-100">
