@@ -17,7 +17,7 @@ function init_data()
 		
 		// Initial data
 		main_doc = Automerge.change(main_doc, 'Add card', doc => {
-		  doc.open_cards.push({title: 'Click me', description: 'Add description...',done: false, date_added:'now', date_finished:'later',points:'0'})
+		  doc.open_cards.push({title: 'Click me', description: 'Add description...', date_added:'now', date_finished:'later',points:'0'})
 		})
 		
 		save_doc()
@@ -77,7 +77,7 @@ function find_index_for_card(open_card)
 {
 	for(i = 0; i < main_doc.open_cards.length;i++)
 	{
-		if(main_doc.open_cards[i] == open_card)
+		if(main_doc.open_cards[i]._objectId == open_card._objectId)
 			return i
 	}
 	return undefined
@@ -95,6 +95,7 @@ function check_data_and_save(card_origin)
 	}
 	let title_input = card_origin.querySelector('.title_input_text')
 	let description_input = card_origin.querySelector('.description_input_text')
+	let point_select = card_origin.querySelector('.point_select')
 	// check titlechanged
 	if(title_input.value
 		 != card_origin.open_card.title)
@@ -109,17 +110,29 @@ function check_data_and_save(card_origin)
 	// check titlechanged
 	if(description_input.value
 		!= card_origin.open_card.description)
- {
-	 console.log("Description changed")
-	 changed = true;
-	 main_doc = Automerge.change(main_doc, doc => {
-		 doc.open_cards[card_index].description 
-		   = description_input.value
-	 })
- }
+	{
+		console.log("Description changed")
+		changed = true;
+		main_doc = Automerge.change(main_doc, doc => {
+			doc.open_cards[card_index].description 
+				= description_input.value
+		})
+	}
+  // check points
+	if(point_select.value
+		!= card_origin.open_card.points)
+	{
+		console.log("Points changed")
+		changed = true;
+		main_doc = Automerge.change(main_doc, doc => {
+			doc.open_cards[card_index].points 
+				= point_select.value
+		})
+	}
 	if(changed)
 	{
 		save_doc()
+		card_origin.open_card = main_doc.open_cards[card_index]
 	}
 }
 
@@ -164,7 +177,7 @@ function create_card_html(card)
    <div class="o-grid o-grid--no-gutter o-grid--demo o-grid--wrap">
 	<div class="o-grid__cell o-grid__cell--width-fixed" style={{width: '20px'}}>
 	 <div class="o-grid-text">
-	   <select class="c-field">
+	   <select class="c-field point_select">
 		  <option class="remove-disabled-on-editmode" 
 		    disabled="disabled">1</option>
 		  <option class="remove-disabled-on-editmode" 
@@ -269,8 +282,10 @@ function update_data_view()
 		// save reference to data in view (it is JS...)
 		open_cards_view.lastChild.querySelector('.title_input_text').value 
 			= main_doc.open_cards[i].title
-			open_cards_view.lastChild.querySelector('.description_input_text').value 
-		  = main_doc.open_cards[i].description
+		open_cards_view.lastChild.querySelector('.description_input_text').value 
+			= main_doc.open_cards[i].description
+			open_cards_view.lastChild.querySelector('.point_select').value 
+		  = main_doc.open_cards[i].points
 		open_cards_view.lastChild.open_card = main_doc.open_cards[i];
 	}
 }
