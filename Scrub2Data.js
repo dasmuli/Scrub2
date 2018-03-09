@@ -252,15 +252,32 @@ function create_card_html(card)
 	</div>
   </div>
 </div>
-  </blaze-accordion-pane>
+	</blaze-accordion-pane>
+
+<div class="o-grid o-grid--demo">
+  <div class="o-grid__cell o-grid__cell--width-20">
+    <div class="o-grid-text">first</div>
+  </div>
+  <div class="o-grid__cell o-grid__cell--width-20 o-grid__cell--offset-60">
+		<div class="o-grid-text u-right">
+			<button type="button" class="c-button unhide-on-edit-mode"
+			style="visibility:visisble">
+				<i class="material-icons" style="font-size:1em;">
+				  block
+				</i>
+			</button>
+		</div>
+  </div>
+</div>
 	`;
 }
 
 function append_html(el, str) {
-  var div = document.createElement('div');
+	var div = document.createElement('div');
+	var result;
   div.innerHTML = str;
   while (div.children.length > 0) {
-    el.appendChild(div.children[0]);
+		el.appendChild(div.children[0]);
 	}
 }
 
@@ -279,14 +296,16 @@ function update_data_view()
 		    main_doc.open_cards[i]
 			);
 		append_html(open_cards_view, string_html_data);
+		let all_card_views =  open_cards_view.querySelectorAll('.card-origin')
+		let card_element = all_card_views[all_card_views.length-1]
 		// save reference to data in view (it is JS...)
-		open_cards_view.lastChild.querySelector('.title_input_text').value 
+		card_element.querySelector('.title_input_text').value 
 			= main_doc.open_cards[i].title
-		open_cards_view.lastChild.querySelector('.description_input_text').value 
+			card_element.querySelector('.description_input_text').value 
 			= main_doc.open_cards[i].description
-			open_cards_view.lastChild.querySelector('.point_select').value 
+			card_element.querySelector('.point_select').value 
 		  = main_doc.open_cards[i].points
-		open_cards_view.lastChild.open_card = main_doc.open_cards[i];
+			card_element.open_card = main_doc.open_cards[i];
 	}
 }
 
