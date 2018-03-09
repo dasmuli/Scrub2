@@ -254,14 +254,20 @@ function create_card_html(card)
 </div>
 	</blaze-accordion-pane>
 
-<div class="o-grid o-grid--demo">
+<div class="o-grid o-grid--demo o-grid--no-gutter">
   <div class="o-grid__cell o-grid__cell--width-20">
-    <div class="o-grid-text">first</div>
+		<div class="o-grid-text">
+			<button type="button" class="c-button unhide-on-edit-mode"
+			style="visibility:visible">
+				<i class="material-icons" style="font-size:1em;">note_add</i>
+				<i class="material-icons" style="font-size:1em;">subdirectory_arrow_right</i>
+			</button>
+		</div>
   </div>
   <div class="o-grid__cell o-grid__cell--width-20 o-grid__cell--offset-60">
 		<div class="o-grid-text u-right">
 			<button type="button" class="c-button unhide-on-edit-mode"
-			style="visibility:visisble">
+			style="visibility:visible">
 				<i class="material-icons" style="font-size:1em;">
 				  block
 				</i>
