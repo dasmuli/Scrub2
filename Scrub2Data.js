@@ -94,6 +94,7 @@ function check_data_and_save(card_origin)
 		return
 	}
 	let title_input = card_origin.querySelector('.title_input_text')
+	let description_input = card_origin.querySelector('.description_input_text')
 	// check titlechanged
 	if(title_input.value
 		 != card_origin.open_card.title)
@@ -105,6 +106,17 @@ function check_data_and_save(card_origin)
 		})
 		card_origin.header = title_input.value
 	}
+	// check titlechanged
+	if(description_input.value
+		!= card_origin.open_card.description)
+ {
+	 console.log("Description changed")
+	 changed = true;
+	 main_doc = Automerge.change(main_doc, doc => {
+		 doc.open_cards[card_index].description 
+		   = description_input.value
+	 })
+ }
 	if(changed)
 	{
 		save_doc()
@@ -211,7 +223,8 @@ function create_card_html(card)
   </div>
   <div class="o-grid__cell o-grid__cell--width-100">
     <div class="o-grid-text">
-	  <textarea class="c-field writeable-on-editmode"
+		<textarea class="c-field writeable-on-editmode
+		description_input_text"
 	  placeholder="Description..." readOnly></textarea>
 	</div>
   </div>
@@ -255,7 +268,9 @@ function update_data_view()
 		append_html(open_cards_view, string_html_data);
 		// save reference to data in view (it is JS...)
 		open_cards_view.lastChild.querySelector('.title_input_text').value 
-		  = main_doc.open_cards[i].title
+			= main_doc.open_cards[i].title
+			open_cards_view.lastChild.querySelector('.description_input_text').value 
+		  = main_doc.open_cards[i].description
 		open_cards_view.lastChild.open_card = main_doc.open_cards[i];
 	}
 }
