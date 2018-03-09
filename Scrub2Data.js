@@ -103,6 +103,7 @@ function check_data_and_save(card_origin)
 		main_doc = Automerge.change(main_doc, doc => {
 		  doc.open_cards[card_index].title = title_input.value
 		})
+		card_origin.header = title_input.value
 	}
 	if(changed)
 	{
@@ -253,6 +254,8 @@ function update_data_view()
 			);
 		append_html(open_cards_view, string_html_data);
 		// save reference to data in view (it is JS...)
+		open_cards_view.lastChild.querySelector('.title_input_text').value 
+		  = main_doc.open_cards[i].title
 		open_cards_view.lastChild.open_card = main_doc.open_cards[i];
 	}
 }
