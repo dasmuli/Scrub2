@@ -20,9 +20,7 @@ function init_data()
 		  doc.open_cards.push({title: 'Click me', description: 'Add description...',done: false, date_added:'now', date_finished:'later',points:'0'})
 		})
 		
-		serialData = Automerge.save(main_doc);
-		
-		localStorage.setItem("SerializedAutomergeData", serialData);
+		save_doc()
 	}
 	else // Load from storage
 	{
@@ -30,6 +28,12 @@ function init_data()
 		main_doc = Automerge.load(serialData);
 	}
 	console.log("init_data done");
+}
+
+function save_doc()
+{
+	let serialData = Automerge.save(main_doc);
+	localStorage.setItem("SerializedAutomergeData", serialData);
 }
 
 function set_style_property_for_class_in_children(parentelem,classname,
@@ -69,6 +73,43 @@ function add_or_delete_property_for_class_in_children(
 	}
 }
 
+function find_index_for_card(open_card)
+{
+	for(i = 0; i < main_doc.open_cards.length;i++)
+	{
+		if(main_doc.open_cards[i] == open_card)
+			return i
+	}
+	return undefined
+}
+
+function check_data_and_save(card_origin)
+{
+	let changed = false
+	let card_index = find_index_for_card(card_origin.open_card)
+	if(card_index == undefined)
+	{
+		console.log("Could not find card index for card "
+			+card_origin)
+		return
+	}
+	let title_input = card_origin.querySelector('.title_input_text')
+	// check titlechanged
+	if(title_input.value
+		 != card_origin.open_card.title)
+	{
+		console.log("Title changed")
+		changed = true;
+		main_doc = Automerge.change(main_doc, doc => {
+		  doc.open_cards[card_index].title = title_input.value
+		})
+	}
+	if(changed)
+	{
+		save_doc()
+	}
+}
+
 function on_click_edit(element)
 {
 	//find base card div element
@@ -86,6 +127,7 @@ function on_click_edit(element)
 		 set_property_for_class_in_children(
 		 card_origin,'.remove-disabled-on-editmode',
 		 'disabled',true)
+		 check_data_and_save(card_origin)
 	}
 	else // turn edit mode on
 	{
@@ -99,8 +141,7 @@ function on_click_edit(element)
 		set_property_for_class_in_children(
 		 card_origin,'.remove-disabled-on-editmode',
 		 'disabled',false)
-	}
-	console.log("Click");
+		}
 }
 
 function create_card_html(card)
@@ -179,7 +220,7 @@ function create_card_html(card)
 	  style="visibility:hidden">
 	    <i class="material-icons c-icon" 
 		style="font-size:1em;">title</i>
-	    <input class="c-field" type="text">
+	    <input class="c-field title_input_text" type="text">
 	  </div>
 	</div>
   </div>
@@ -193,7 +234,7 @@ function append_html(el, str) {
   div.innerHTML = str;
   while (div.children.length > 0) {
     el.appendChild(div.children[0]);
-  }
+	}
 }
 
 function find_ancestor (el, cls) {
@@ -211,6 +252,8 @@ function update_data_view()
 		    main_doc.open_cards[i]
 			);
 		append_html(open_cards_view, string_html_data);
+		// save reference to data in view (it is JS...)
+		open_cards_view.lastChild.open_card = main_doc.open_cards[i];
 	}
 }
 
