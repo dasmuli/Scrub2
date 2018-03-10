@@ -165,7 +165,6 @@ function on_click_finish(element)
 	//		doc.open_cards.splice(card_to_be_finished_index,1)[0]
 	//	)
 	//})
-	// delete
 	// save
 }
 
@@ -300,6 +299,42 @@ function on_click_move(element)
 	}
 }
 
+function hide_all_pages()
+{
+	document.getElementById('open_cards_id').style.display = 'none';
+	document.getElementById('finished_cards_id').style.display = 'none';
+}
+
+function show_open_cards()
+{
+	console.log('show_open_cards')
+	hide_all_pages()
+	let open_cards_view = document.getElementById('open_cards_id')
+	open_cards_view.style.display = 'inline';
+
+	set_style_property_for_class_in_children(
+		open_cards_view,'.block-on-finishcard',
+		'display','inline')
+		set_style_property_for_class_in_children(
+			open_cards_view,'.display-on-finishcard',
+		'display','none')
+}
+
+function show_finished_cards()
+{
+	console.log('show_finished_cards')
+	hide_all_pages()
+	let finished_cards_view = document.getElementById('finished_cards_id')
+	finished_cards_view.style.display = 'inline';
+
+	set_style_property_for_class_in_children(
+		finished_cards_view,'.block-on-finishcard',
+		'display','none')
+	set_style_property_for_class_in_children(
+		finished_cards_view,'.display-on-finishcard',
+		'display','inline')
+}
+
 function on_click_move_mode(element)
 {
 	let open_cards_view = document.getElementById('open_cards_id')
@@ -396,26 +431,26 @@ function create_card_html(card)
 	</div>
   <div class="o-grid__cell">
 	<div class="o-grid-text u-right">
-		<button type="button" class="c-button unhide-on-edit-mode"
+		<button type="button" class="c-button unhide-on-edit-mode block-on-finishcard"
 			style="visibility:hidden" onclick="on_click_add_mode(this)">
 			<i class="material-icons"
 		  style="font-size:1em;">note_add</i></button>
-		<button type="button" class="c-button unhide-on-edit-mode"
+		<button type="button" class="c-button unhide-on-edit-mode block-on-finishcard"
 		  style="visibility:hidden" onclick="on_click_delete(this)"><i 
 		  class="material-icons" 
 		  style="font-size:1em;">delete</i></button>
-		<button type="button" class="c-button unhide-on-edit-mode"
+		<button type="button" class="c-button unhide-on-edit-mode block-on-finishcard"
 		  style="visibility:hidden" onclick="on_click_move_mode(this)"><i 
 		  class="material-icons" 
 		  style="font-size:1em;">swap_vert</i></button>
-		<button type="button" class="c-button unhide-on-edit-mode"
+		<button type="button" class="c-button unhide-on-edit-mode block-on-finishcard"
 		  style="visibility:hidden" onclick="on_click_finish(this)">
 		    <i class="material-icons" 
 		    style="font-size:1em;">
 		     assignment_turned_in
 		   </i>
 		</button>
-		<button type="button" class="c-button"  
+		<button type="button" class="c-button block-on-finishcard"  
 		 onclick="on_click_edit(this)">
 		  <i class="material-icons" 
 		    style="font-size:1em;">
@@ -423,7 +458,7 @@ function create_card_html(card)
 		  </i>
 		</button>
 		<button type="button" class="c-button display-on-finishcard"  
-		 onclick="on_click_return(this)">
+		style="display:none" onclick="on_click_return(this)">
 		  <i class="material-icons" 
 		    style="font-size:1em;">
 		    assignment_return

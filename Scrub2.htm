@@ -21,9 +21,9 @@
 <!-- Top menue -->
 
 <ul class="c-nav c-nav--inline c-nav--fixed u-high">
-  <li class="c-nav__item"><i class="material-icons" style="font-size:1em;">mode_edit</i></li>
-  <li class="c-nav__item"><i class="material-icons" style="font-size:1em;">trending_down</i></li>
-  <li class="c-nav__item"><i class="material-icons" style="font-size:1em;">assignment_turned_in</i></li>
+  <li class="c-nav__item"  onclick="show_open_cards()"><i class="material-icons" style="font-size:1em;">mode_edit</i></li>
+  <li class="c-nav__item" ><i class="material-icons" style="font-size:1em;">trending_down</i></li>
+  <li class="c-nav__item" onclick="show_finished_cards()"><i class="material-icons" style="font-size:1em;">assignment_turned_in</i></li>
   <li class="c-nav__item c-nav__item--right"></i><i class="material-icons" style="font-size:1em;">help</i></li>
   <li class="c-nav__item c-nav__item--right"><i class="material-icons" style="font-size:1em;">settings</i></li>
   <li class="c-nav__item c-nav__item--right"><i class="material-icons" style="font-size:1em;">sync</i></li>
@@ -43,7 +43,7 @@
 <blaze-accordion id="open_cards_id">
 </blaze-accordion>
 
-<blaze-accordion id="finished_cards_id">
+<blaze-accordion id="finished_cards_id" style="display:none">
 </blaze-accordion>
 
 	<!--
