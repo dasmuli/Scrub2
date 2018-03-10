@@ -12,13 +12,13 @@ function init_data()
 	{
 		console.log("Created new doc");
 
-		main_doc = Automerge.change(main_doc, 'Initialize card list', doc => {
+		main_doc = Automerge.change(main_doc, doc => {
 		  doc.open_cards = [],
 		  doc.finished_cards = []
 		})
 		
 		// Initial data
-		main_doc = Automerge.change(main_doc, 'Add card', doc => {
+		main_doc = Automerge.change(main_doc, doc => {
 			doc.open_cards.push
 			({title: 'Click me', description: '', date_added:'now', date_finished:'later',points:'0'})
 		})
@@ -147,6 +147,26 @@ function check_data_and_save(card_origin)
 		save_doc()
 		card_origin.open_card = main_doc.open_cards[card_index]
 	}
+}
+
+function on_click_finish(element)
+{
+	console.log('Finish')
+	let finished_cards_view = document.getElementById('finished_cards_id');
+	let card_origin = find_ancestor(element,"card-origin");
+	let card_to_be_finished_index = find_index_for_card(card_origin.open_card)
+	// move html
+	let card_origin_controls = card_origin.nextSibling
+	//card_origin.classList.remove('c-card__item--active')
+	finished_cards_view.lastChild.appendChild(card_origin)
+	finished_cards_view.lastChild.appendChild(card_origin_controls)
+	//main_doc = Automerge.change(main_doc, doc => {
+	//	doc.finished_cards.push(
+	//		doc.open_cards.splice(card_to_be_finished_index,1)[0]
+	//	)
+	//})
+	// delete
+	// save
 }
 
 function on_click_delete(element)
@@ -389,7 +409,7 @@ function create_card_html(card)
 		  class="material-icons" 
 		  style="font-size:1em;">swap_vert</i></button>
 		<button type="button" class="c-button unhide-on-edit-mode"
-		  style="visibility:hidden">
+		  style="visibility:hidden" onclick="on_click_finish(this)">
 		    <i class="material-icons" 
 		    style="font-size:1em;">
 		     assignment_turned_in
@@ -400,6 +420,13 @@ function create_card_html(card)
 		  <i class="material-icons" 
 		    style="font-size:1em;">
 		    build
+		  </i>
+		</button>
+		<button type="button" class="c-button display-on-finishcard"  
+		 onclick="on_click_return(this)">
+		  <i class="material-icons" 
+		    style="font-size:1em;">
+		    assignment_return
 		  </i>
 		</button>
     </div>
