@@ -354,7 +354,7 @@ function create_card_html(card)
   <div class="o-grid__cell o-grid__cell--width-20 o-grid__cell--offset-60">
 		<div class="o-grid-text u-right">
 			<button type="button" class="c-button display-on-add-mode"
-			style="display:none">
+			style="display:none" onclick="cancel_all_edits()">
 				<i class="material-icons" style="font-size:1em;">
 				  block
 				</i>
