@@ -174,7 +174,7 @@ function on_click_add(element)
 		set_card_data_from_doc(card_element,previous_card_index+1)
 		// leave add mode
 		cancel_all_edits()
-		// save()
+		//save_doc()
 	}
 	else // front position
 	{
@@ -250,20 +250,14 @@ function on_click_move(element)
 		position_selector.parentNode.insertBefore(
 			card_div_element_to_be_moved,
 			position_selector.nextSibling);
-		// generate new card
-		//main_doc = Automerge.change(main_doc, doc => {
-		//	doc.open_cards.insertAt(previous_card_index+1,
-		//		{title: 'Click me', description: '', date_added:'now', date_finished:'later',points:'0'})
-		//})
-		// add html
-		//let raw_html_string = 
-		//	 create_card_html(main_doc.open_cards[previous_card_index+1])
-		//let card_element =
-		// insert_html(position_selector, raw_html_string);
-		//set_card_data_from_doc(card_element,previous_card_index+1)
+		// move card in data card
+		main_doc = Automerge.change(main_doc, doc => {
+			doc.open_cards.splice(previous_card_index+1, 0,    // add at new pos
+			 doc.open_cards.splice(card_to_be_moved_index,1)[0])  // delete at old pos
+		})
 		// leave add mode
 		cancel_all_edits()
-		// save()
+		save_doc()
 	}
 	else // front position
 	{
