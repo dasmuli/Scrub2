@@ -17,7 +17,8 @@ function init_data()
 		
 		// Initial data
 		main_doc = Automerge.change(main_doc, 'Add card', doc => {
-		  doc.open_cards.push({title: 'Click me', description: 'Add description...', date_added:'now', date_finished:'later',points:'0'})
+			doc.open_cards.push
+			({title: 'Click me', description: '', date_added:'now', date_finished:'later',points:'0'})
 		})
 		
 		save_doc()
@@ -136,6 +137,59 @@ function check_data_and_save(card_origin)
 	}
 }
 
+function on_click_add(element)
+{
+	console.log('add')
+	let position_selector = find_ancestor(element,"card_position_selector")
+	if(position_selector.previousElementSibling)
+	{
+		console.log('behind pos')
+		let card_view_before_position = 
+			position_selector.previousElementSibling
+		// find index for document in front
+		let previous_card_index = 
+		  find_index_for_card(card_view_before_position.open_card)
+		// generate new card
+		main_doc = Automerge.change(main_doc, doc => {
+			doc.open_cards.insertAt(previous_card_index+1,
+				{title: 'Click me', description: '', date_added:'now', date_finished:'later',points:'0'})
+		})
+		// add html
+		let raw_html_string = 
+			 create_card_html(main_doc.open_cards[previous_card_index+1])
+		let card_element =
+		 insert_html(position_selector, raw_html_string);
+		set_card_data_from_doc(card_element,previous_card_index+1)
+		// leave add mode
+		// save()
+	}
+	else // front position
+	{
+		console.log('front pos')
+	}
+}
+
+function on_click_add_mode(element)
+{
+	let open_cards_view = document.getElementById('open_cards_id')
+  if(element.classList.contains("c-button--active"))
+	{
+		// turn add mode off
+		element.classList.remove("c-button--active");
+		set_style_property_for_class_in_children(
+			open_cards_view,'.display-on-add-mode',
+			'display','none')
+	}
+	else
+	{
+		// turn add mode on
+		element.classList.add("c-button--active");
+		set_style_property_for_class_in_children(
+			open_cards_view,'.display-on-add-mode',
+			'display','inline')
+	}
+}
+
 function on_click_edit(element)
 {
 	//find base card div element
@@ -207,8 +261,8 @@ function create_card_html(card)
   <div class="o-grid__cell">
 	<div class="o-grid-text u-right">
 		<button type="button" class="c-button unhide-on-edit-mode"
-		  style="visibility:hidden"><i 
-		  class="material-icons" 
+			style="visibility:hidden" onclick="on_click_add_mode(this)">
+			<i class="material-icons"
 		  style="font-size:1em;">note_add</i></button>
 		<button type="button" class="c-button unhide-on-edit-mode"
 		  style="visibility:hidden"><i 
@@ -254,11 +308,11 @@ function create_card_html(card)
 </div>
 	</blaze-accordion-pane>
 
-<div class="o-grid o-grid--demo o-grid--no-gutter">
+<div class="o-grid o-grid--demo o-grid--no-gutter card_position_selector">
   <div class="o-grid__cell o-grid__cell--width-20">
 		<div class="o-grid-text">
-			<button type="button" class="c-button unhide-on-edit-mode"
-			style="visibility:visible">
+			<button type="button" class="c-button display-on-add-mode"
+			style="display:none" onclick="on_click_add(this)">
 				<i class="material-icons" style="font-size:1em;">note_add</i>
 				<i class="material-icons" style="font-size:1em;">subdirectory_arrow_right</i>
 			</button>
@@ -266,8 +320,8 @@ function create_card_html(card)
   </div>
   <div class="o-grid__cell o-grid__cell--width-20 o-grid__cell--offset-60">
 		<div class="o-grid-text u-right">
-			<button type="button" class="c-button unhide-on-edit-mode"
-			style="visibility:visible">
+			<button type="button" class="c-button display-on-add-mode"
+			style="display:none">
 				<i class="material-icons" style="font-size:1em;">
 				  block
 				</i>
@@ -280,16 +334,48 @@ function create_card_html(card)
 
 function append_html(el, str) {
 	var div = document.createElement('div');
-	var result;
   div.innerHTML = str;
-  while (div.children.length > 0) {
+	while (div.children.length > 0)
+	{
 		el.appendChild(div.children[0]);
 	}
+}
+
+/// Returns the newly created card div element
+function insert_html(el, str) {
+	var div = document.createElement('div');
+	let result;
+  div.innerHTML = str;
+	while (div.children.length > 0)
+	{
+		if(div.children[div.children.length-1].classList.contains('card-origin'))
+		{
+			result = div.children[div.children.length-1]
+		}
+		insert_after(div.children[div.children.length-1],el);
+	}
+	return result
+}
+
+function insert_after(newNode, referenceNode) {
+	referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 }
 
 function find_ancestor (el, cls) {
     while ((el = el.parentElement) && !el.classList.contains(cls));
     return el;
+}
+
+function set_card_data_from_doc(card_element,card_index)
+{
+	card_element.querySelector('.title_input_text').value 
+			= main_doc.open_cards[card_index].title
+	card_element.querySelector('.description_input_text').value 
+		= main_doc.open_cards[card_index].description
+	card_element.querySelector('.point_select').value 
+		= main_doc.open_cards[card_index].points
+	// save reference to data in view (it is JS...)
+	card_element.open_card = main_doc.open_cards[card_index];
 }
 
 function update_data_view()
@@ -304,14 +390,17 @@ function update_data_view()
 		append_html(open_cards_view, string_html_data);
 		let all_card_views =  open_cards_view.querySelectorAll('.card-origin')
 		let card_element = all_card_views[all_card_views.length-1]
-		// save reference to data in view (it is JS...)
+		set_card_data_from_doc(card_element,i)
+		/*
 		card_element.querySelector('.title_input_text').value 
 			= main_doc.open_cards[i].title
-			card_element.querySelector('.description_input_text').value 
+	  card_element.querySelector('.description_input_text').value 
 			= main_doc.open_cards[i].description
-			card_element.querySelector('.point_select').value 
-		  = main_doc.open_cards[i].points
-			card_element.open_card = main_doc.open_cards[i];
+		card_element.querySelector('.point_select').value 
+			= main_doc.open_cards[i].points
+		// save reference to data in view (it is JS...)
+		card_element.open_card = main_doc.open_cards[i];
+		*/
 	}
 }
 
