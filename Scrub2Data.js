@@ -57,6 +57,16 @@ function set_property_for_class_in_children(parentelem,classname,
 	}
 }
 
+function delete_class_in_children(
+	parentelem,classname)
+{
+	let list = parentelem.querySelectorAll('.'+classname)
+	for(i = 0; i <list.length; i++)
+	{
+		list[i].classList.remove(classname)
+	}
+}
+
 function add_or_delete_property_for_class_in_children(
     parentelem,classname,property,add)
 {
@@ -161,12 +171,35 @@ function on_click_add(element)
 		 insert_html(position_selector, raw_html_string);
 		set_card_data_from_doc(card_element,previous_card_index+1)
 		// leave add mode
+		cancel_all_edits()
 		// save()
 	}
 	else // front position
 	{
 		console.log('front pos')
 	}
+}
+
+function cancel_all_edits()
+{
+	let open_cards_view = document.getElementById('open_cards_id')
+	set_style_property_for_class_in_children(
+		open_cards_view,'.display-on-add-mode',
+		'display','none')
+	set_style_property_for_class_in_children(
+		open_cards_view,'.display-on-edit-mode',
+		'display','none')
+	delete_class_in_children(
+		open_cards_view,'c-button--active')
+	set_style_property_for_class_in_children(
+		open_cards_view,'.unhide-on-edit-mode',
+		'visibility','hidden')
+	set_property_for_class_in_children(
+		open_cards_view,'.writeable-on-editmode',
+		'readOnly',true)
+	set_property_for_class_in_children(
+		open_cards_view,'.remove-disabled-on-editmode',
+		'disabled',true)
 }
 
 function on_click_add_mode(element)
@@ -332,18 +365,26 @@ function create_card_html(card)
 	`;
 }
 
+/// Returns the newly created card div element
 function append_html(el, str) {
 	var div = document.createElement('div');
+	let result
   div.innerHTML = str;
 	while (div.children.length > 0)
 	{
+		if(div.children[div.children.length-1].classList.contains('card-origin'))
+		{
+			result = div.children[div.children.length-1]
+		}
 		el.appendChild(div.children[0]);
 	}
+	return result
 }
 
 /// Returns the newly created card div element
+// inserts new elements from raw html string after el
 function insert_html(el, str) {
-	var div = document.createElement('div');
+	let div = document.createElement('div');
 	let result;
   div.innerHTML = str;
 	while (div.children.length > 0)
