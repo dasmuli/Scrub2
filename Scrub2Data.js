@@ -149,6 +149,21 @@ function check_data_and_save(card_origin)
 	}
 }
 
+function on_click_delete(element)
+{
+	console.log('Delete')
+	let card_origin = find_ancestor(element,"card-origin");
+	let card_to_be_removed_index = find_index_for_card(card_origin.open_card)
+	// delete card and following controls
+	card_origin.parentNode.removeChild(card_origin.nextSibling);
+	card_origin.parentNode.removeChild(card_origin);
+	// delete in data
+	main_doc = Automerge.change(main_doc, doc => {
+		doc.open_cards.deleteAt( card_to_be_removed_index )
+	})
+	save_doc()
+}
+
 function on_click_add(element)
 {
 	console.log('add')
@@ -366,7 +381,7 @@ function create_card_html(card)
 			<i class="material-icons"
 		  style="font-size:1em;">note_add</i></button>
 		<button type="button" class="c-button unhide-on-edit-mode"
-		  style="visibility:hidden"><i 
+		  style="visibility:hidden" onclick="on_click_delete(this)"><i 
 		  class="material-icons" 
 		  style="font-size:1em;">delete</i></button>
 		<button type="button" class="c-button unhide-on-edit-mode"
