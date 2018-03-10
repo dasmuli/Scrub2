@@ -160,12 +160,13 @@ function on_click_finish(element)
 	//card_origin.classList.remove('c-card__item--active')
 	finished_cards_view.lastChild.appendChild(card_origin)
 	finished_cards_view.lastChild.appendChild(card_origin_controls)
-	//main_doc = Automerge.change(main_doc, doc => {
-	//	doc.finished_cards.push(
-	//		doc.open_cards.splice(card_to_be_finished_index,1)[0]
-	//	)
-	//})
-	// save
+	main_doc = Automerge.change(main_doc, doc => {
+		doc.finished_cards.push(
+			doc.open_cards.splice(card_to_be_finished_index,1)[0]
+		)
+	})
+	save_doc()
+	close_all_accordions()
 }
 
 function on_click_delete(element)
@@ -586,6 +587,18 @@ function update_data_view()
 			);
 		append_html(open_cards_view, string_html_data);
 		let all_card_views =  open_cards_view.querySelectorAll('.card-origin')
+		let card_element = all_card_views[all_card_views.length-1]
+		set_card_data_from_doc(card_element,i)
+	}
+	let finished_cards_view = document.getElementById('finished_cards_id');
+	for(i = 0; i < main_doc.finished_cards.length; i++)
+	{
+		let string_html_data = 
+		  create_card_html(
+		    main_doc.finished_cards[i]
+			);
+		append_html(finished_cards_view, string_html_data);
+		let all_card_views =  finished_cards_view.querySelectorAll('.card-origin')
 		let card_element = all_card_views[all_card_views.length-1]
 		set_card_data_from_doc(card_element,i)
 	}
