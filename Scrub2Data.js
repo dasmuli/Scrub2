@@ -216,8 +216,14 @@ function on_click_add(element)
 	}
 }
 
+function close_all_accordions()
+{
+	delete_class_in_children(document.body,'c-card__item--active')
+}
+
 function cancel_all_edits()
 {
+	close_all_accordions()
 	let open_cards_view = document.getElementById('open_cards_id')
 	set_style_property_for_class_in_children(
 		open_cards_view,'.display-on-add-mode',
