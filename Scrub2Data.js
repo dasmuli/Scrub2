@@ -221,6 +221,7 @@ function on_click_add_mode(element)
 			open_cards_view,'.display-on-add-mode',
 			'display','inline')
 	}
+	element.scrollIntoView()
 }
 
 function on_click_edit(element)
