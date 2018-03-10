@@ -1,5 +1,7 @@
 
 var main_doc;
+var card_to_be_moved_index;
+var card_div_element_to_be_moved;
 
 function init_data()
 {
@@ -189,6 +191,9 @@ function cancel_all_edits()
 	set_style_property_for_class_in_children(
 		open_cards_view,'.display-on-edit-mode',
 		'display','none')
+	set_style_property_for_class_in_children(
+			open_cards_view,'.display-on-move-mode',
+			'display','none')
 	delete_class_in_children(
 		open_cards_view,'c-button--active')
 	set_style_property_for_class_in_children(
@@ -221,8 +226,76 @@ function on_click_add_mode(element)
 			open_cards_view,'.display-on-add-mode',
 			'display','inline')
 	}
-	element.scrollIntoView()
+	//element.scrollIntoView(false)
 }
+
+function on_click_move(element)
+{
+	console.log('move')
+	let position_selector = find_ancestor(element,"card_position_selector")
+	if(position_selector.previousElementSibling)
+	{
+		console.log('behind pos')
+		let card_view_before_position = 
+			position_selector.previousElementSibling
+		// find index for document in front
+		let previous_card_index = 
+			find_index_for_card(card_view_before_position.open_card)
+		console.log('Moving '+card_to_be_moved_index+' behind '+previous_card_index)
+		// move control div element
+		position_selector.parentNode.insertBefore(
+			card_div_element_to_be_moved.nextSibling,
+			position_selector.nextSibling);
+		// move card element
+		position_selector.parentNode.insertBefore(
+			card_div_element_to_be_moved,
+			position_selector.nextSibling);
+		// generate new card
+		//main_doc = Automerge.change(main_doc, doc => {
+		//	doc.open_cards.insertAt(previous_card_index+1,
+		//		{title: 'Click me', description: '', date_added:'now', date_finished:'later',points:'0'})
+		//})
+		// add html
+		//let raw_html_string = 
+		//	 create_card_html(main_doc.open_cards[previous_card_index+1])
+		//let card_element =
+		// insert_html(position_selector, raw_html_string);
+		//set_card_data_from_doc(card_element,previous_card_index+1)
+		// leave add mode
+		cancel_all_edits()
+		// save()
+	}
+	else // front position
+	{
+		console.log('front pos')
+	}
+}
+
+function on_click_move_mode(element)
+{
+	let open_cards_view = document.getElementById('open_cards_id')
+	let card_origin = find_ancestor(element,"card-origin");
+	card_to_be_moved_index = find_index_for_card(card_origin.open_card)
+	card_div_element_to_be_moved = card_origin
+  if(element.classList.contains("c-button--active"))
+	{
+		// turn add mode off
+		element.classList.remove("c-button--active");
+		set_style_property_for_class_in_children(
+			open_cards_view,'.display-on-move-mode',
+			'display','none')
+	}
+	else
+	{
+		// turn add mode on
+		element.classList.add("c-button--active");
+		set_style_property_for_class_in_children(
+			open_cards_view,'.display-on-move-mode',
+			'display','inline')
+	}
+	//element.scrollIntoView(false)
+}
+
 
 function on_click_edit(element)
 {
@@ -303,7 +376,7 @@ function create_card_html(card)
 		  class="material-icons" 
 		  style="font-size:1em;">delete</i></button>
 		<button type="button" class="c-button unhide-on-edit-mode"
-		  style="visibility:hidden"><i 
+		  style="visibility:hidden" onclick="on_click_move_mode(this)"><i 
 		  class="material-icons" 
 		  style="font-size:1em;">swap_vert</i></button>
 		<button type="button" class="c-button unhide-on-edit-mode"
@@ -350,11 +423,16 @@ function create_card_html(card)
 				<i class="material-icons" style="font-size:1em;">note_add</i>
 				<i class="material-icons" style="font-size:1em;">subdirectory_arrow_right</i>
 			</button>
+			<button type="button" class="c-button display-on-move-mode"
+			style="display:none" onclick="on_click_move(this)">
+				<i class="material-icons" style="font-size:1em;">swap_vert</i>
+				<i class="material-icons" style="font-size:1em;">arrow_forward</i>
+			</button>
 		</div>
   </div>
   <div class="o-grid__cell o-grid__cell--width-20 o-grid__cell--offset-60">
 		<div class="o-grid-text u-right">
-			<button type="button" class="c-button display-on-add-mode"
+			<button type="button" class="c-button display-on-add-mode display-on-move-mode"
 			style="display:none" onclick="cancel_all_edits()">
 				<i class="material-icons" style="font-size:1em;">
 				  block
@@ -433,16 +511,6 @@ function update_data_view()
 		let all_card_views =  open_cards_view.querySelectorAll('.card-origin')
 		let card_element = all_card_views[all_card_views.length-1]
 		set_card_data_from_doc(card_element,i)
-		/*
-		card_element.querySelector('.title_input_text').value 
-			= main_doc.open_cards[i].title
-	  card_element.querySelector('.description_input_text').value 
-			= main_doc.open_cards[i].description
-		card_element.querySelector('.point_select').value 
-			= main_doc.open_cards[i].points
-		// save reference to data in view (it is JS...)
-		card_element.open_card = main_doc.open_cards[i];
-		*/
 	}
 }
 
