@@ -689,7 +689,9 @@ function drawChart() {
 		//curveType: 'function',
 		legend: { position: 'bottom' },
 		height: window.innerHeight * 3 / 4,
+		width: document.getElementById('burndown_chart').parentElement.offsetWidth,
 	};
+	console.log("burndown chart div: "+options.width);
 
 	var chart = new google.visualization.LineChart(document.getElementById('burndown_chart'));
 
