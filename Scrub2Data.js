@@ -325,6 +325,13 @@ function hide_all_pages()
 {
 	document.getElementById('open_cards_id').style.display = 'none';
 	document.getElementById('finished_cards_id').style.display = 'none';
+	document.getElementById('curve_chart').style.display = 'none';
+}
+
+function show_chart()
+{
+	hide_all_pages()
+	document.getElementById('curve_chart').style.display = 'inline';
 }
 
 function show_open_cards()

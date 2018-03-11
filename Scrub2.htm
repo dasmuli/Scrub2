@@ -26,7 +26,7 @@
 
 <ul class="c-nav c-nav--inline c-nav--fixed u-high">
   <li class="c-nav__item"  onclick="show_open_cards()"><i class="material-icons" style="font-size:1em;">mode_edit</i></li>
-  <li class="c-nav__item" ><i class="material-icons" style="font-size:1em;">trending_down</i></li>
+  <li class="c-nav__item" onclick="show_chart()"><i class="material-icons" style="font-size:1em;">trending_down</i></li>
   <li class="c-nav__item" onclick="show_finished_cards()"><i class="material-icons" style="font-size:1em;">assignment_turned_in</i></li>
   <li class="c-nav__item c-nav__item--right"></i><i class="material-icons" style="font-size:1em;">help</i></li>
   <li class="c-nav__item c-nav__item--right"><i class="material-icons" style="font-size:1em;">settings</i></li>
@@ -54,7 +54,7 @@
 	<blaze-alert open dismissible type="success" position="bottomright">Saved</blaze-alert>
 	-->
 
-<div id="curve_chart"></div>
+<div id="curve_chart" style="display:none"></div>
 
 <!-- Clearly indicate the end -->
 <p style="margin-bottom:1em;">
