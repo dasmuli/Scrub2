@@ -69,45 +69,87 @@
 <div id="burndown_chart" style="display:none;"></div>
 
 <div id="synhronize_id" style="display:none;">
-	<ul class="c-list" id="synhronize_step_list_id">
-	</ul>
+	<div id="synhronize_step_list_id">
+	</div>
 </div>
 
 
-<div class="o-grid o-grid--full o-grid--demo " style="display:none;" id="preferences_id">
+<div class="o-grid  o-grid--demo" style="display:none;" id="preferences_id">
 	<div class="o-grid__cell">
 	  <div class="o-grid-text">
-
-		  <!-- Delete all data -->
-          <div class="o-grid o-grid--demo o-grid--center">
-				<div class="o-grid__cell o-grid__cell--width-30">
-				  <div class="o-grid-text u-right">
-						<button type="button" class="c-button"
-						    onclick="delete_all_data()">
-							<i class="material-icons" style="font-size:1em;">
-							  delete_forever
-							</i>
-						</button>
+		  <div class="o-field o-field--icon-left">
+			<i class="material-icons c-icon" 
+			style="font-size:1em;">group_work</i>
+		   <input class="c-field title_input_text" type="text"
+		   placeholder="User or group name">
+		  </div>
+	  </div>
+	</div>
+	<div class="o-grid__cell">
+			<div class="o-grid-text">
+				  <div class="o-field o-field--icon-left">
+					  <i class="material-icons c-icon" 
+					  style="font-size:1em;">assignment</i>
+					  <input class="c-field title_input_text" type="text"
+					  placeholder="Project name">
 				  </div>
-				</div>
-				<div class="o-grid__cell">
-				  <div class="o-grid-text">
-					  Delete all data
-				  </div>
-				</div>
 			</div>
-
+		  </div>
+	<div class="o-grid__cell">
+	  <div class="o-grid-text">
+			<div class="o-field o-field--icon-left">
+				<i class="material-icons c-icon" 
+				style="font-size:1em;">security</i>
+				<input class="c-field title_input_text" type="text"
+				placeholder="Access token">
+			</div>
 	  </div>
 	</div>
 	<div class="o-grid__cell">
-	  <div class="o-grid-text">
-		  <!-- other preferencer -->
-	  </div>
+			<div class="o-grid-text">
+					<!-- Delete all data -->
+					<div class="o-grid o-grid--demo o-grid--center">
+						<div class="o-grid__cell o-grid__cell--width-30">
+							<div class="o-grid-text u-right">
+								  <button type="button" class="c-button"
+									  onclick="delete_all_data()">
+									  <i class="material-icons" style="font-size:1em;">
+										save
+									  </i>
+								  </button>
+							</div>
+						  </div>
+						  <div class="o-grid__cell">
+							<div class="o-grid-text">
+								Save
+							</div>
+						</div>
+					</div>
+			</div>
+		</div>
+	<div class="o-grid__cell">
 	</div>
 	<div class="o-grid__cell">
-	  <div class="o-grid-text">
-		  <!-- other preferencer -->
-	  </div>
+		<div class="o-grid-text">
+				<!-- Delete all data -->
+				<div class="o-grid o-grid--demo o-grid--center">
+					<div class="o-grid__cell o-grid__cell--width-30">
+						<div class="o-grid-text u-right">
+							  <button type="button" class="c-button"
+								  onclick="delete_all_data()">
+								  <i class="material-icons" style="font-size:1em;">
+									delete_forever
+								  </i>
+							  </button>
+						</div>
+					  </div>
+					  <div class="o-grid__cell">
+						<div class="o-grid-text">
+							Delete all data
+						</div>
+					</div>
+				</div>
+		</div>
 	</div>
   </div>
 

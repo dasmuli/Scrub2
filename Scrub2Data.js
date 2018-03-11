@@ -341,7 +341,7 @@ function on_click_move(element)
 
 function add_synchronize_feedback(user_info)
 {
-	let info_str = '<li class="c-list__item">'+user_info+'</li>';
+	let info_str = '<div>'+user_info+'</div>';
 	append_html(document.getElementById('synhronize_step_list_id'), info_str) ;
 }
 
@@ -357,7 +357,8 @@ function synchronize()
 {
 	console.log('synchronize');
 	clear_children(document.getElementById('synhronize_step_list_id'));
-	add_synchronize_feedback("Starting synchronisation");
+	add_synchronize_feedback(`<div class="c-alert c-alert--info">
+  Started synchronisation</div>`);
 	hide_all_pages();
 	document.getElementById('synhronize_id').style.display = 'inline';
 	// check organization, projet, access token
@@ -365,20 +366,29 @@ function synchronize()
 	if(organization == undefined)
 	{
 		access_data_ok = false;
-		add_synchronize_feedback(`Please add a user / group name in <i class="material-icons"
-		style="font-size:1em;">settings</i>`);
+		add_synchronize_feedback(`
+		<div class="c-alert c-alert--warning">
+		Please add a user / group name in <i class="material-icons"
+		style="font-size:1em;">settings</i>
+	  </div>`);
 	}
 	if(project == undefined)
 	{
 		access_data_ok = false;
-		add_synchronize_feedback(`Please add a project name in <i class="material-icons"
-		style="font-size:1em;">settings</i>`);
+		add_synchronize_feedback(`
+		<div class="c-alert c-alert--warning">
+		Please add a project name in <i class="material-icons"
+		style="font-size:1em;">settings</i>
+	  </div>`);
 	}
 	if(access_token == undefined)
 	{
 		access_data_ok = false;
-		add_synchronize_feedback(`Please add an access token in <i class="material-icons"
-		style="font-size:1em;">settings</i>`);
+		add_synchronize_feedback(`
+		<div class="c-alert c-alert--warning">
+		Please add an access token in <i class="material-icons"
+		style="font-size:1em;">settings</i>
+	  </div>`);
 	}
 	if(access_data_ok)
 	{
@@ -388,7 +398,11 @@ function synchronize()
 	}
 	else
 	{
-		add_synchronize_feedback(`Not Synchronisation`);
+		add_synchronize_feedback(`
+		<div class="c-alert c-alert--error">
+		Not synchronised <i class="material-icons"
+		style="font-size:1em;">sync_problem</i>
+	  </div>`);
 	}
 }
 
@@ -585,9 +599,9 @@ function create_card_html(card)
   <div class="o-grid__cell o-grid__cell--width-100">
     <div class="o-grid-text">
       <div class="o-field o-field--icon-left unhide-on-edit-mode" 
-	  style="visibility:hidden">
+	     style="visibility:hidden">
 	    <i class="material-icons c-icon" 
-		style="font-size:1em;">title</i>
+		   style="font-size:1em;">title</i>
 	    <input class="c-field title_input_text" type="text">
 	  </div>
 	</div>
