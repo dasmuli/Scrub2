@@ -142,7 +142,7 @@ function check_data_and_save(card_origin)
 		changed = true;
 		main_doc = Automerge.change(main_doc, doc => {
 			doc.open_cards[card_index].points 
-				= point_select.value
+				= Number(point_select.value)
 		})
 	}
 	if(changed)
@@ -214,7 +214,7 @@ function on_click_add(element)
 				 description: '',
 				 date_added:Date.now(),
 				 date_finished:'0',
-				 points:'0'})
+				 points:0})
 		})
 		// add html
 		let raw_html_string = 
@@ -640,6 +640,7 @@ function drawChart() {
  let data_array =[];
  data_array[0] = ['Date','Burndown'];
  var open_points = 0; // the chart's offset
+ 
  // go through all open cards and add up points
  for(i = 0; i < main_doc.open_cards.length; i++)
  {
@@ -649,18 +650,30 @@ function drawChart() {
  // go through finished and calculate finished value
  for(i = main_doc.finished_cards.length-1; i >= 0; i--)
  {
-	 data_array[i+1] = [main_doc.finished_cards[i].date_finished,
-		main_doc.finished_cards[i].points+open_points+finished_points];
-	finished_points += main_doc.finished_cards[i].points;
+	 data_array[i+2] = [main_doc.finished_cards[i].date_finished,
+		 open_points+finished_points];
+	 finished_points += main_doc.finished_cards[i].points;
  }
 
-	var data = google.visualization.arrayToDataTable([
+ let time_step = 100000; // this a guess for the time diff on finish entries
+ if(main_doc.finished_cards.length > 1)
+ {
+		time_step = main_doc.finished_cards[1].date_finished -
+		main_doc.finished_cards[0].date_finished;
+ }
+ // add first element with full points
+ data_array[1] = [main_doc.finished_cards[0].date_finished - time_step,
+		open_points+finished_points];
+
+	var data = google.visualization.arrayToDataTable(
+		data_array
+		/*
 		['Date', 'Burndown', 'Additions'],
 		['2004',  1000,      400],
 		['2005',  1170,      460],
 		['2006',  660,       1120],
-		['2007',  1030,      540]
-	]);
+		['2007',  1030,      540]*/
+	);
 
 	var options = {
 		title: 'Burndown chart',
