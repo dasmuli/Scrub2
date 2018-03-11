@@ -326,6 +326,13 @@ function hide_all_pages()
 	document.getElementById('open_cards_id').style.display = 'none';
 	document.getElementById('finished_cards_id').style.display = 'none';
 	document.getElementById('burndown_chart').style.display = 'none';
+	document.getElementById('preferences_id').style.display = 'none';
+}
+
+function show_prefences()
+{
+	hide_all_pages();
+	document.getElementById('preferences_id').style.display = 'inline';
 }
 
 function show_chart()
