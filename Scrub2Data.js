@@ -21,9 +21,14 @@ function init_data()
 		main_doc = Automerge.change(main_doc, doc => {
 			doc.open_cards.push
 			({title: 'Click me', description: '', 
-				date_added:Date.now(),
-				date_finished:'0',
-				points:'0'})
+				date_added:Date.now()-1000*60*10,
+				date_finished:0,
+				points:2})
+			doc.finished_cards.push
+			({title: 'Finished', description: '', 
+				date_added:Date.now()-1000*60*10,
+				date_finished:Date.now(),
+				points:1})
 		})
 		
 		save_doc()
@@ -40,6 +45,13 @@ function save_doc()
 {
 	let serialData = Automerge.save(main_doc);
 	localStorage.setItem("SerializedAutomergeData", serialData);
+}
+
+function delete_all_data()
+{
+	//localStorage.clear(); // may be too much
+	localStorage.removeItem("SerializedAutomergeData");
+	location.reload();  // so lazy...
 }
 
 function set_style_property_for_class_in_children(parentelem,classname,
@@ -320,6 +332,8 @@ function on_click_move(element)
 		console.log('front pos')
 	}
 }
+
+
 
 function hide_all_pages()
 {
