@@ -20,7 +20,10 @@ function init_data()
 		// Initial data
 		main_doc = Automerge.change(main_doc, doc => {
 			doc.open_cards.push
-			({title: 'Click me', description: '', date_added:'now', date_finished:'later',points:'0'})
+			({title: 'Click me', description: '', 
+				date_added:Date.now(),
+				date_finished:'0',
+				points:'0'})
 		})
 		
 		save_doc()
@@ -149,6 +152,14 @@ function check_data_and_save(card_origin)
 	}
 }
 
+// Reopen card from finish to open
+function on_click_return(element)
+{
+	let finished_cards_view = document.getElementById('finished_cards_id');
+	let card_origin = find_ancestor(element,"card-origin");
+	let card_to_be_finished_index = find_index_for_card(card_origin.open_card)
+}
+
 function on_click_finish(element)
 {
 	console.log('Finish')
@@ -157,10 +168,10 @@ function on_click_finish(element)
 	let card_to_be_finished_index = find_index_for_card(card_origin.open_card)
 	// move html
 	let card_origin_controls = card_origin.nextSibling
-	//card_origin.classList.remove('c-card__item--active')
 	finished_cards_view.lastChild.appendChild(card_origin)
 	finished_cards_view.lastChild.appendChild(card_origin_controls)
 	main_doc = Automerge.change(main_doc, doc => {
+		doc.open_cards[card_to_be_finished_index].date_finished = Date.now();
 		doc.finished_cards.push(
 			doc.open_cards.splice(card_to_be_finished_index,1)[0]
 		)
@@ -199,7 +210,11 @@ function on_click_add(element)
 		// generate new card
 		main_doc = Automerge.change(main_doc, doc => {
 			doc.open_cards.insertAt(previous_card_index+1,
-				{title: 'Click me', description: '', date_added:'now', date_finished:'later',points:'0'})
+				{title: 'Click me',
+				 description: '',
+				 date_added:Date.now(),
+				 date_finished:'0',
+				 points:'0'})
 		})
 		// add html
 		let raw_html_string = 
@@ -606,5 +621,28 @@ function update_data_view()
 
 document.addEventListener("DOMContentLoaded", function(event) { 
   init_data();
-  update_data_view();
+	update_data_view();
+	google.charts.load('current', {packages: ['corechart']});
+	google.charts.setOnLoadCallback(drawChart);
 });
+
+
+function drawChart() {
+	var data = google.visualization.arrayToDataTable([
+		['Year', 'Sales', 'Expenses'],
+		['2004',  1000,      400],
+		['2005',  1170,      460],
+		['2006',  660,       1120],
+		['2007',  1030,      540]
+	]);
+
+	var options = {
+		title: 'Company Performance',
+		curveType: 'function',
+		legend: { position: 'bottom' }
+	};
+
+	var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+	chart.draw(data, options);
+}
