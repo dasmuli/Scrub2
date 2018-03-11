@@ -221,7 +221,7 @@ function on_click_add(element)
 			 create_card_html(main_doc.open_cards[previous_card_index+1])
 		let card_element =
 		 insert_html(position_selector, raw_html_string);
-		set_card_data_from_doc(card_element,previous_card_index+1)
+		set_card_data_from_doc(card_element,previous_card_index+1,main_doc.open_cards)
 		// leave add mode
 		cancel_all_edits()
 		//save_doc()
@@ -325,13 +325,14 @@ function hide_all_pages()
 {
 	document.getElementById('open_cards_id').style.display = 'none';
 	document.getElementById('finished_cards_id').style.display = 'none';
-	document.getElementById('curve_chart').style.display = 'none';
+	document.getElementById('burndown_chart').style.display = 'none';
 }
 
 function show_chart()
 {
-	hide_all_pages()
-	document.getElementById('curve_chart').style.display = 'inline';
+	hide_all_pages();
+	document.getElementById('burndown_chart').style.display = 'inline';
+	drawChart();
 }
 
 function show_open_cards()
@@ -586,16 +587,16 @@ function find_ancestor (el, cls) {
     return el;
 }
 
-function set_card_data_from_doc(card_element,card_index)
+function set_card_data_from_doc(card_element,card_index,doc)
 {
 	card_element.querySelector('.title_input_text').value 
-			= main_doc.open_cards[card_index].title
+			= doc[card_index].title
 	card_element.querySelector('.description_input_text').value 
-		= main_doc.open_cards[card_index].description
+		= doc[card_index].description
 	card_element.querySelector('.point_select').value 
-		= main_doc.open_cards[card_index].points
+		= doc[card_index].points
 	// save reference to data in view (it is JS...)
-	card_element.open_card = main_doc.open_cards[card_index];
+	card_element.open_card = doc[card_index];
 }
 
 function update_data_view()
@@ -610,7 +611,7 @@ function update_data_view()
 		append_html(open_cards_view, string_html_data);
 		let all_card_views =  open_cards_view.querySelectorAll('.card-origin')
 		let card_element = all_card_views[all_card_views.length-1]
-		set_card_data_from_doc(card_element,i)
+		set_card_data_from_doc(card_element,i,main_doc.open_cards)
 	}
 	let finished_cards_view = document.getElementById('finished_cards_id');
 	for(i = 0; i < main_doc.finished_cards.length; i++)
@@ -622,7 +623,7 @@ function update_data_view()
 		append_html(finished_cards_view, string_html_data);
 		let all_card_views =  finished_cards_view.querySelectorAll('.card-origin')
 		let card_element = all_card_views[all_card_views.length-1]
-		set_card_data_from_doc(card_element,i)
+		set_card_data_from_doc(card_element,i,main_doc.finished_cards)
 	}
 }
 
@@ -630,13 +631,31 @@ document.addEventListener("DOMContentLoaded", function(event) {
   init_data();
 	update_data_view();
 	google.charts.load('current', {packages: ['corechart']});
-	google.charts.setOnLoadCallback(drawChart);
+	//google.charts.setOnLoadCallback(drawChart);
 });
 
 
 function drawChart() {
+
+ let data_array =[];
+ data_array[0] = ['Date','Burndown'];
+ var open_points = 0; // the chart's offset
+ // go through all open cards and add up points
+ for(i = 0; i < main_doc.open_cards.length; i++)
+ {
+   open_points += main_doc.open_cards[i].points;
+ }
+ let finished_points = 0;
+ // go through finished and calculate finished value
+ for(i = main_doc.finished_cards.length-1; i >= 0; i--)
+ {
+	 data_array[i+1] = [main_doc.finished_cards[i].date_finished,
+		main_doc.finished_cards[i].points+open_points+finished_points];
+	finished_points += main_doc.finished_cards[i].points;
+ }
+
 	var data = google.visualization.arrayToDataTable([
-		['Year', 'Sales', 'Expenses'],
+		['Date', 'Burndown', 'Additions'],
 		['2004',  1000,      400],
 		['2005',  1170,      460],
 		['2006',  660,       1120],
@@ -644,12 +663,13 @@ function drawChart() {
 	]);
 
 	var options = {
-		title: 'Company Performance',
-		curveType: 'function',
-		legend: { position: 'bottom' }
+		title: 'Burndown chart',
+		//curveType: 'function',
+		legend: { position: 'bottom' },
+		height: window.innerHeight * 3 / 4,
 	};
 
-	var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+	var chart = new google.visualization.LineChart(document.getElementById('burndown_chart'));
 
 	chart.draw(data, options);
 }
