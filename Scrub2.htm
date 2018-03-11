@@ -28,13 +28,21 @@
   <li class="c-nav__item"  onclick="show_open_cards()"><i class="material-icons" style="font-size:1em;">mode_edit</i></li>
   <li class="c-nav__item" onclick="show_chart()"><i class="material-icons" style="font-size:1em;">trending_down</i></li>
   <li class="c-nav__item" onclick="show_finished_cards()"><i class="material-icons" style="font-size:1em;">assignment_turned_in</i></li>
-  <li class="c-nav__item c-nav__item--right"></i><i class="material-icons" style="font-size:1em;">help</i></li>
+  <li class="c-nav__item c-nav__item--right">
+	  <i class="material-icons" style="font-size:1em;">
+		  help
+	  </i>
+  </li>
   <li class="c-nav__item c-nav__item--right" onclick="show_prefences()">
 	  <i class="material-icons" style="font-size:1em;">
 		  settings
 	  </i>
   </li>
-  <li class="c-nav__item c-nav__item--right"><i class="material-icons" style="font-size:1em;">sync</i></li>
+  <li class="c-nav__item c-nav__item--right" onclick="synchronize()">
+	 <i class="material-icons" style="font-size:1em;">
+		 sync
+	  </i>
+   </li>
 </ul>
 
 <!-- Main 3 row layout, center is used for main content. -->
@@ -59,6 +67,11 @@
 	-->
 
 <div id="burndown_chart" style="display:none;"></div>
+
+<div id="synhronize_id" style="display:none;">
+	<ul class="c-list" id="synhronize_step_list_id">
+	</ul>
+</div>
 
 
 <div class="o-grid o-grid--full o-grid--demo " style="display:none;" id="preferences_id">

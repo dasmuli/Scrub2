@@ -8,6 +8,8 @@ $access_token_hash  = $_GET['access_token_hash'];
 
 $result->db_success = true;
 $result->access_granted = true;
+$result->document_version_hash = 'undefined';
+$result->new_project = false;
 
 try {
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -27,7 +29,11 @@ try {
         {
             $result->access_granted = false;
         }
-     }
+    }
+    else  // empty info -> no project at position
+    {
+        $result->new_project = true;
+    }
 }
 catch(PDOException $e)
 {

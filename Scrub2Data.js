@@ -2,12 +2,18 @@
 var main_doc;
 var card_to_be_moved_index;
 var card_div_element_to_be_moved;
+var organization;
+var project;
+var access_token;
 
 function init_data()
 {
 	main_doc = Automerge.init();
 	let serialData =
 		localStorage.getItem("SerializedAutomergeData");
+	organization = localStorage.getItem("organization");
+	project = localStorage.getItem("project");
+	access_token = localStorage.getItem("access_token");
 	if(serialData == undefined)
 	{
 		console.log("Created new doc");
@@ -333,7 +339,58 @@ function on_click_move(element)
 	}
 }
 
+function add_synchronize_feedback(user_info)
+{
+	let info_str = '<li class="c-list__item">'+user_info+'</li>';
+	append_html(document.getElementById('synhronize_step_list_id'), info_str) ;
+}
 
+function clear_children(node)
+{
+	while (node.firstChild)
+	{
+		node.removeChild(node.firstChild);
+	}
+}
+
+function synchronize()
+{
+	console.log('synchronize');
+	clear_children(document.getElementById('synhronize_step_list_id'));
+	add_synchronize_feedback("Starting synchronisation");
+	hide_all_pages();
+	document.getElementById('synhronize_id').style.display = 'inline';
+	// check organization, projet, access token
+	let access_data_ok = true;
+	if(organization == undefined)
+	{
+		access_data_ok = false;
+		add_synchronize_feedback(`Please add a user / group name in <i class="material-icons"
+		style="font-size:1em;">settings</i>`);
+	}
+	if(project == undefined)
+	{
+		access_data_ok = false;
+		add_synchronize_feedback(`Please add a project name in <i class="material-icons"
+		style="font-size:1em;">settings</i>`);
+	}
+	if(access_token == undefined)
+	{
+		access_data_ok = false;
+		add_synchronize_feedback(`Please add an access token in <i class="material-icons"
+		style="font-size:1em;">settings</i>`);
+	}
+	if(access_data_ok)
+	{
+		// check version on server: send asynchronuous request for version
+		// if version ok or new data: upload
+		// if version not ok: download and merge
+	}
+	else
+	{
+		add_synchronize_feedback(`Not Synchronisation`);
+	}
+}
 
 function hide_all_pages()
 {
@@ -341,6 +398,7 @@ function hide_all_pages()
 	document.getElementById('finished_cards_id').style.display = 'none';
 	document.getElementById('burndown_chart').style.display = 'none';
 	document.getElementById('preferences_id').style.display = 'none';
+	document.getElementById('synhronize_id').style.display = 'none';
 }
 
 function show_prefences()
