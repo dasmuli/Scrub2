@@ -424,6 +424,29 @@ function synchronize()
 								//document.getElementById("demo").innerHTML = myObj[2];
 								add_synchronize_feedback(`<div class="c-alert c-alert--info">
 									Server responded</div>`);
+								if(!resultObj.db_success) // check db
+								{
+									add_synchronize_feedback(`
+										<div class="c-alert c-alert--error">
+										Server DB error</div>`); 
+								}
+								if(!resultObj.db_success) // check access
+								{
+									add_synchronize_feedback(`
+										<div class="c-alert c-alert--error">
+										Access denied</div>`); 
+								}
+								// check new
+								if(resultObj.new_project)
+								{
+									add_synchronize_feedback(`<div class="c-alert c-alert--info">
+									  Uploading initial version</div>`);
+									// if version ok or new data: upload
+								}
+								else // if version not ok: download and merge
+								{
+
+								}
 						}
 						else
 						{  
@@ -434,7 +457,7 @@ function synchronize()
 						}  
 			 }
 		};
-		xmlhttp.open("GET", "demo_file_array.php", true);
+		xmlhttp.open("GET", "get_version.php", true);
 		xmlhttp.timeout = 4000; // Set timeout to 4 seconds (4000 milliseconds)
     xmlhttp.ontimeout = function () { 
 			add_synchronize_feedback(`
@@ -442,8 +465,6 @@ function synchronize()
 				Could not contact server - check connection
 				</div>`); }
 		xmlhttp.send(); 
-		// if version ok or new data: upload
-		// if version not ok: download and merge
 	}
 	else
 	{
