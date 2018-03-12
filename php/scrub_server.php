@@ -42,10 +42,46 @@ if(empty($command))
 }
 */
 
+function check_access_token($conn)
+{
+    $stmt = $conn->prepare("SELECT access_token_hash FROM Scrub2MainData WHERE organization = ? AND project = ?");
+    $stmt->execute(array($user_group_name, $project_name)); 
+    // set the resulting array to associative
+    $stmt->setFetchMode(PDO::FETCH_ASSOC);
+    if($row = $stmt->fetch())
+    {
+        $result->db_success = true;
+        if($access_token == $row['access_token_hash'])
+        {
+            $result->access_granted = true;
+            $result->num_entries = $row['num_entries'];
+            return true;
+        }
+        else
+        {
+            $result->error = true;
+            $result->access_granted = false;
+            $result->error_message = "Access denied";
+            return false;
+        }
+    }
+    else
+    {
+        $result->access_granted = true;
+        return true;
+    }
+}
+
+
 try {
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     // set the PDO error mode to exception
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    // global access token check
+    if(!check_access_token($conn))
+    {
+        return;
+    }
     if($command == 'upload_data')
     {
         $sql = "INSERT INTO Scrub2MainData (organization, project, access_token_hash, document_data)
@@ -71,12 +107,12 @@ try {
     else if($command == "get_version")
     {
         $stmt = $conn->prepare("SELECT access_token_hash, num_entries FROM Scrub2MainData WHERE organization = ? AND project = ?");
-        $stmt->execute(array($organization, $project)); 
+        $stmt->execute(array($user_group_name, $project_name)); 
         // set the resulting array to associative
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         if($row = $stmt->fetch()) {
             $result->db_success = true;
-            if($access_token_hash == $row['access_token_hash'])
+            if($access_token == $row['access_token_hash'])
             {
                 $result->access_granted = true;
                 $result->num_entries = $row['num_entries'];

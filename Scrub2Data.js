@@ -427,7 +427,7 @@ function check_result_error(resultObj)
 			Server DB error:`+resultObj.error_message+`</div>`); 
 		return true;
 	}
-	if(!resultObj.db_success) // check access
+	if(!resultObj.access_granted) // check access
 	{
 		add_synchronize_feedback(`
 			<div class="c-alert c-alert--error">
