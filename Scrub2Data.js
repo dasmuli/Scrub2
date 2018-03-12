@@ -377,14 +377,14 @@ function save_synch_data()
 function synchronize()
 {
 	console.log('synchronize');
-	clear_children(document.getElementById('synhronize_step_list_id'));
-	add_synchronize_feedback(`<div class="c-alert c-alert--info">
-  Started synchronisation</div>`);
 	hide_all_pages();
+	clear_children(document.getElementById('synhronize_step_list_id'));
 	document.getElementById('synhronize_id').style.display = 'inline';
+	add_synchronize_feedback(`<div class="c-alert c-alert--info">
+  Synchronisation started</div>`);
 	// check organization, projet, access token
 	let access_data_ok = true;
-	if(organization == undefined)
+	if(user_group_name == undefined)
 	{
 		access_data_ok = false;
 		add_synchronize_feedback(`
@@ -393,7 +393,7 @@ function synchronize()
 		style="font-size:1em;">settings</i>
 	  </div>`);
 	}
-	if(project == undefined)
+	if(user_group_name == undefined)
 	{
 		access_data_ok = false;
 		add_synchronize_feedback(`
@@ -414,6 +414,34 @@ function synchronize()
 	if(access_data_ok)
 	{
 		// check version on server: send asynchronuous request for version
+		var xmlhttp = new XMLHttpRequest();
+		xmlhttp.onreadystatechange = function() {
+				if (this.readyState == 4)
+				{ 
+						if(this.status == 200)
+						{
+								var resultObj = JSON.parse(this.responseText);
+								//document.getElementById("demo").innerHTML = myObj[2];
+								add_synchronize_feedback(`<div class="c-alert c-alert--info">
+									Server responded</div>`);
+						}
+						else
+						{  
+							add_synchronize_feedback(`
+								<div class="c-alert c-alert--error">
+								HTTP Error: `+xmlhttp.statusText+`
+								</div>`); 
+						}  
+			 }
+		};
+		xmlhttp.open("GET", "demo_file_array.php", true);
+		xmlhttp.timeout = 4000; // Set timeout to 4 seconds (4000 milliseconds)
+    xmlhttp.ontimeout = function () { 
+			add_synchronize_feedback(`
+				<div class="c-alert c-alert--error">
+				Could not contact server - check connection
+				</div>`); }
+		xmlhttp.send(); 
 		// if version ok or new data: upload
 		// if version not ok: download and merge
 	}
