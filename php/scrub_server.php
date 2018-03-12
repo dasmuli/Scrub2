@@ -2,10 +2,12 @@
 
 include 'mysql_credentials.php';
 
-$user_group_name    = $_GET['user_group_name'];
-$project_name       = $_GET['project_name'];
-$access_token       = $_GET['access_token'];
-$command            = $_GET['command'];
+$data = json_decode(file_get_contents('php://input'), true);
+
+$user_group_name    = $data['user_group_name'];
+$project_name       = $data['project_name'];
+$access_token       = $data['access_token'];
+$command            = $data['command'];
 
 $result->error                  = false;
 $result->db_success             = true;
@@ -45,6 +47,7 @@ try {
     else
     {
         $result->error_message = "Unknown command: ".$command;
+
         $result->error = true;
     }
 }

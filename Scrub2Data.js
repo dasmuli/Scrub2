@@ -506,7 +506,7 @@ function synchronize()
 		xmlhttp.open("POST", "scrub_server.php", true);
 		var params = JSON.stringify({ user_group_name: user_group_name,
 		  project_name: project_name, access_token: access_token, command: 'get_version' });
-	  xmlhttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
+	  //xmlhttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
 		//xmlhttp.setRequestHeader("Content-length", params.length);
 		xmlhttp.timeout = 4000; // Set timeout to 4 seconds (4000 milliseconds)
     xmlhttp.ontimeout = function () { 
