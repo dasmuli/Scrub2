@@ -54,16 +54,15 @@ try {
         // execute the query
         $stmt->execute(array($user_group_name, $project_name, $access_token, $data['document']));
         // echo a message to say the UPDATE succeeded
-        if($stmt->rowCount() != 1)
-        {
-            $result->db_success  = false;
-            $result->error_message = "1 row to be updated, but #:".$stmt->rowCount();
-        }
-        $result->data = $data['document'];
+        //if($stmt->rowCount() != 1)  // ALLWAYS2?
+        //{
+        //    $result->db_success  = false;
+        //    $result->error_message = "1 row to be updated, but #:".$stmt->rowCount();
+        //}
     }
     else if($command == "get_version")
     {
-        $stmt = $conn->prepare("SELECT access_token_hash FROM Scrub2MainData WHERE organization = ? AND project = ?");
+        $stmt = $conn->prepare("SELECT access_token_hash, num_entries FROM Scrub2MainData WHERE organization = ? AND project = ?");
         $stmt->execute(array($organization, $project)); 
         // set the resulting array to associative
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
@@ -72,7 +71,7 @@ try {
             if($access_token_hash == $row['access_token_hash'])
             {
                 $result->access_granted = true;
-                $result->document_version_hash = $row['document_version_hash'];
+                $result->num_entries = $row['num_entries'];
             }
             else
             {

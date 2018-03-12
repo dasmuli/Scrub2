@@ -391,17 +391,8 @@ function upload()
 							{
 								return;
 							}
-							let serialDoc = Automerge.save(main_doc);
-							if(serialDoc == resultObj.data)
-							{
-								add_synchronize_feedback(`<div class="c-alert c-alert--success">
-								  Upload success</div>`);
-							}
-							else
-							{
-								add_synchronize_feedback(`<div class="c-alert c-alert--error">
-								  Data not equal</div>`);
-							}
+							add_synchronize_feedback(`<div class="c-alert c-alert--success">
+								Upload success</div>`);
 						}
 						else
 						{  
@@ -433,7 +424,7 @@ function check_result_error(resultObj)
 	{
 		add_synchronize_feedback(`
 			<div class="c-alert c-alert--error">
-			Server DB error</div>`); 
+			Server DB error:`+resultObj.error_message+`</div>`); 
 		return true;
 	}
 	if(!resultObj.db_success) // check access
