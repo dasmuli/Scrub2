@@ -2,8 +2,8 @@
 var main_doc;
 var card_to_be_moved_index;
 var card_div_element_to_be_moved;
-var organization;
-var project;
+var user_group_name;
+var project_name;
 var access_token;
 
 function init_data()
@@ -11,9 +11,15 @@ function init_data()
 	main_doc = Automerge.init();
 	let serialData =
 		localStorage.getItem("SerializedAutomergeData");
-	organization = localStorage.getItem("organization");
-	project = localStorage.getItem("project");
-	access_token = localStorage.getItem("access_token");
+	user_group_name = localStorage.getItem("user_group_name");
+	project_name    = localStorage.getItem("project_name");
+	access_token    = localStorage.getItem("access_token");
+	if(user_group_name)
+	  document.getElementById('user_group_name_id').value = user_group_name;
+	if(project_name)
+	  document.getElementById('project_name_id').value = project_name;
+	if(access_token)
+	  document.getElementById('access_token_id').value = access_token;
 	if(serialData == undefined)
 	{
 		console.log("Created new doc");
@@ -57,6 +63,10 @@ function delete_all_data()
 {
 	//localStorage.clear(); // may be too much
 	localStorage.removeItem("SerializedAutomergeData");
+	// synch data?
+	localStorage.removeItem("user_group_name");
+	localStorage.removeItem("project_name");
+	localStorage.removeItem("access_token");
 	location.reload();  // so lazy...
 }
 
@@ -351,6 +361,17 @@ function clear_children(node)
 	{
 		node.removeChild(node.firstChild);
 	}
+}
+
+function save_synch_data()
+{
+	console.log('save_synch_data');
+	user_group_name = document.getElementById('user_group_name_id').value;
+	project_name    = document.getElementById('project_name_id').value;
+	access_token    = document.getElementById('access_token_id').value;
+	localStorage.setItem("user_group_name", user_group_name);
+	localStorage.setItem("project_name", project_name);
+	localStorage.setItem("access_token", access_token);
 }
 
 function synchronize()
