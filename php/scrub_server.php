@@ -48,11 +48,19 @@ try {
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     if($command == 'upload_data')
     {
-        $sql = "INSERT INTO Scrub2MainData (organization, project, access_token_hash, document_data) VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE num_entries = num_entries + 1;";
+        $sql = "INSERT INTO Scrub2MainData (organization, project, access_token_hash, document_data)
+        VALUES (:org,:proj,:access,:doc) ON DUPLICATE KEY UPDATE
+        access_token_hash = :access,
+        document_data = :doc, 
+        num_entries = num_entries + 1;";
         // Prepare statement
         $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':org'     , $user_group_name);
+        $stmt->bindParam(':proj'    , $project_name);
+        $stmt->bindParam(':access'  , $access_token);
+        $stmt->bindParam(':doc'     , $data['document']);
         // execute the query
-        $stmt->execute(array($user_group_name, $project_name, $access_token, $data['document']));
+        $stmt->execute();
         // echo a message to say the UPDATE succeeded
         //if($stmt->rowCount() != 1)  // ALLWAYS2?
         //{
