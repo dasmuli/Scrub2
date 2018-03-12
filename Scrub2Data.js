@@ -458,6 +458,9 @@ function synchronize()
 			 }
 		};
 		xmlhttp.open("GET", "scrub_server.php", true);
+		var params = JSON.stringify({ appoverGUID: approverGUID });
+		http.setRequestHeader("Content-type", "application/json; charset=utf-8");
+    http.setRequestHeader("Content-length", params.length);
 		xmlhttp.timeout = 4000; // Set timeout to 4 seconds (4000 milliseconds)
     xmlhttp.ontimeout = function () { 
 			add_synchronize_feedback(`
