@@ -1,0 +1,2 @@
+/*! Built with http://stenciljs.com */
+const{h:t}=window.BlazeAtoms;class s{constructor(){this.position="topright"}render(){return t("div",{class:`c-alerts c-alerts--${this.position}`},t("slot",null))}static get is(){return"blaze-toasts"}static get properties(){return{position:{type:String,attr:"position"}}}}export{s as BlazeToasts};

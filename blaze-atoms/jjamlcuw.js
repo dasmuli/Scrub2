@@ -1,0 +1,2 @@
+/*! Built with http://stenciljs.com */
+const{h:r}=window.BlazeAtoms;class e{render(){return r("footer",{class:"c-card__footer"},r("slot",null))}static get is(){return"blaze-card-footer"}}export{e as BlazeCardFooter};

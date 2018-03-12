@@ -1,0 +1,2 @@
+/*! Built with http://stenciljs.com */
+const{h:e}=window.BlazeAtoms;class r{componentDidLoad(){const e=this.el.querySelector("blaze-breadcrumb:last-child .c-breadcrumbs__crumb");e&&e.classList.add("c-breadcrumb__crumb--last")}render(){return e("ol",{class:"c-breadcrumbs"},e("slot",null))}static get is(){return"blaze-breadcrumbs"}static get properties(){return{el:{elementRef:!0}}}}export{r as BlazeBreadcrumbs};

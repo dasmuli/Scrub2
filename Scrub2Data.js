@@ -374,6 +374,39 @@ function save_synch_data()
 	localStorage.setItem("access_token", access_token);
 }
 
+function upload()
+{
+	add_synchronize_feedback(`<div class="c-alert c-alert--info">
+		Uploading...</div>`);
+		var xmlhttp = new XMLHttpRequest();
+		xmlhttp.onreadystatechange = function() {
+				if (this.readyState == 4)
+				{ 
+						if(this.status == 200)
+						{
+						}
+						else
+						{  
+							add_synchronize_feedback(`
+								<div class="c-alert c-alert--error">
+								Upload error: `+xmlhttp.statusText+`
+								</div>`); 
+						}  
+			 }
+		};
+		xmlhttp.open("GET", "scrub_server.php", true);
+		var params = JSON.stringify({ appoverGUID: approverGUID });
+		http.setRequestHeader("Content-type", "application/json; charset=utf-8");
+    http.setRequestHeader("Content-length", params.length);
+		xmlhttp.timeout = 4000; // Set timeout to 4 seconds (4000 milliseconds)
+    xmlhttp.ontimeout = function () { 
+			add_synchronize_feedback(`
+				<div class="c-alert c-alert--error">
+				Could not contact server - check connection
+				</div>`); }
+		xmlhttp.send(); 
+}
+
 function synchronize()
 {
 	console.log('synchronize');
@@ -429,45 +462,59 @@ function synchronize()
 									add_synchronize_feedback(`
 										<div class="c-alert c-alert--error">
 										Server DB error</div>`); 
+									return;
 								}
 								if(!resultObj.db_success) // check access
 								{
 									add_synchronize_feedback(`
 										<div class="c-alert c-alert--error">
 										Access denied</div>`); 
+									return;
+								}
+								if(resultObj.error) // general error
+								{
+									add_synchronize_feedback(`
+										<div class="c-alert c-alert--error">
+										`+resultObj.error_message+`</div>`); 
+									return;
 								}
 								// check new
-								if(resultObj.new_project)
-								{
-									add_synchronize_feedback(`<div class="c-alert c-alert--info">
-									  Uploading initial version</div>`);
+								//if(resultObj.new_project)
+								//{
+									//add_synchronize_feedback(`<div class="c-alert c-alert--info">
+									//  Uploading initial version</div>`);
+									//upload();
 									// if version ok or new data: upload
-								}
-								else // if version not ok: download and merge
-								{
-
-								}
+								//}
+								//else // if version not ok: download and merge
+								//{
+										//remote_doc = download_document();
+										//merge_docs(remote_doc);
+										upload();
+								//}
 						}
 						else
 						{  
 							add_synchronize_feedback(`
 								<div class="c-alert c-alert--error">
-								HTTP Error: `+xmlhttp.statusText+`
+								HTTP error: `+xmlhttp.statusText+`
 								</div>`); 
 						}  
 			 }
 		};
-		xmlhttp.open("GET", "scrub_server.php", true);
-		var params = JSON.stringify({ appoverGUID: approverGUID });
-		http.setRequestHeader("Content-type", "application/json; charset=utf-8");
-    http.setRequestHeader("Content-length", params.length);
+		//xmlhttp.open("GET", "scrub_server.php", true);
+		xmlhttp.open("POST", "scrub_server.php", true);
+		var params = JSON.stringify({ user_group_name: user_group_name,
+		  project_name: project_name, access_token: access_token, command: 'get_version' });
+	  xmlhttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
+		//xmlhttp.setRequestHeader("Content-length", params.length);
 		xmlhttp.timeout = 4000; // Set timeout to 4 seconds (4000 milliseconds)
     xmlhttp.ontimeout = function () { 
 			add_synchronize_feedback(`
 				<div class="c-alert c-alert--error">
 				Could not contact server - check connection
 				</div>`); }
-		xmlhttp.send(); 
+		xmlhttp.send(params); 
 	}
 	else
 	{

@@ -1,0 +1,2 @@
+/*! Built with http://stenciljs.com */
+BlazeAtoms.loadBundle("hh5d7wgj",["exports"],function(e){var r=window.BlazeAtoms.h,n=function(){function e(){}return e.prototype.render=function(){return r("header",{class:"c-card__header"},r("slot",null))},Object.defineProperty(e,"is",{get:function(){return"blaze-card-header"},enumerable:!0,configurable:!0}),e}();e.BlazeCardHeader=n,Object.defineProperty(e,"__esModule",{value:!0})});

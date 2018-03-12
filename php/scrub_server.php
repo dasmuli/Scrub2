@@ -2,41 +2,55 @@
 
 include 'mysql_credentials.php';
 
-$organization       = $_GET['organization'];
-$project            = $_GET['project'];
-$access_token_hash  = $_GET['access_token_hash'];
+$user_group_name    = $_GET['user_group_name'];
+$project_name       = $_GET['project_name'];
+$access_token       = $_GET['access_token'];
+$command            = $_GET['command'];
 
-$result->db_success = true;
-$result->access_granted = true;
-$result->document_version_hash = 'undefined';
-$result->new_project = false;
+$result->error                  = false;
+$result->db_success             = true;
+$result->access_granted         = true;
+$result->document_version_hash  = 'undefined';
+$result->new_project            = false;
 
 try {
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     // set the PDO error mode to exception
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $stmt = $conn->prepare("SELECT access_token_hash, document_version_hash FROM Scrub2MainData WHERE organization = ? AND project = ?");
-    $stmt->execute(array($organization, $project)); 
-
-    // set the resulting array to associative
-    $stmt->setFetchMode(PDO::FETCH_ASSOC);
-    if($row = $stmt->fetch()) {
-        if($access_token_hash == $row['access_token_hash'])
-        {
-          $result->document_version_hash = $row['document_version_hash'];
+    if($command == "get_version")
+    {
+        $stmt = $conn->prepare("SELECT access_token_hash, document_version_hash FROM Scrub2MainData WHERE organization = ? AND project = ?");
+        $stmt->execute(array($organization, $project)); 
+        // set the resulting array to associative
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        if($row = $stmt->fetch()) {
+            $result->db_success = true;
+            if($access_token_hash == $row['access_token_hash'])
+            {
+                $result->access_granted = true;
+                $result->document_version_hash = $row['document_version_hash'];
+            }
+            else
+            {
+                $result->error = true;
+                $result->access_granted = false;
+                $result->error_message = "Access denied";
+            }
         }
-        else
+        else  // empty info -> no project at position
         {
-            $result->access_granted = false;
+            $result->new_project = true;
         }
     }
-    else  // empty info -> no project at position
+    else
     {
-        $result->new_project = true;
+        $result->error_message = "Unknown command: ".$command;
+        $result->error = true;
     }
 }
 catch(PDOException $e)
 {
+    $result->error = true;
     $result->db_success = false;
     $result->error_message = $e->getMessage();
 }

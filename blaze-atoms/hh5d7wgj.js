@@ -1,0 +1,2 @@
+/*! Built with http://stenciljs.com */
+const{h:e}=window.BlazeAtoms;class a{render(){return e("header",{class:"c-card__header"},e("slot",null))}static get is(){return"blaze-card-header"}}export{a as BlazeCardHeader};

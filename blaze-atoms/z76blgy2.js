@@ -1,0 +1,2 @@
+/*! Built with http://stenciljs.com */
+const{h:c}=window.BlazeAtoms;class r{render(){return c("div",{class:"c-card c-card--accordion"},c("slot",null))}static get is(){return"blaze-accordion"}}export{r as BlazeAccordion};

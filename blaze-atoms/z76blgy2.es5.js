@@ -1,0 +1,2 @@
+/*! Built with http://stenciljs.com */
+BlazeAtoms.loadBundle("z76blgy2",["exports"],function(e){var n=window.BlazeAtoms.h,o=function(){function e(){}return e.prototype.render=function(){return n("div",{class:"c-card c-card--accordion"},n("slot",null))},Object.defineProperty(e,"is",{get:function(){return"blaze-accordion"},enumerable:!0,configurable:!0}),e}();e.BlazeAccordion=o,Object.defineProperty(e,"__esModule",{value:!0})});
