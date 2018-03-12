@@ -457,7 +457,7 @@ function synchronize()
 						}  
 			 }
 		};
-		xmlhttp.open("GET", "get_version.php", true);
+		xmlhttp.open("GET", "scrub_server.php", true);
 		xmlhttp.timeout = 4000; // Set timeout to 4 seconds (4000 milliseconds)
     xmlhttp.ontimeout = function () { 
 			add_synchronize_feedback(`
