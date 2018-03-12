@@ -400,8 +400,7 @@ function synchronize()
 	{
 		add_synchronize_feedback(`
 		<div class="c-alert c-alert--error">
-		Not synchronised <i class="material-icons"
-		style="font-size:1em;">sync_problem</i>
+		Not synchronised
 	  </div>`);
 	}
 }

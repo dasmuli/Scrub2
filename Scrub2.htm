@@ -74,9 +74,10 @@
 </div>
 
 
-<div class="o-grid  o-grid--demo" style="display:none;" id="preferences_id">
+<div class="o-grid  o-grid--demo o-grid--no-gutter" style="display:none;" id="preferences_id">
 	<div class="o-grid__cell">
 	  <div class="o-grid-text">
+			<h1 class="c-heading u-large">Synchronsation</h1>
 		  <div class="o-field o-field--icon-left">
 			<i class="material-icons c-icon" 
 			style="font-size:1em;">group_work</i>
@@ -106,34 +107,44 @@
 	  </div>
 	</div>
 	<div class="o-grid__cell">
-			<div class="o-grid-text">
-					<!-- Delete all data -->
-					<div class="o-grid o-grid--demo o-grid--center">
-						<div class="o-grid__cell o-grid__cell--width-30">
+			<div class="o-grid-text u-right">
+				<!-- Save synchronisation data -->
+				<div class="o-grid o-grid--demo o-grid--center o-grid--no-gutter">
+						<div class="o-grid__cell">
+							<div class="o-grid-text u-right">
+								Save
+							</div>
+						</div>
+						<div class="o-grid__cell o-grid__cell--width-10">
 							<div class="o-grid-text u-right">
 								  <button type="button" class="c-button"
-									  onclick="delete_all_data()">
+									  onclick="save_synch_data()">
 									  <i class="material-icons" style="font-size:1em;">
 										save
 									  </i>
 								  </button>
 							</div>
 						  </div>
-						  <div class="o-grid__cell">
-							<div class="o-grid-text">
-								Save
-							</div>
-						</div>
 					</div>
 			</div>
 		</div>
+	<div class="o-grid__cell">
+		<div class="o-grid-text">
+				<h1 class="c-heading u-large">General</h1>
+		</div>
+	</div>
 	<div class="o-grid__cell">
 	</div>
 	<div class="o-grid__cell">
 		<div class="o-grid-text">
 				<!-- Delete all data -->
-				<div class="o-grid o-grid--demo o-grid--center">
-					<div class="o-grid__cell o-grid__cell--width-30">
+				<div class="o-grid o-grid--demo o-grid--center o-grid--no-gutter">
+					<div class="o-grid__cell">
+						<div class="o-grid-text u-right">
+							Delete all data
+						</div>
+					</div>
+					<div class="o-grid__cell o-grid__cell--width-10">
 						<div class="o-grid-text u-right">
 							  <button type="button" class="c-button"
 								  onclick="delete_all_data()">
@@ -143,11 +154,6 @@
 							  </button>
 						</div>
 					  </div>
-					  <div class="o-grid__cell">
-						<div class="o-grid-text">
-							Delete all data
-						</div>
-					</div>
 				</div>
 		</div>
 	</div>
