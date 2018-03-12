@@ -19,7 +19,12 @@ try {
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     // set the PDO error mode to exception
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    if($command == "get_version")
+    if($command == 'upload_data')
+    {
+        // echo
+        $result->data = $data['document'];
+    }
+    else if($command == "get_version")
     {
         $stmt = $conn->prepare("SELECT access_token_hash, document_version_hash FROM Scrub2MainData WHERE organization = ? AND project = ?");
         $stmt->execute(array($organization, $project)); 
@@ -47,7 +52,6 @@ try {
     else
     {
         $result->error_message = "Unknown command: ".$command;
-
         $result->error = true;
     }
 }

@@ -267,7 +267,7 @@ function close_all_accordions()
 
 function cancel_all_edits()
 {
-	close_all_accordions()
+	// close_all_accordions()  // leads to double click on reopen
 	let open_cards_view = document.getElementById('open_cards_id')
 	set_style_property_for_class_in_children(
 		open_cards_view,'.display-on-add-mode',
@@ -384,6 +384,24 @@ function upload()
 				{ 
 						if(this.status == 200)
 						{
+							add_synchronize_feedback(`<div class="c-alert c-alert--info">
+								Upload done</div>`);
+							var resultObj = JSON.parse(this.responseText);
+							if(check_result_error(resultObj))
+							{
+								return;
+							}
+							let serialDoc = Automerge.save(main_doc);
+							if(serialDoc == resultObj.data)
+							{
+								add_synchronize_feedback(`<div class="c-alert c-alert--success">
+								  Upload success</div>`);
+							}
+							else
+							{
+								add_synchronize_feedback(`<div class="c-alert c-alert--error">
+								  Data not equal</div>`);
+							}
 						}
 						else
 						{  
@@ -394,17 +412,45 @@ function upload()
 						}  
 			 }
 		};
-		xmlhttp.open("GET", "scrub_server.php", true);
-		var params = JSON.stringify({ appoverGUID: approverGUID });
-		http.setRequestHeader("Content-type", "application/json; charset=utf-8");
-    http.setRequestHeader("Content-length", params.length);
+		xmlhttp.open("POST", "scrub_server.php", true);
+		let serialDoc = Automerge.save(main_doc);
+		var params = JSON.stringify({ user_group_name: user_group_name,
+			project_name: project_name, access_token: access_token, command: 'upload_data',
+		 	document: serialDoc });
+		xmlhttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
 		xmlhttp.timeout = 4000; // Set timeout to 4 seconds (4000 milliseconds)
     xmlhttp.ontimeout = function () { 
 			add_synchronize_feedback(`
 				<div class="c-alert c-alert--error">
-				Could not contact server - check connection
+				Upload timeout, upload failed
 				</div>`); }
-		xmlhttp.send(); 
+		xmlhttp.send(params); 
+}
+
+function check_result_error(resultObj)
+{
+	if(!resultObj.db_success) // check db
+	{
+		add_synchronize_feedback(`
+			<div class="c-alert c-alert--error">
+			Server DB error</div>`); 
+		return true;
+	}
+	if(!resultObj.db_success) // check access
+	{
+		add_synchronize_feedback(`
+			<div class="c-alert c-alert--error">
+			Access denied</div>`); 
+		return true;
+	}
+	if(resultObj.error) // general error
+	{
+		add_synchronize_feedback(`
+			<div class="c-alert c-alert--error">
+			`+resultObj.error_message+`</div>`); 
+		return true;
+	}
+	return false;
 }
 
 function synchronize()
@@ -457,26 +503,9 @@ function synchronize()
 								//document.getElementById("demo").innerHTML = myObj[2];
 								add_synchronize_feedback(`<div class="c-alert c-alert--info">
 									Server responded</div>`);
-								if(!resultObj.db_success) // check db
+								if(check_result_error(resultObj))
 								{
-									add_synchronize_feedback(`
-										<div class="c-alert c-alert--error">
-										Server DB error</div>`); 
-									return;
-								}
-								if(!resultObj.db_success) // check access
-								{
-									add_synchronize_feedback(`
-										<div class="c-alert c-alert--error">
-										Access denied</div>`); 
-									return;
-								}
-								if(resultObj.error) // general error
-								{
-									add_synchronize_feedback(`
-										<div class="c-alert c-alert--error">
-										`+resultObj.error_message+`</div>`); 
-									return;
+									return
 								}
 								// check new
 								//if(resultObj.new_project)
@@ -506,7 +535,7 @@ function synchronize()
 		xmlhttp.open("POST", "scrub_server.php", true);
 		var params = JSON.stringify({ user_group_name: user_group_name,
 		  project_name: project_name, access_token: access_token, command: 'get_version' });
-	  //xmlhttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
+	  xmlhttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
 		//xmlhttp.setRequestHeader("Content-length", params.length);
 		xmlhttp.timeout = 4000; // Set timeout to 4 seconds (4000 milliseconds)
     xmlhttp.ontimeout = function () { 
