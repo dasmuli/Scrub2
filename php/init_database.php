@@ -9,12 +9,12 @@ try {
 
     // sql to create table
     $sql = "CREATE TABLE Scrub2MainData (
-    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     organization VARCHAR(30) NOT NULL,
     project VARCHAR(30) NOT NULL,
-    access_token_hash VARCHAR(64) NOT NULL,
-    document_version_hash VARCHAR(64),
-    document_data TEXT
+    access_token_hash VARCHAR(256) NOT NULL,
+    document_data TEXT,
+    num_entries INT DEFAULT 0,
+    UNIQUE KEY (organization, project)
     )";
 
     // use exec() because no results are returned
