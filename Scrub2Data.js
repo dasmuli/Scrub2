@@ -901,6 +901,7 @@ function drawChart() {
 		legend: { position: 'bottom' },
 		height: window.innerHeight * 3 / 4,
 		width: document.getElementById('burndown_chart').parentElement.offsetWidth,
+		vAxis: {minValue: 0}, // force y=0 in view
 	};
 
 	var chart = new google.visualization.LineChart(document.getElementById('burndown_chart'));
