@@ -82,7 +82,25 @@ try {
     {
         return;
     }
-    if($command == 'upload_data')
+
+    if($command == "download_data")
+    {
+        $stmt = $conn->prepare("SELECT document_data, num_entries FROM Scrub2MainData WHERE organization = ? AND project = ?");
+        $stmt->execute(array($user_group_name, $project_name)); 
+        // set the resulting array to associative
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        if($row = $stmt->fetch()) {
+            $result->db_success = true;
+            $result->num_entries = $row['num_entries'];
+            $result->document    = $row['document_data'];
+        }
+        else  // empty info -> no project at position
+        {
+            $result->error = true;
+            $result->error_message = 'No document entry found';
+        }
+    }
+    else if($command == 'upload_data')
     {
         $sql = "INSERT INTO Scrub2MainData (organization, project, access_token_hash, document_data)
         VALUES (:org,:proj,:access,:doc) ON DUPLICATE KEY UPDATE
@@ -111,17 +129,7 @@ try {
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         if($row = $stmt->fetch()) {
             $result->db_success = true;
-            if($access_token == $row['access_token_hash'])
-            {
-                $result->access_granted = true;
-                $result->num_entries = $row['num_entries'];
-            }
-            else
-            {
-                $result->error = true;
-                $result->access_granted = false;
-                $result->error_message = "Access denied";
-            }
+            $result->num_entries = $row['num_entries'];
         }
         else  // empty info -> no project at position
         {

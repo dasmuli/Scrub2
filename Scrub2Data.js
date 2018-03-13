@@ -374,6 +374,54 @@ function save_synch_data()
 	localStorage.setItem("access_token", access_token);
 }
 
+
+function download_document()
+{
+	add_synchronize_feedback(`<div class="c-alert c-alert--info">
+		Downloading...</div>`);
+		var xmlhttp = new XMLHttpRequest();
+		xmlhttp.onreadystatechange = function() {
+				if (this.readyState == 4)
+				{ 
+						if(this.status == 200)
+						{
+							var resultObj = JSON.parse(this.responseText);
+							if(check_result_error(resultObj))
+							{
+								return undefined;
+							}
+							add_synchronize_feedback(`<div class="c-alert c-alert--info">
+								Download done</div>`);
+							var resultObj = JSON.parse(this.responseText);
+							//merge_docs(remote_doc);
+							remote_doc = resultObj.document;
+							console.log( "Received doc: " + JSON.stringify(remote_doc) );
+							upload();
+						}
+						else
+						{  
+							add_synchronize_feedback(`
+								<div class="c-alert c-alert--error">
+								Download error: `+xmlhttp.statusText+`
+								</div>`); 
+							return undefined;
+						}  
+			 }
+		};
+		xmlhttp.open("POST", "scrub_server.php", true);
+		var params = JSON.stringify({ user_group_name: user_group_name,
+			project_name: project_name, access_token: access_token, command: 'download_data' });
+		xmlhttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
+		xmlhttp.timeout = 4000; // Set timeout to 4 seconds (4000 milliseconds)
+    xmlhttp.ontimeout = function () { 
+			add_synchronize_feedback(`
+				<div class="c-alert c-alert--error">
+				Download timeout, download failed
+				</div>`); }
+		xmlhttp.send(params); 
+}
+
+
 function upload()
 {
 	add_synchronize_feedback(`<div class="c-alert c-alert--info">
@@ -508,9 +556,7 @@ function synchronize()
 								//}
 								//else // if version not ok: download and merge
 								//{
-										//remote_doc = download_document();
-										//merge_docs(remote_doc);
-										upload();
+										download_document();
 								//}
 						}
 						else
