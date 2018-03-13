@@ -86,7 +86,6 @@ try {
     {
         $sql = "INSERT INTO Scrub2MainData (organization, project, access_token_hash, document_data)
         VALUES (:org,:proj,:access,:doc) ON DUPLICATE KEY UPDATE
-        access_token_hash = :access,
         document_data = :doc, 
         num_entries = num_entries + 1;";
         // Prepare statement

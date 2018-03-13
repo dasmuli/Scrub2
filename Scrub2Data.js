@@ -454,7 +454,7 @@ function synchronize()
   Synchronisation started</div>`);
 	// check organization, projet, access token
 	let access_data_ok = true;
-	if(user_group_name == undefined)
+	if(user_group_name == undefined || user_group_name == '')
 	{
 		access_data_ok = false;
 		add_synchronize_feedback(`
@@ -463,7 +463,7 @@ function synchronize()
 		style="font-size:1em;">settings</i>
 	  </div>`);
 	}
-	if(user_group_name == undefined)
+	if(project_name == undefined || project_name == '')
 	{
 		access_data_ok = false;
 		add_synchronize_feedback(`
@@ -472,7 +472,7 @@ function synchronize()
 		style="font-size:1em;">settings</i>
 	  </div>`);
 	}
-	if(access_token == undefined)
+	if(access_token == undefined || access_token == '')
 	{
 		access_data_ok = false;
 		add_synchronize_feedback(`
