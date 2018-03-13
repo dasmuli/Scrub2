@@ -375,6 +375,17 @@ function save_synch_data()
 }
 
 
+function merge_docs(remote_doc)
+{
+	add_synchronize_feedback(`<div class="c-alert c-alert--info">
+								Merging</div>`);
+	console.log(JSON.stringify("Main doc:"+main_doc));
+	let remote_doc_unserialized =  Automerge.load(remote_doc);;
+	main_doc = Automerge.merge(main_doc, remote_doc_unserialized)
+	save_doc();
+}
+
+
 function download_document()
 {
 	add_synchronize_feedback(`<div class="c-alert c-alert--info">
@@ -393,9 +404,9 @@ function download_document()
 							add_synchronize_feedback(`<div class="c-alert c-alert--info">
 								Download done</div>`);
 							var resultObj = JSON.parse(this.responseText);
-							//merge_docs(remote_doc);
 							remote_doc = resultObj.document;
 							console.log( "Received doc: " + JSON.stringify(remote_doc) );
+							merge_docs(remote_doc);
 							upload();
 						}
 						else
