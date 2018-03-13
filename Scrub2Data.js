@@ -379,10 +379,10 @@ function merge_docs(remote_doc)
 {
 	add_synchronize_feedback(`<div class="c-alert c-alert--info">
 								Merging</div>`);
-	console.log(JSON.stringify("Main doc:"+main_doc));
 	let remote_doc_unserialized =  Automerge.load(remote_doc);;
 	main_doc = Automerge.merge(main_doc, remote_doc_unserialized)
 	save_doc();
+	update_data_view();
 }
 
 
@@ -405,7 +405,6 @@ function download_document()
 								Download done</div>`);
 							var resultObj = JSON.parse(this.responseText);
 							remote_doc = resultObj.document;
-							console.log( "Received doc: " + JSON.stringify(remote_doc) );
 							merge_docs(remote_doc);
 							upload();
 						}
@@ -451,7 +450,7 @@ function upload()
 								return;
 							}
 							add_synchronize_feedback(`<div class="c-alert c-alert--success">
-								Upload success</div>`);
+								Synchronization successful</div>`);
 						}
 						else
 						{  
@@ -510,7 +509,7 @@ function synchronize()
 	clear_children(document.getElementById('synhronize_step_list_id'));
 	document.getElementById('synhronize_id').style.display = 'inline';
 	add_synchronize_feedback(`<div class="c-alert c-alert--info">
-  Synchronisation started</div>`);
+  Synchronization started</div>`);
 	// check organization, projet, access token
 	let access_data_ok = true;
 	if(user_group_name == undefined || user_group_name == '')
@@ -597,7 +596,7 @@ function synchronize()
 	{
 		add_synchronize_feedback(`
 		<div class="c-alert c-alert--error">
-		Not synchronised
+		Not synchronized
 	  </div>`);
 	}
 }
@@ -891,6 +890,10 @@ function set_card_data_from_doc(card_element,card_index,doc)
 function update_data_view()
 {
 	let open_cards_view = document.getElementById('open_cards_id');
+	while (open_cards_view.firstChild)
+	{
+    open_cards_view.removeChild(open_cards_view.firstChild);
+  }
 	for(i = 0; i < main_doc.open_cards.length; i++)
 	{
 		let string_html_data = 
@@ -903,6 +906,10 @@ function update_data_view()
 		set_card_data_from_doc(card_element,i,main_doc.open_cards)
 	}
 	let finished_cards_view = document.getElementById('finished_cards_id');
+	while (finished_cards_view.firstChild)
+	{
+    finished_cards_view.removeChild(finished_cards_view.firstChild);
+  }
 	for(i = 0; i < main_doc.finished_cards.length; i++)
 	{
 		let string_html_data = 
