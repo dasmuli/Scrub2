@@ -50,14 +50,14 @@ function init_data() {
 	else // Load from storage
 	{
 		console.log("Loaded from storage");
-		main_doc = Automerge.load(LZString.decompress(serialData));
+		main_doc = Automerge.load(LZString.decompressFromUTF16(serialData));
 	}
 	console.log("init_data done");
 }
 
 function save_doc() {
 	let serialData = Automerge.save(main_doc);
-	var compressed = LZString.compress(serialData);
+	var compressed = LZString.compressToUTF16(serialData);
 	localStorage.setItem("SerializedAutomergeData", compressed);
 	console.log("Original size: "+serialData.length+", saving size: "+compressed.length);
 }
