@@ -348,14 +348,24 @@ function save_synch_data() {
 }
 
 
-function merge_docs(remote_doc) {
-	add_synchronize_feedback(`<div class="c-alert c-alert--info">
-								Merging</div>`);
+function merge_docs(remote_doc) 
+{
 	try
 	{
 		let remote_doc_unserialized = Automerge.load(LZString.decompressFromBase64(remote_doc));
-		let test_doc = Automerge.merge(main_doc, remote_doc_unserialized)
-		main_doc = test_doc;
+		if(remote_doc_unserialized._objectId != main_doc._objectId)
+		{
+			add_synchronize_feedback(`<div class="c-alert c-alert--warning">
+								First connect to existing data - purging local data</div>`);
+			main_doc = remote_doc_unserialized;
+		}
+		else
+		{
+			add_synchronize_feedback(`<div class="c-alert c-alert--info">
+								Merging</div>`);
+			let test_doc = Automerge.merge(main_doc, remote_doc_unserialized)
+			main_doc = test_doc;
+		}
 		save_doc();
 		update_data_view();
 	}
