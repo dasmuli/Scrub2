@@ -218,7 +218,7 @@ function on_click_add(element) {
 		main_doc = Automerge.change(main_doc, doc => {
 			doc.open_cards.insertAt(previous_card_index + 1,
 				{
-					title: 'Click me',
+					title: 'New',
 					description: '',
 					date_added: Date.now(),
 					date_finished: '0',
@@ -242,11 +242,12 @@ function on_click_add(element) {
 }
 
 function close_all_accordions() {
-	delete_class_in_children(document.body, 'c-card__item--active')
+	set_style_property_for_class_in_children(document.getElementById('open_cards_id'),
+      '.close_accordion','display','none');
 }
 
 function cancel_all_edits() {
-	// close_all_accordions()  // leads to double click on reopen
+	close_all_accordions()  // leads to double click on reopen
 	let open_cards_view = document.getElementById('open_cards_id')
 	set_style_property_for_class_in_children(
 		open_cards_view, '.display-on-add-mode',
@@ -685,10 +686,10 @@ function on_click_card_header(element)
 
 function create_card_html(card) {
 	return ` 
-	<div class="c-card card-origin">
+	<div class="c-card card-origin" style="margin-top: 0.2em;">
 	  <div class="c-card__item c-card__item--divider c-card__item--brand"
-	  style="cursor: pointer;" onclick="on_click_card_header(this)">`+ card.title + `</div>
-	  <div class="" style="display:none">
+	  style="cursor: pointer;" onclick="on_click_card_header(this);">`+ card.title + `</div>
+	  <div class="close_accordion" style="display:none">
         <div class="o-grid o-grid--no-gutter o-grid--demo o-grid--wrap">
 			<div class="o-grid__cell o-grid__cell--width-fixed" style="width: '20px'">
 			<div class="o-grid-text">
