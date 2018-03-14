@@ -548,6 +548,8 @@ function synchronize() {
 					  add_synchronize_feedback(`<div class="c-alert c-alert--info">
 					    Uploading initial version</div>`);
 					  upload();
+					  has_connect_once = true;
+					  localStorage.setItem("has_connect_once",has_connect_once);
 					}
 					else // if version not ok: download and merge
 					{
