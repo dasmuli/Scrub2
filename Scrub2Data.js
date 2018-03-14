@@ -675,7 +675,6 @@ function on_click_edit(element) {
 
 function on_click_card_header(element)
 {
-	console.log("click on card header");
 	let card_origin = find_ancestor(element, "card-origin");
 	// check display
 	if(card_origin.children[1].style.display != 'none')
