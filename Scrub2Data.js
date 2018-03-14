@@ -134,7 +134,9 @@ function check_data_and_save(card_origin) {
 		main_doc = Automerge.change(main_doc, doc => {
 			doc.open_cards[card_index].title = title_input.value
 		})
-		card_origin.header = title_input.value
+		console.log("Old title: "+card_origin.children[0].innerHTML);
+		card_origin.children[0].innerHTML = title_input.value
+		console.log("New title: "+card_origin.children[0].innerHTML);
 	}
 	// check titlechanged
 	if (description_input.value
