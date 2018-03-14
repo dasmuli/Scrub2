@@ -138,19 +138,15 @@ function check_data_and_save(card_origin) {
 	// check titlechanged
 	if (title_input.value
 		!= card_origin.open_card.title) {
-		console.log("Title changed")
 		changed = true;
 		main_doc = Automerge.change(main_doc, doc => {
 			doc.open_cards[card_index].title = title_input.value
 		})
-		console.log("Old title: "+card_origin.children[0].innerHTML);
 		card_origin.children[0].innerHTML = title_input.value
-		console.log("New title: "+card_origin.children[0].innerHTML);
 	}
 	// check titlechanged
 	if (description_input.value
 		!= card_origin.open_card.description) {
-		console.log("Description changed")
 		changed = true;
 		main_doc = Automerge.change(main_doc, doc => {
 			doc.open_cards[card_index].description
@@ -160,7 +156,6 @@ function check_data_and_save(card_origin) {
 	// check points
 	if (point_select.value
 		!= card_origin.open_card.points) {
-		console.log("Points changed")
 		changed = true;
 		main_doc = Automerge.change(main_doc, doc => {
 			doc.open_cards[card_index].points
@@ -352,6 +347,9 @@ function save_synch_data() {
 	localStorage.setItem("user_group_name", user_group_name);
 	localStorage.setItem("project_name", project_name);
 	localStorage.setItem("access_token", access_token);
+	// do not mix repositories
+	has_connect_once = false;
+	localStorage.setItem("has_connect_once",has_connect_once);
 }
 
 
