@@ -5,6 +5,7 @@ var card_div_element_to_be_moved;
 var user_group_name;
 var project_name;
 var access_token;
+var has_connect_once = false;
 
 function init_data() {
 	main_doc = Automerge.init();
@@ -13,6 +14,11 @@ function init_data() {
 	user_group_name = localStorage.getItem("user_group_name");
 	project_name = localStorage.getItem("project_name");
 	access_token = localStorage.getItem("access_token");
+	has_connect_once = localStorage.getItem("has_connect_once");
+	if(has_connect_once == undefined)
+	{
+		has_connect_once = false;
+	}
 	if (user_group_name)
 		document.getElementById('user_group_name_id').value = user_group_name;
 	if (project_name)
@@ -69,6 +75,7 @@ function delete_all_data() {
 	localStorage.removeItem("user_group_name");
 	localStorage.removeItem("project_name");
 	localStorage.removeItem("access_token");
+	localStorage.removeItem("has_connect_once");
 	location.reload();  // so lazy...
 }
 
@@ -353,11 +360,13 @@ function merge_docs(remote_doc)
 	try
 	{
 		let remote_doc_unserialized = Automerge.load(LZString.decompressFromBase64(remote_doc));
-		if(remote_doc_unserialized._objectId != main_doc._objectId)
+		if(!has_connect_once)
 		{
 			add_synchronize_feedback(`<div class="c-alert c-alert--warning">
 								First connect to existing data - purging local data</div>`);
 			main_doc = remote_doc_unserialized;
+			has_connect_once = true;
+			localStorage.setItem("has_connect_once",has_connect_once);
 		}
 		else
 		{
@@ -536,17 +545,16 @@ function synchronize() {
 						return
 					}
 					// check new
-					//if(resultObj.new_project)
-					//{
-					//add_synchronize_feedback(`<div class="c-alert c-alert--info">
-					//  Uploading initial version</div>`);
-					//upload();
-					// if version ok or new data: upload
-					//}
-					//else // if version not ok: download and merge
-					//{
-					download_document();
-					//}
+					if(resultObj.new_project)
+					{
+					  add_synchronize_feedback(`<div class="c-alert c-alert--info">
+					    Uploading initial version</div>`);
+					  upload();
+					}
+					else // if version not ok: download and merge
+					{
+					  download_document();
+					}
 				}
 				else {
 					add_synchronize_feedback(`
