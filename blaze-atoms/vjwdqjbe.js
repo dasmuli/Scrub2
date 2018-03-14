@@ -1,2 +1,0 @@
-/*! Built with http://stenciljs.com */
-const{h:t}=window.BlazeAtoms;class e{render(){const e=this.open?"c-tabs__tab--active":"";return t("div",{class:`c-tabs__tab ${e}`},t("slot",null))}static get is(){return"blaze-tab"}static get properties(){return{disabled:{type:Boolean,attr:"disabled"},header:{type:String,attr:"header"},open:{type:Boolean,attr:"open"}}}}export{e as BlazeTab};

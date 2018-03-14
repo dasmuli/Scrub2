@@ -1,2 +1,0 @@
-/*! Built with http://stenciljs.com */
-BlazeAtoms.loadBundle("pga27nvu",["exports"],function(e){var n=window.BlazeAtoms.h,r=function(){function e(){}return e.prototype.render=function(){return n("address",{class:"c-address"},n("slot",null))},Object.defineProperty(e,"is",{get:function(){return"blaze-address"},enumerable:!0,configurable:!0}),e}();e.BlazeAddress=r,Object.defineProperty(e,"__esModule",{value:!0})});

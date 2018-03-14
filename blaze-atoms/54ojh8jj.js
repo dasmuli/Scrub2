@@ -1,2 +1,0 @@
-/*! Built with http://stenciljs.com */
-const{h:r}=window.BlazeAtoms;class e{render(){return r("li",{class:"c-breadcrumbs__crumb"},this.href?r("a",{class:"c-link",href:this.href},r("slot",null)):r("slot",null))}static get is(){return"blaze-breadcrumb"}static get properties(){return{href:{type:String,attr:"href"}}}}export{e as BlazeBreadcrumb};

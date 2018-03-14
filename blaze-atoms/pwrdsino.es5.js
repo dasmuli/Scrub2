@@ -1,2 +1,0 @@
-/*! Built with http://stenciljs.com */
-BlazeAtoms.loadBundle("pwrdsino",["exports"],function(e){var n=window.BlazeAtoms.h,r=function(){function e(){}return e.prototype.render=function(){return n("span",{class:"c-address__heading"},n("slot",null))},Object.defineProperty(e,"is",{get:function(){return"blaze-address-heading"},enumerable:!0,configurable:!0}),e}();e.BlazeAddressHeading=r,Object.defineProperty(e,"__esModule",{value:!0})});

@@ -1,2 +1,0 @@
-/*! Built with http://stenciljs.com */
-const{h:t}=window.BlazeAtoms;class e{render(){const e=this.type?`c-badge--${this.type}`:"",s=this.rounded?"c-badge--rounded":"",a=this.ghost?"c-badge--ghost":"";return t("span",{class:`c-badge ${e} ${s} ${a}`},t("slot",null))}static get is(){return"blaze-badge"}static get properties(){return{ghost:{type:Boolean,attr:"ghost"},rounded:{type:Boolean,attr:"rounded"},type:{type:String,attr:"type"}}}}export{e as BlazeBadge};

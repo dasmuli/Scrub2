@@ -1,2 +1,0 @@
-/*! Built with http://stenciljs.com */
-const{h:a}=window.BlazeAtoms;class r{render(){return a("div",{class:"c-card__body"},a("slot",null))}static get is(){return"blaze-card-body"}}export{r as BlazeCardBody};
