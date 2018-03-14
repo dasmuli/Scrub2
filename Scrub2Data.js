@@ -50,14 +50,16 @@ function init_data() {
 	else // Load from storage
 	{
 		console.log("Loaded from storage");
-		main_doc = Automerge.load(serialData);
+		main_doc = Automerge.load(LZString.decompress(serialData));
 	}
 	console.log("init_data done");
 }
 
 function save_doc() {
 	let serialData = Automerge.save(main_doc);
-	localStorage.setItem("SerializedAutomergeData", serialData);
+	var compressed = LZString.compress(serialData);
+	localStorage.setItem("SerializedAutomergeData", compressed);
+	console.log("Original size: "+serialData.length+", saving size: "+compressed.length);
 }
 
 function delete_all_data() {
@@ -349,10 +351,19 @@ function save_synch_data() {
 function merge_docs(remote_doc) {
 	add_synchronize_feedback(`<div class="c-alert c-alert--info">
 								Merging</div>`);
-	let remote_doc_unserialized = Automerge.load(remote_doc);;
-	main_doc = Automerge.merge(main_doc, remote_doc_unserialized)
-	save_doc();
-	update_data_view();
+	try
+	{
+		let remote_doc_unserialized = Automerge.load(LZString.decompressFromBase64(remote_doc));
+		let test_doc = Automerge.merge(main_doc, remote_doc_unserialized)
+		main_doc = test_doc;
+		save_doc();
+		update_data_view();
+	}
+	catch( e )
+	{
+		add_synchronize_feedback(`<div class="c-alert c-alert--warning">
+								Remote data corrupted - ignoring</div>`);
+	}
 }
 
 
@@ -425,7 +436,8 @@ function upload() {
 		}
 	};
 	xmlhttp.open("POST", "scrub_server.php", true);
-	let serialDoc = Automerge.save(main_doc);
+	let serialDoc = LZString.compressToBase64(Automerge.save(main_doc));
+	console.log("Upload size: "+serialDoc.length);
 	var params = JSON.stringify({
 		user_group_name: user_group_name,
 		project_name: project_name, access_token: access_token, command: 'upload_data',
