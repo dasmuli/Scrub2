@@ -244,6 +244,7 @@ function on_click_add(element) {
 	// leave add mode
 	cancel_all_edits()
 	//save_doc()
+	element.stopPropagation();
 }
 
 function set_display_on_all_children(element, display_style)
@@ -264,7 +265,7 @@ function close_all_accordions()
 }
 
 function cancel_all_edits() {
-	close_all_accordions()  // leads to double click on reopen
+	//close_all_accordions()  // leads to double click on reopen
 	let open_cards_view = document.getElementById('open_cards_id')
 	set_style_property_for_class_in_children(
 		open_cards_view, '.display-on-add-mode',
@@ -327,6 +328,7 @@ function on_click_move(element) {
 	// leave add mode
 	cancel_all_edits()
 	save_doc()
+	element.stopPropagation();
 }
 
 function add_synchronize_feedback(user_info) {
@@ -727,21 +729,21 @@ function create_card_html(card) {
 			</div>
 			<div class="o-grid__cell">
 					<div class="o-grid-text u-right">
-						<button type="button" class="c-button display-on-add-mode u-xlarge"
-						style="display:none;padding:0px;margin-top:-12px;margin-bottom:-12px;"
-						onclick="on_click_add(this)">
+						<button type="button" class="c-button display-on-add-mode u-small"
+						style="display:none;margin-top:-10px;margin-bottom:-10px;"
+						onclick="event.stopPropagation();on_click_add(this);">
 							<i class="material-icons" style="font-size:1em;margin:0;">note_add</i>
 							<i class="material-icons" style="font-size:1em;margin:0;">arrow_downward</i>
 						</button>
-						<button type="button" class="c-button display-on-move-mode u-xlarge"
-						style="display:none;padding:0px;margin-top:-8px;margin-bottom:-8px;"
-						onclick="on_click_move(this)">
+						<button type="button" class="c-button display-on-move-mode u-small"
+						style="display:none;margin-top:-10px;margin-bottom:-10px;"
+						onclick="event.stopPropagation();on_click_move(this);">
 							<i class="material-icons" style="font-size:1em;margin:0;">swap_vert</i>
 							<i class="material-icons" style="font-size:1em;margin:0;">arrow_downward</i>
 						</button>
 						<button type="button" class="c-button display-on-add-mode display-on-move-mode u-small"
 						style="display:none;margin-top:-10px;margin-bottom:-10px;"
-						onclick="cancel_all_edits()">
+						onclick="event.stopPropagation();cancel_all_edits();">
 							<i class="material-icons" style="font-size:1em;">
 							block
 							</i>
