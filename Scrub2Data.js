@@ -208,7 +208,6 @@ function on_click_delete(element) {
 	let card_origin = find_ancestor(element, "card-origin");
 	let card_to_be_removed_index = find_index_for_card(card_origin.open_card,main_doc.open_cards)
 	// delete card and following controls
-	card_origin.parentNode.removeChild(card_origin.nextSibling);
 	card_origin.parentNode.removeChild(card_origin);
 	// delete in data
 	main_doc = Automerge.change(main_doc, doc => {
