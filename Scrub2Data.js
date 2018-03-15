@@ -244,6 +244,9 @@ function on_click_add(element) {
 	// leave add mode
 	cancel_all_edits()
 	//save_doc()
+	// open new card for edit
+	set_card_display(card_element,'inline');
+	toggle_edit_mode(card_element.getElementsByClassName('edit-button')[0],card_element);
 }
 
 function set_display_on_all_children(element, display_style)
@@ -256,11 +259,6 @@ function set_display_on_all_children(element, display_style)
 
 function close_all_accordions() 
 {
-	//set_display_on_all_children(document.getElementById('open_cards_id'), 'none')
-	//set_display_on_all_children(document.getElementById('finished_cards_id'), 'none')
-	//set_style_property_for_class_in_children(
-	//	document.getElementById('open_cards_id'),
-	//	'close_accordion','display','none');
 	let all_cards = document.getElementsByClassName('card-origin');
 	for(i = 0; i < all_cards.length; i++)
 	{
@@ -664,10 +662,8 @@ function on_click_move_mode(element) {
 	close_all_accordions();
 }
 
-
-function on_click_edit(element) {
-	//find base card div element
-	let card_origin = find_ancestor(element, "card-origin");
+function toggle_edit_mode(element,card_origin)
+{
 	if (element.classList.contains("c-button--active")) {
 		// turn edit mode off
 		element.classList.remove("c-button--active");
@@ -695,6 +691,13 @@ function on_click_edit(element) {
 			card_origin, '.remove-disabled-on-editmode',
 			'disabled', false)
 	}
+}
+
+
+function on_click_edit(element) {
+	//find base card div element
+	let card_origin = find_ancestor(element, "card-origin");
+	toggle_edit_mode(element,card_origin);
 }
 
 function set_card_display(card_origin, style_display_value)
@@ -809,7 +812,7 @@ function create_card_html(card) {
 						assignment_turned_in
 					</i>
 				</button>
-				<button type="button" class="c-button block-on-finishcard"  
+				<button type="button" class="c-button block-on-finishcard edit-button"  
 				onclick="on_click_edit(this)">
 					<i class="material-icons" 
 						style="font-size:1em;">
