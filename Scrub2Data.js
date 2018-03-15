@@ -176,9 +176,7 @@ function on_click_return_to_open(element) {
 	let card_origin = find_ancestor(element, "card-origin");
 	let card_to_be_finished_index = find_index_for_card(card_origin.open_card,main_doc.finished_cards)
 	// move html
-	let card_origin_controls = card_origin.nextSibling
 	open_cards_view.appendChild(card_origin)
-	open_cards_view.appendChild(card_origin_controls)
 	main_doc = Automerge.change(main_doc, doc => {
 		doc.open_cards.push(
 			doc.finished_cards.splice(card_to_be_finished_index, 1)[0]
@@ -194,9 +192,7 @@ function on_click_finish(element) {
 	let card_origin = find_ancestor(element, "card-origin");
 	let card_to_be_finished_index = find_index_for_card(card_origin.open_card,main_doc.open_cards)
 	// move html
-	let card_origin_controls = card_origin.nextSibling
 	finished_cards_view.appendChild(card_origin)
-	finished_cards_view.appendChild(card_origin_controls)
 	main_doc = Automerge.change(main_doc, doc => {
 		doc.open_cards[card_to_be_finished_index].date_finished = Date.now();
 		doc.finished_cards.push(
@@ -223,44 +219,48 @@ function on_click_delete(element) {
 
 function on_click_add(element) {
 	console.log('add')
-	let position_selector = find_ancestor(element, "card_position_selector")
-	if (position_selector.previousElementSibling) {
-		console.log('behind pos')
-		let card_view_before_position =
-			position_selector.previousElementSibling
-		// find index for document in front
-		let previous_card_index =
-			find_index_for_card(card_view_before_position.open_card,main_doc.open_cards)
-		// generate new card
-		main_doc = Automerge.change(main_doc, doc => {
-			doc.open_cards.insertAt(previous_card_index + 1,
-				{
-					title: 'New',
-					description: '',
-					date_added: Date.now(),
-					date_finished: '0',
-					points: 0
-				})
-		})
-		// add html
-		let raw_html_string =
-			create_card_html(main_doc.open_cards[previous_card_index + 1])
-		let card_element =
-			insert_html(position_selector, raw_html_string);
-		set_card_data_from_doc(card_element, previous_card_index + 1, main_doc.open_cards)
-		// leave add mode
-		cancel_all_edits()
-		//save_doc()
-	}
-	else // front position
+	let card_origin = find_ancestor(element, "card-origin");
+	console.log('behind pos')
+	// find index for document in front
+	let previous_card_index =
+		find_index_for_card(card_origin.open_card,main_doc.open_cards)
+	// generate new card
+	main_doc = Automerge.change(main_doc, doc => {
+		doc.open_cards.insertAt(previous_card_index + 1,
+			{
+				title: 'New',
+				description: '',
+				date_added: Date.now(),
+				date_finished: '0',
+				points: 0
+			})
+	})
+	// add html
+	let raw_html_string =
+		create_card_html(main_doc.open_cards[previous_card_index + 1])
+	let card_element =
+		insert_html(card_origin, raw_html_string);
+	set_card_data_from_doc(card_element, previous_card_index + 1, main_doc.open_cards)
+	// leave add mode
+	cancel_all_edits()
+	//save_doc()
+}
+
+function set_display_on_all_children(element, display_style)
+{
+	for(var i = 0; i < element.children.length; i++)
 	{
-		console.log('front pos')
+		element.children[i].style.display = display_style;
 	}
 }
 
-function close_all_accordions() {
-	set_style_property_for_class_in_children(document.getElementById('open_cards_id'),
-      '.close_accordion','display','none');
+function close_all_accordions() 
+{
+	//set_display_on_all_children(document.getElementById('open_cards_id'), 'none')
+	//set_display_on_all_children(document.getElementById('finished_cards_id'), 'none')
+	set_style_property_for_class_in_children(
+		document.getElementById('open_cards_id'),
+		'close_accordion','display','none');
 }
 
 function cancel_all_edits() {
@@ -304,41 +304,29 @@ function on_click_add_mode(element) {
 			open_cards_view, '.display-on-add-mode',
 			'display', 'inline')
 	}
-	//element.scrollIntoView(false)
+	close_all_accordions();
 }
 
 function on_click_move(element) {
 	console.log('move')
-	let position_selector = find_ancestor(element, "card_position_selector")
-	if (position_selector.previousElementSibling) {
-		console.log('behind pos')
-		let card_view_before_position =
-			position_selector.previousElementSibling
-		// find index for document in front
-		let previous_card_index =
-			find_index_for_card(card_view_before_position.open_card,main_doc.open_cards)
-		console.log('Moving ' + card_to_be_moved_index + ' behind ' + previous_card_index)
-		// move control div element
-		position_selector.parentNode.insertBefore(
-			card_div_element_to_be_moved.nextSibling,
-			position_selector.nextSibling);
-		// move card element
-		position_selector.parentNode.insertBefore(
-			card_div_element_to_be_moved,
-			position_selector.nextSibling);
-		// move card in data card
-		main_doc = Automerge.change(main_doc, doc => {
-			doc.open_cards.splice(previous_card_index + 1, 0,    // add at new pos
-				doc.open_cards.splice(card_to_be_moved_index, 1)[0])  // delete at old pos
-		})
-		// leave add mode
-		cancel_all_edits()
-		save_doc()
-	}
-	else // front position
-	{
-		console.log('front pos')
-	}
+	let card_origin = find_ancestor(element, "card-origin")
+	console.log('behind pos')
+	// find index for document in front
+	let previous_card_index =
+		find_index_for_card(card_origin.open_card,main_doc.open_cards)
+	console.log('Moving ' + card_to_be_moved_index + ' behind ' + previous_card_index)
+	// move card element
+	card_origin.parentNode.insertBefore(
+		card_div_element_to_be_moved,
+		card_origin.nextSibling);
+	// move card in data card
+	main_doc = Automerge.change(main_doc, doc => {
+		doc.open_cards.splice(previous_card_index, 0,    // add at new pos
+			doc.open_cards.splice(card_to_be_moved_index, 1)[0])  // delete at old pos
+	})
+	// leave add mode
+	cancel_all_edits()
+	save_doc()
 }
 
 function add_synchronize_feedback(user_info) {
@@ -668,7 +656,7 @@ function on_click_move_mode(element) {
 			open_cards_view, '.display-on-move-mode',
 			'display', 'inline')
 	}
-	//element.scrollIntoView(false)
+	close_all_accordions();
 }
 
 
@@ -726,11 +714,42 @@ function on_click_card_header(element)
 	}
 }
 
-function create_card_html(card) {
+function create_card_html(card) { 
 	return ` 
 	<div class="c-card card-origin" style="margin-top: 0.2em;">
 	  <div class="c-card__item c-card__item--divider c-card__item--brand"
-	  style="cursor: pointer;" onclick="on_click_card_header(this);">`+ card.title + `</div>
+	  style="cursor: pointer;" onclick="on_click_card_header(this);">
+	  <div class="o-grid o-grid--demo o-grid--no-gutter card_position_selector">
+	  		<div class="o-grid__cell">
+				  <div class="o-grid-text">
+				  `+ card.title + `  
+	  			  </div>
+			</div>
+			<div class="o-grid__cell">
+					<div class="o-grid-text u-right">
+						<button type="button" class="c-button display-on-add-mode u-xlarge"
+						style="display:none;padding:0px;margin-top:-12px;margin-bottom:-12px;"
+						onclick="on_click_add(this)">
+							<i class="material-icons" style="font-size:1em;margin:0;">note_add</i>
+							<i class="material-icons" style="font-size:1em;margin:0;">arrow_downward</i>
+						</button>
+						<button type="button" class="c-button display-on-move-mode u-xlarge"
+						style="display:none;padding:0px;margin-top:-8px;margin-bottom:-8px;"
+						onclick="on_click_move(this)">
+							<i class="material-icons" style="font-size:1em;margin:0;">swap_vert</i>
+							<i class="material-icons" style="font-size:1em;margin:0;">arrow_downward</i>
+						</button>
+						<button type="button" class="c-button display-on-add-mode display-on-move-mode u-small"
+						style="display:none;margin-top:-10px;margin-bottom:-10px;"
+						onclick="cancel_all_edits()">
+							<i class="material-icons" style="font-size:1em;">
+							block
+							</i>
+						</button>
+					</div>
+			</div>
+			</div>
+	  </div>
 	  <div class="close_accordion" style="display:none">
         <div class="o-grid o-grid--no-gutter o-grid--demo o-grid--wrap">
 			<div class="o-grid__cell o-grid__cell--width-fixed" style="width: '20px'">
@@ -819,32 +838,6 @@ function create_card_html(card) {
 	    </div>
 	  </div>
 	</div>
-<div class="o-grid o-grid--demo o-grid--no-gutter card_position_selector">
-  <div class="o-grid__cell">
-		<div class="o-grid-text">
-			<button type="button" class="c-button display-on-add-mode"
-			style="display:none" onclick="on_click_add(this)">
-				<i class="material-icons" style="font-size:1em;">note_add</i>
-				<i class="material-icons" style="font-size:1em;">subdirectory_arrow_right</i>
-			</button>
-			<button type="button" class="c-button display-on-move-mode"
-			style="display:none" onclick="on_click_move(this)">
-				<i class="material-icons" style="font-size:1em;">swap_vert</i>
-				<i class="material-icons" style="font-size:1em;">arrow_forward</i>
-			</button>
-		</div>
-  </div>
-  <div class="o-grid__cell">
-		<div class="o-grid-text u-right">
-			<button type="button" class="c-button display-on-add-mode display-on-move-mode"
-			style="display:none" onclick="cancel_all_edits()">
-				<i class="material-icons" style="font-size:1em;">
-				  block
-				</i>
-			</button>
-		</div>
-  </div>
-</div>
 	`;
 }
 
