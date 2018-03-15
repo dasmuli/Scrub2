@@ -116,9 +116,9 @@ function add_or_delete_property_for_class_in_children(
 	}
 }
 
-function find_index_for_card(open_card) {
-	for (i = 0; i < main_doc.open_cards.length; i++) {
-		if (main_doc.open_cards[i]._objectId == open_card._objectId)
+function find_index_for_card(open_card,card_list) {
+	for (i = 0; i < card_list.length; i++) {
+		if (card_list[i]._objectId == open_card._objectId)
 			return i
 	}
 	return undefined
@@ -126,7 +126,7 @@ function find_index_for_card(open_card) {
 
 function check_data_and_save(card_origin) {
 	let changed = false
-	let card_index = find_index_for_card(card_origin.open_card)
+	let card_index = find_index_for_card(card_origin.open_card,main_doc.open_cards)
 	if (card_index == undefined) {
 		console.log("Could not find card index for card "
 			+ card_origin)
@@ -168,22 +168,35 @@ function check_data_and_save(card_origin) {
 	}
 }
 
-// Reopen card from finish to open
-function on_click_return(element) {
-	let finished_cards_view = document.getElementById('finished_cards_id');
+
+
+function on_click_return_to_open(element) {
+	console.log('Finish')
+	let open_cards_view = document.getElementById('open_cards_id');
 	let card_origin = find_ancestor(element, "card-origin");
-	let card_to_be_finished_index = find_index_for_card(card_origin.open_card)
+	let card_to_be_finished_index = find_index_for_card(card_origin.open_card,main_doc.finished_cards)
+	// move html
+	let card_origin_controls = card_origin.nextSibling
+	open_cards_view.appendChild(card_origin)
+	open_cards_view.appendChild(card_origin_controls)
+	main_doc = Automerge.change(main_doc, doc => {
+		doc.open_cards.push(
+			doc.finished_cards.splice(card_to_be_finished_index, 1)[0]
+		)
+	})
+	save_doc()
+	close_all_accordions()
 }
 
 function on_click_finish(element) {
 	console.log('Finish')
 	let finished_cards_view = document.getElementById('finished_cards_id');
 	let card_origin = find_ancestor(element, "card-origin");
-	let card_to_be_finished_index = find_index_for_card(card_origin.open_card)
+	let card_to_be_finished_index = find_index_for_card(card_origin.open_card,main_doc.open_cards)
 	// move html
 	let card_origin_controls = card_origin.nextSibling
-	finished_cards_view.lastChild.appendChild(card_origin)
-	finished_cards_view.lastChild.appendChild(card_origin_controls)
+	finished_cards_view.appendChild(card_origin)
+	finished_cards_view.appendChild(card_origin_controls)
 	main_doc = Automerge.change(main_doc, doc => {
 		doc.open_cards[card_to_be_finished_index].date_finished = Date.now();
 		doc.finished_cards.push(
@@ -197,7 +210,7 @@ function on_click_finish(element) {
 function on_click_delete(element) {
 	console.log('Delete')
 	let card_origin = find_ancestor(element, "card-origin");
-	let card_to_be_removed_index = find_index_for_card(card_origin.open_card)
+	let card_to_be_removed_index = find_index_for_card(card_origin.open_card,main_doc.open_cards)
 	// delete card and following controls
 	card_origin.parentNode.removeChild(card_origin.nextSibling);
 	card_origin.parentNode.removeChild(card_origin);
@@ -217,7 +230,7 @@ function on_click_add(element) {
 			position_selector.previousElementSibling
 		// find index for document in front
 		let previous_card_index =
-			find_index_for_card(card_view_before_position.open_card)
+			find_index_for_card(card_view_before_position.open_card,main_doc.open_cards)
 		// generate new card
 		main_doc = Automerge.change(main_doc, doc => {
 			doc.open_cards.insertAt(previous_card_index + 1,
@@ -303,7 +316,7 @@ function on_click_move(element) {
 			position_selector.previousElementSibling
 		// find index for document in front
 		let previous_card_index =
-			find_index_for_card(card_view_before_position.open_card)
+			find_index_for_card(card_view_before_position.open_card,main_doc.open_cards)
 		console.log('Moving ' + card_to_be_moved_index + ' behind ' + previous_card_index)
 		// move control div element
 		position_selector.parentNode.insertBefore(
@@ -639,7 +652,7 @@ function show_finished_cards() {
 function on_click_move_mode(element) {
 	let open_cards_view = document.getElementById('open_cards_id')
 	let card_origin = find_ancestor(element, "card-origin");
-	card_to_be_moved_index = find_index_for_card(card_origin.open_card)
+	card_to_be_moved_index = find_index_for_card(card_origin.open_card,main_doc.open_cards)
 	card_div_element_to_be_moved = card_origin
 	if (element.classList.contains("c-button--active")) {
 		// turn add mode off
@@ -778,7 +791,7 @@ function create_card_html(card) {
 					</i>
 				</button>
 				<button type="button" class="c-button display-on-finishcard"  
-				style="display:none" onclick="on_click_return(this)">
+				style="display:none" onclick="on_click_return_to_open(this)">
 					<i class="material-icons" 
 						style="font-size:1em;">
 						assignment_return
