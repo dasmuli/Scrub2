@@ -246,7 +246,8 @@ function on_click_add(element) {
 	//save_doc()
 	// open new card for edit
 	set_card_display(card_element,'inline');
-	toggle_edit_mode(card_element.getElementsByClassName('edit-button')[0],card_element);
+	// this below breaks buttons
+	//toggle_edit_mode(card_element.getElementsByClassName('edit-button')[0],card_element);
 }
 
 function set_display_on_all_children(element, display_style)
@@ -689,7 +690,7 @@ function toggle_edit_mode(element,card_origin)
 			'readOnly', false)
 		set_property_for_class_in_children(
 			card_origin, '.remove-disabled-on-editmode',
-			'disabled', false)
+			'disabled', 'inline')
 	}
 }
 
