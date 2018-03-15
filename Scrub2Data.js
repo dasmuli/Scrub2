@@ -244,7 +244,6 @@ function on_click_add(element) {
 	// leave add mode
 	cancel_all_edits()
 	//save_doc()
-	element.stopPropagation();
 }
 
 function set_display_on_all_children(element, display_style)
@@ -259,13 +258,18 @@ function close_all_accordions()
 {
 	//set_display_on_all_children(document.getElementById('open_cards_id'), 'none')
 	//set_display_on_all_children(document.getElementById('finished_cards_id'), 'none')
-	set_style_property_for_class_in_children(
-		document.getElementById('open_cards_id'),
-		'close_accordion','display','none');
+	//set_style_property_for_class_in_children(
+	//	document.getElementById('open_cards_id'),
+	//	'close_accordion','display','none');
+	let all_cards = document.getElementsByClassName('card-origin');
+	for(i = 0; i < all_cards.length; i++)
+	{
+		set_card_display(all_cards[i], 'none');
+	}
 }
 
 function cancel_all_edits() {
-	//close_all_accordions()  // leads to double click on reopen
+	close_all_accordions()  // leads to double click on reopen
 	let open_cards_view = document.getElementById('open_cards_id')
 	set_style_property_for_class_in_children(
 		open_cards_view, '.display-on-add-mode',
@@ -328,7 +332,6 @@ function on_click_move(element) {
 	// leave add mode
 	cancel_all_edits()
 	save_doc()
-	element.stopPropagation();
 }
 
 function add_synchronize_feedback(user_info) {
@@ -694,25 +697,27 @@ function on_click_edit(element) {
 	}
 }
 
+function set_card_display(card_origin, style_display_value)
+{
+	// do not display children > 0
+	for(var i = 1; i < card_origin.children.length; i++)
+	{
+		card_origin.children[i].style.display = style_display_value;
+	}
+}
+
 function on_click_card_header(element)
 {
 	let card_origin = find_ancestor(element, "card-origin");
 	// check display
 	if(card_origin.children[1].style.display != 'none')
 	{
-		// do not display children > 0
-		for(var i = 1; i < card_origin.children.length; i++)
-		{
-			card_origin.children[i].style.display = 'none';
-		}
+		set_card_display(card_origin, 'none');
 	}
 	else
 	{
 		// display children > 0
-		for(var i = 1; i < card_origin.children.length; i++)
-		{
-			card_origin.children[i].style.display = 'inline';
-		}
+		set_card_display(card_origin, 'inline');
 	}
 }
 
