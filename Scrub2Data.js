@@ -746,7 +746,7 @@ function on_click_card_header(element)
 
 function create_card_html(card) { 
 	return ` 
-	<div class="c-card card-origin" style="margin-top: 0.2em;">
+	<div class="c-card card-origin u-higher" style="margin-top: 8px;">
 	  <div class="c-card__item c-card__item--divider c-card__item--brand"
 	  style="cursor: pointer;" onclick="on_click_card_header(this);">
 	  <div class="o-grid o-grid--demo o-grid--no-gutter">
