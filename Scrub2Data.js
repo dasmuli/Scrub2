@@ -6,6 +6,7 @@ var user_group_name;
 var project_name;
 var access_token;
 var has_connect_once = false;
+var num_entries = -1;
 
 function init_data() {
 	main_doc = Automerge.init();
@@ -18,6 +19,11 @@ function init_data() {
 	if(has_connect_once == undefined)
 	{
 		has_connect_once = false;
+	}
+	num_entries = localStorage.getItem("num_entries");
+	if(num_entries == undefined)
+	{
+		num_entries = -1;
 	}
 	if (user_group_name)
 		document.getElementById('user_group_name_id').value = user_group_name;
@@ -421,6 +427,7 @@ function download_document() {
 				add_synchronize_feedback(`<div class="c-alert c-alert--info">
 								Download done</div>`);
 				var resultObj = JSON.parse(this.responseText);
+				console.log(resultObj.num_entries);
 				remote_doc = resultObj.document;
 				merge_docs(remote_doc);
 				upload();
@@ -465,7 +472,8 @@ function upload() {
 					return;
 				}
 				add_synchronize_feedback(`<div class="c-alert c-alert--success">
-								Synchronization successful</div>`);
+								Synchronization successful, version `+resultObj.num_entries+`</div>`);
+				localStorage.setItem("num_entries",resultObj.num_entries);
 			}
 			else {
 				add_synchronize_feedback(`
@@ -558,6 +566,7 @@ function synchronize() {
 		xmlhttp.onreadystatechange = function () {
 			if (this.readyState == 4) {
 				if (this.status == 200) {
+					console.log(this.responseText);
 					var resultObj = JSON.parse(this.responseText);
 					//document.getElementById("demo").innerHTML = myObj[2];
 					add_synchronize_feedback(`<div class="c-alert c-alert--info">
@@ -576,7 +585,19 @@ function synchronize() {
 					}
 					else // if version not ok: download and merge
 					{
-					  download_document();
+						console.log("Remote entries:"+
+						resultObj.num_entries+", local entries"+num_entries);
+						if(resultObj.num_entries == num_entries)
+						{
+							add_synchronize_feedback(`<div class="c-alert c-alert--info">
+								No remote changes</div>`);
+							// todo: check local changes
+							upload();
+						}
+						else
+						{
+					  		download_document();
+						}
 					}
 				}
 				else {

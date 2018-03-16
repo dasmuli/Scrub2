@@ -83,8 +83,12 @@ try {
         return;
     }
 
+    $result->error_message = "Unknown command: ".$command;
+    $result->error = true;
+
     if($command == "download_data")
     {
+        $result->error = false;
         $stmt = $conn->prepare("SELECT document_data, num_entries FROM Scrub2MainData WHERE organization = ? AND project = ?");
         $stmt->execute(array($user_group_name, $project_name)); 
         // set the resulting array to associative
@@ -102,10 +106,11 @@ try {
     }
     else if($command == 'upload_data')
     {
+        $result->error = false;
         $sql = "INSERT INTO Scrub2MainData (organization, project, access_token_hash, document_data)
         VALUES (:org,:proj,:access,:doc) ON DUPLICATE KEY UPDATE
         document_data = :doc, 
-        num_entries = num_entries + 1;";
+        num_entries = num_entries + 1";
         // Prepare statement
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':org'     , $user_group_name);
@@ -115,14 +120,10 @@ try {
         // execute the query
         $stmt->execute();
         // echo a message to say the UPDATE succeeded
-        //if($stmt->rowCount() != 1)  // ALLWAYS2?
-        //{
-        //    $result->db_success  = false;
-        //    $result->error_message = "1 row to be updated, but #:".$stmt->rowCount();
-        //}
     }
-    else if($command == "get_version")
+    if($command == "get_version" || $command == 'upload_data') // upload returns id
     {
+        $result->error = false;
         $stmt = $conn->prepare("SELECT access_token_hash, num_entries FROM Scrub2MainData WHERE organization = ? AND project = ?");
         $stmt->execute(array($user_group_name, $project_name)); 
         // set the resulting array to associative
@@ -135,11 +136,6 @@ try {
         {
             $result->new_project = true;
         }
-    }
-    else
-    {
-        $result->error_message = "Unknown command: ".$command;
-        $result->error = true;
     }
 }
 catch(PDOException $e)
