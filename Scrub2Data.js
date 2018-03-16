@@ -267,6 +267,10 @@ function close_all_accordions()
 }
 
 function cancel_all_edits() {
+	if(card_div_element_to_be_moved)
+	{
+	  set_select_card(card_div_element_to_be_moved,false);
+	}
 	close_all_accordions()  // leads to double click on reopen
 	let open_cards_view = document.getElementById('open_cards_id')
 	set_style_property_for_class_in_children(
@@ -310,9 +314,24 @@ function on_click_add_mode(element) {
 	close_all_accordions();
 }
 
+function set_select_card(card_origin,set_select)
+{
+	if(set_select)
+	{
+		card_origin.children[0].classList.remove('c-card__item--brand');
+		card_origin.children[0].classList.add('c-card__item--warning');
+	}
+	else
+	{
+		card_origin.children[0].classList.remove('c-card__item--warning');
+		card_origin.children[0].classList.add('c-card__item--brand');
+	}
+}
+
 function on_click_move(element) {
 	console.log('move')
 	let card_origin = find_ancestor(element, "card-origin")
+	set_select_card(card_origin, false);
 	console.log('behind pos')
 	// find index for document in front
 	let previous_card_index =
@@ -645,6 +664,7 @@ function on_click_move_mode(element) {
 	let card_origin = find_ancestor(element, "card-origin");
 	card_to_be_moved_index = find_index_for_card(card_origin.open_card,main_doc.open_cards)
 	card_div_element_to_be_moved = card_origin
+	set_select_card(card_origin,true);
 	if (element.classList.contains("c-button--active")) {
 		// turn add mode off
 		element.classList.remove("c-button--active");
@@ -730,7 +750,7 @@ function create_card_html(card) {
 	  <div class="c-card__item c-card__item--divider c-card__item--brand"
 	  style="cursor: pointer;" onclick="on_click_card_header(this);">
 	  <div class="o-grid o-grid--demo o-grid--no-gutter">
-	  		<div class="o-grid__cell o-grid__cell--width-75">
+	  		<div class="o-grid__cell o-grid__cell--width-70">
 				  <div class="o-grid-text">
 				  `+ card.title + `  
 	  			  </div>
