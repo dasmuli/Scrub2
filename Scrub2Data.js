@@ -7,6 +7,7 @@ var project_name;
 var access_token;
 var has_connect_once = false;
 var num_entries = -1;
+var local_changes = false;
 
 function init_data() {
 	main_doc = Automerge.init();
@@ -24,6 +25,11 @@ function init_data() {
 	if(num_entries == undefined)
 	{
 		num_entries = -1;
+	}
+	local_changes = localStorage.getItem("local_changes");
+	if(local_changes == undefined)
+	{
+		local_changes = false;
 	}
 	if (user_group_name)
 		document.getElementById('user_group_name_id').value = user_group_name;
@@ -57,7 +63,7 @@ function init_data() {
 				})
 		})
 
-		save_doc()
+		save_doc(true)
 	}
 	else // Load from storage
 	{
@@ -67,11 +73,16 @@ function init_data() {
 	console.log("init_data done");
 }
 
-function save_doc() {
+function save_doc(is_local_change) {
 	let serialData = Automerge.save(main_doc);
 	var compressed = LZString.compressToUTF16(serialData);
 	localStorage.setItem("SerializedAutomergeData", compressed);
 	console.log("Original size: "+serialData.length+", saving size: "+compressed.length);
+	if(is_local_change)
+	{
+		local_changes = true;
+		localStorage.setItem("local_changes",local_changes);
+	}
 }
 
 function delete_all_data() {
@@ -169,7 +180,8 @@ function check_data_and_save(card_origin) {
 		})
 	}
 	if (changed) {
-		save_doc()
+		console.log("Local data changed after edit");
+		save_doc(true)
 		card_origin.open_card = main_doc.open_cards[card_index]
 	}
 }
@@ -188,7 +200,7 @@ function on_click_return_to_open(element) {
 			doc.finished_cards.splice(card_to_be_finished_index, 1)[0]
 		)
 	})
-	save_doc()
+	save_doc(true)
 	close_all_accordions()
 }
 
@@ -205,7 +217,7 @@ function on_click_finish(element) {
 			doc.open_cards.splice(card_to_be_finished_index, 1)[0]
 		)
 	})
-	save_doc()
+	save_doc(true)
 	close_all_accordions()
 }
 
@@ -219,7 +231,7 @@ function on_click_delete(element) {
 	main_doc = Automerge.change(main_doc, doc => {
 		doc.open_cards.deleteAt(card_to_be_removed_index)
 	})
-	save_doc()
+	save_doc(true)
 }
 
 function on_click_add(element) {
@@ -354,7 +366,7 @@ function on_click_move(element) {
 	})
 	// leave add mode
 	cancel_all_edits()
-	save_doc()
+	save_doc(true)
 }
 
 function add_synchronize_feedback(user_info) {
@@ -402,7 +414,7 @@ function merge_docs(remote_doc)
 			let test_doc = Automerge.merge(main_doc, remote_doc_unserialized)
 			main_doc = test_doc;
 		}
-		save_doc();
+		save_doc(false);
 		update_data_view();
 	}
 	catch( e )
@@ -430,7 +442,15 @@ function download_document() {
 				console.log(resultObj.num_entries);
 				remote_doc = resultObj.document;
 				merge_docs(remote_doc);
-				upload();
+				if(local_changes)
+				{
+					upload();
+				}
+				else
+				{
+					add_synchronize_feedback(`<div class="c-alert c-alert--success">
+								No local changes - synchronized</div>`);
+				}
 			}
 			else {
 				add_synchronize_feedback(`
@@ -473,7 +493,10 @@ function upload() {
 				}
 				add_synchronize_feedback(`<div class="c-alert c-alert--success">
 								Synchronization successful, version `+resultObj.num_entries+`</div>`);
+			    num_entries = resultObj.num_entries;
 				localStorage.setItem("num_entries",resultObj.num_entries);
+				local_changes = false;
+				localStorage.setItem("local_changes",local_changes);
 			}
 			else {
 				add_synchronize_feedback(`
@@ -591,8 +614,15 @@ function synchronize() {
 						{
 							add_synchronize_feedback(`<div class="c-alert c-alert--info">
 								No remote changes</div>`);
-							// todo: check local changes
-							upload();
+							if(local_changes)
+							{
+							   upload();
+							}
+							else
+							{
+								add_synchronize_feedback(`<div class="c-alert c-alert--success">
+								No local changes - synchronized</div>`);
+							}
 						}
 						else
 						{
