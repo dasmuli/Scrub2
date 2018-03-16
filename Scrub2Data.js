@@ -689,7 +689,7 @@ function toggle_edit_mode(element,card_origin)
 			'readOnly', false)
 		set_property_for_class_in_children(
 			card_origin, '.remove-disabled-on-editmode',
-			'disabled', 'inline')
+			'disabled', false)
 	}
 }
 
@@ -729,8 +729,8 @@ function create_card_html(card) {
 	<div class="c-card card-origin" style="margin-top: 0.2em;">
 	  <div class="c-card__item c-card__item--divider c-card__item--brand"
 	  style="cursor: pointer;" onclick="on_click_card_header(this);">
-	  <div class="o-grid o-grid--demo o-grid--no-gutter card_position_selector">
-	  		<div class="o-grid__cell">
+	  <div class="o-grid o-grid--demo o-grid--no-gutter">
+	  		<div class="o-grid__cell o-grid__cell--width-75">
 				  <div class="o-grid-text">
 				  `+ card.title + `  
 	  			  </div>
@@ -758,7 +758,7 @@ function create_card_html(card) {
 						</button>
 					</div>
 			</div>
-			</div>
+		</div>
 	  </div>
 	  <div class="close_accordion" style="display:none">
         <div class="o-grid o-grid--no-gutter o-grid--demo o-grid--wrap">
