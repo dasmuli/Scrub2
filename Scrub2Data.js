@@ -450,6 +450,8 @@ function download_document() {
 				{
 					add_synchronize_feedback(`<div class="c-alert c-alert--success">
 								No local changes - synchronized</div>`);
+					num_entries = resultObj.num_entries;
+					localStorage.setItem("num_entries",resultObj.num_entries);
 				}
 			}
 			else {
@@ -620,6 +622,9 @@ function synchronize() {
 							}
 							else
 							{
+								num_entries = resultObj.num_entries;
+								localStorage.setItem("num_entries",resultObj.num_entries);num_entries = resultObj.num_entries;
+								localStorage.setItem("num_entries",resultObj.num_entries);
 								add_synchronize_feedback(`<div class="c-alert c-alert--success">
 								No local changes - synchronized</div>`);
 							}
@@ -797,7 +802,7 @@ function on_click_card_header(element)
 
 function create_card_html(card) { 
 	return ` 
-	<div class="c-card card-origin u-higher" style="margin-top: 8px;">
+	<div class="c-card card-origin u-high" style="margin-top: 8px;">
 	  <div class="c-card__item c-card__item--divider c-card__item--brand"
 	  style="cursor: pointer;" onclick="on_click_card_header(this);">
 	  <div class="o-grid o-grid--demo o-grid--no-gutter">
