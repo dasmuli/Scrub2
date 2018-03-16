@@ -5,9 +5,9 @@ var card_div_element_to_be_moved;
 var user_group_name;
 var project_name;
 var access_token;
-var has_connect_once = false;
+var has_connect_once = 'false';
 var num_entries = -1;
-var local_changes = false;
+var local_changes = 'false';
 
 function init_data() {
 	main_doc = Automerge.init();
@@ -19,7 +19,7 @@ function init_data() {
 	has_connect_once = localStorage.getItem("has_connect_once");
 	if(has_connect_once == undefined)
 	{
-		has_connect_once = false;
+		has_connect_once = 'false';
 	}
 	num_entries = localStorage.getItem("num_entries");
 	if(num_entries == undefined)
@@ -30,7 +30,7 @@ function init_data() {
 	local_changes = localStorage.getItem("local_changes");
 	if(local_changes == undefined)
 	{
-		local_changes = false;
+		local_changes = 'false';
 	}
 	console.log("local_changes: "+local_changes);
 	if (user_group_name)
@@ -82,7 +82,7 @@ function save_doc(is_local_change) {
 	console.log("Original size: "+serialData.length+", saving size: "+compressed.length);
 	if(is_local_change == true)
 	{
-		local_changes = true;
+		local_changes = 'true';
 		localStorage.setItem("local_changes",local_changes);
 	}
 }
@@ -95,6 +95,8 @@ function delete_all_data() {
 	localStorage.removeItem("project_name");
 	localStorage.removeItem("access_token");
 	localStorage.removeItem("has_connect_once");
+	localStorage.removeItem("num_entries");
+	localStorage.removeItem("local_changes");
 	location.reload();  // so lazy...
 }
 
@@ -391,7 +393,7 @@ function save_synch_data() {
 	localStorage.setItem("project_name", project_name);
 	localStorage.setItem("access_token", access_token);
 	// do not mix repositories
-	has_connect_once = false;
+	has_connect_once = 'false';
 	localStorage.setItem("has_connect_once",has_connect_once);
 }
 
@@ -402,14 +404,14 @@ function merge_docs(remote_doc)
 	{
 		let remote_doc_unserialized = Automerge.load(LZString.decompressFromBase64(remote_doc));
 		console.log("merge docs has_connect_once: "+has_connect_once);
-		if(has_connect_once == false)
+		if(has_connect_once == 'false')
 		{
 			add_synchronize_feedback(`<div class="c-alert c-alert--warning">
 								First connect to existing data - purging local data</div>`);
 			main_doc = remote_doc_unserialized;
-			has_connect_once = true;
+			has_connect_once = 'true';
 			localStorage.setItem("has_connect_once",has_connect_once);
-			local_changes = false;
+			local_changes = 'false';
 			localStorage.setItem("local_changes",local_changes);
 		}
 		else
@@ -447,7 +449,7 @@ function download_document() {
 				console.log(resultObj.num_entries);
 				remote_doc = resultObj.document;
 				merge_docs(remote_doc);
-				if(local_changes)
+				if(local_changes == 'true')
 				{
 					upload();
 				}
@@ -502,7 +504,7 @@ function upload() {
 								Synchronization successful, version `+resultObj.num_entries+`</div>`);
 			    num_entries = resultObj.num_entries;
 				localStorage.setItem("num_entries",resultObj.num_entries);
-				local_changes = false;
+				local_changes = 'false';
 				localStorage.setItem("local_changes",local_changes);
 			}
 			else {
@@ -610,20 +612,19 @@ function synchronize() {
 					  add_synchronize_feedback(`<div class="c-alert c-alert--info">
 					    Uploading initial version</div>`);
 					  upload();
-					  has_connect_once = true;
+					  has_connect_once = 'true';
 					  localStorage.setItem("has_connect_once",has_connect_once);
 					}
 					else // if version not ok: download and merge
 					{
 						console.log("Remote entries:"+
-						resultObj.num_entries+", local entries"+num_entries);
-						if(has_connect_once == true &&
-							resultObj.num_entries == num_entries)
+						resultObj.num_entries+", local entries"+num_entries+", has con once: "+has_connect_once);
+						if(has_connect_once == 'true' && resultObj.num_entries == num_entries)
 						{
 							add_synchronize_feedback(`<div class="c-alert c-alert--info">
 								No remote changes</div>`);
 							console.log("lllocal_changes:"+local_changes);
-							if(local_changes == true)
+							if(local_changes == 'true')
 							{
 							   upload();
 							}
