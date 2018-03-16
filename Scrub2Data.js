@@ -26,11 +26,13 @@ function init_data() {
 	{
 		num_entries = -1;
 	}
+	console.log("num_entries: "+num_entries);
 	local_changes = localStorage.getItem("local_changes");
 	if(local_changes == undefined)
 	{
 		local_changes = false;
 	}
+	console.log("local_changes: "+local_changes);
 	if (user_group_name)
 		document.getElementById('user_group_name_id').value = user_group_name;
 	if (project_name)
@@ -63,7 +65,7 @@ function init_data() {
 				})
 		})
 
-		save_doc(true)
+		save_doc(false)
 	}
 	else // Load from storage
 	{
@@ -78,7 +80,7 @@ function save_doc(is_local_change) {
 	var compressed = LZString.compressToUTF16(serialData);
 	localStorage.setItem("SerializedAutomergeData", compressed);
 	console.log("Original size: "+serialData.length+", saving size: "+compressed.length);
-	if(is_local_change)
+	if(is_local_change == true)
 	{
 		local_changes = true;
 		localStorage.setItem("local_changes",local_changes);
@@ -399,13 +401,16 @@ function merge_docs(remote_doc)
 	try
 	{
 		let remote_doc_unserialized = Automerge.load(LZString.decompressFromBase64(remote_doc));
-		if(!has_connect_once)
+		console.log("merge docs has_connect_once: "+has_connect_once);
+		if(has_connect_once == false)
 		{
 			add_synchronize_feedback(`<div class="c-alert c-alert--warning">
 								First connect to existing data - purging local data</div>`);
 			main_doc = remote_doc_unserialized;
 			has_connect_once = true;
 			localStorage.setItem("has_connect_once",has_connect_once);
+			local_changes = false;
+			localStorage.setItem("local_changes",local_changes);
 		}
 		else
 		{
@@ -612,11 +617,13 @@ function synchronize() {
 					{
 						console.log("Remote entries:"+
 						resultObj.num_entries+", local entries"+num_entries);
-						if(resultObj.num_entries == num_entries)
+						if(has_connect_once == true &&
+							resultObj.num_entries == num_entries)
 						{
 							add_synchronize_feedback(`<div class="c-alert c-alert--info">
 								No remote changes</div>`);
-							if(local_changes)
+							console.log("lllocal_changes:"+local_changes);
+							if(local_changes == true)
 							{
 							   upload();
 							}
