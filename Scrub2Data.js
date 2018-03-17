@@ -213,7 +213,7 @@ function sync_timeout_changed()
 	console.log('sync_timeout_changed: '+sync_timeout);
 }
 
-function ick_return_to_open(element) {
+function click_return_to_open(element) {
 	console.log('Finish')
 	let open_cards_view = document.getElementById('open_cards_id');
 	let card_origin = find_ancestor(element, "card-origin");
@@ -286,10 +286,8 @@ function click_add(element) {
 	// leave add mode
 	cancel_all_edits()
 	//save_doc()
-	// open new card for edit breaks buttons,too
-	//set_card_display(card_element,'inline');
-	// this below breaks buttons
-	//toggle_edit_mode(card_element.getElementsByClassName('edit-button')[0],card_element);
+	set_card_display(card_element,'inline');
+	toggle_edit_mode(card_element.getElementsByClassName('edit-button')[0],card_element);
 }
 
 function set_display_on_all_children(element, display_style)
@@ -937,7 +935,7 @@ function create_card_html(card) {
 					</i>
 				</button>
 				<button type="button" class="c-button display-on-finishcard"  
-				style="display:none" onclick="ick_return_to_open(this)">
+				style="display:none" onclick="click_return_to_open(this)">
 					<i class="material-icons" 
 						style="font-size:1em;">
 						assignment_return
