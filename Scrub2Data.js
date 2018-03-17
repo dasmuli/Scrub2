@@ -404,6 +404,11 @@ function clear_children(node) {
 	}
 }
 
+function hide_timeout_indicator()
+{
+	document.getElementById('saving_done_indicator_id').style.display = 'none';
+}
+
 function save_synch_data() {
 	console.log('save_synch_data');
 	user_group_name = document.getElementById('user_group_name_id').value;
@@ -415,6 +420,13 @@ function save_synch_data() {
 	// do not mix repositories
 	has_connect_once = 'false';
 	localStorage.setItem("has_connect_once",has_connect_once);
+	document.getElementById('saving_done_indicator_id').style.display = 'inline';
+	if(timeout_func_hide_saving_indicator != undefined)
+	{
+		clearTimeout(timeout_func_hide_saving_indicator);
+	}
+	var timeout_func_hide_saving_indicator = setTimeout(
+		hide_timeout_indicator,2000);
 }
 
 
