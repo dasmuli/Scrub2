@@ -8,6 +8,7 @@ var access_token;
 var has_connect_once = 'false';
 var num_entries = -1;
 var local_changes = 'false';
+var sync_timeout;
 
 function init_data() {
 	main_doc = Automerge.init();
@@ -33,6 +34,14 @@ function init_data() {
 		local_changes = 'false';
 	}
 	console.log("local_changes: "+local_changes);
+	sync_timeout = localStorage.getItem("sync_timeout");
+	if(sync_timeout == undefined)
+	{
+		sync_timeout = 4;
+	}
+	document.getElementById('sync_value_input_id').value = sync_timeout;
+	document.getElementById('sync_value_view_id').innerHTML = sync_timeout;
+	console.log("sync_timeout: "+sync_timeout);
 	if (user_group_name)
 		document.getElementById('user_group_name_id').value = user_group_name;
 	if (project_name)
@@ -192,14 +201,15 @@ function check_data_and_save(card_origin) {
 
 function update_view_sync_timeout()
 {
-	//console.log('update_view_sync_timeout');	
 	document.getElementById('sync_value_view_id').innerHTML = 
 	  document.getElementById('sync_value_input_id').value;
 }
 
 function sync_timeout_changed()
 {
-	console.log('sync_timeout_changed');
+	sync_timeout = document.getElementById('sync_value_input_id').value;
+	localStorage.setItem("sync_timeout", sync_timeout);
+	console.log('sync_timeout_changed: '+sync_timeout);
 }
 
 function ick_return_to_open(element) {
@@ -486,7 +496,7 @@ function download_document() {
 		project_name: project_name, access_token: access_token, command: 'download_data'
 	});
 	xmlhttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
-	xmlhttp.timeout = 4000; // Set timeout to 4 seconds (4000 milliseconds)
+	xmlhttp.timeout = sync_timeout*1000; // Set timeout to x seconds (x*1000 milliseconds)
 	xmlhttp.ontimeout = function () {
 		add_synchronize_feedback(`
 				<div class="c-alert c-alert--error">
@@ -534,7 +544,7 @@ function upload() {
 		document: serialDoc
 	});
 	xmlhttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
-	xmlhttp.timeout = 4000; // Set timeout to 4 seconds (4000 milliseconds)
+	xmlhttp.timeout = sync_timeout*1000; // Set timeout to x seconds (x*1000 milliseconds)
 	xmlhttp.ontimeout = function () {
 		add_synchronize_feedback(`
 				<div class="c-alert c-alert--error">
@@ -669,7 +679,7 @@ function synchronize() {
 		});
 		xmlhttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
 		//xmlhttp.setRequestHeader("Content-length", params.length);
-		xmlhttp.timeout = 4000; // Set timeout to 4 seconds (4000 milliseconds)
+		xmlhttp.timeout = sync_timeout*1000; // Set timeout to x seconds (x000 milliseconds)
 		xmlhttp.ontimeout = function () {
 			add_synchronize_feedback(`
 				<div class="c-alert c-alert--error">
