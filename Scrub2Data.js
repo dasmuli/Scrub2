@@ -228,7 +228,7 @@ function ick_return_to_open(element) {
 	close_all_accordions()
 }
 
-function ick_finish(element) {
+function click_finish(element) {
 	console.log('Finish')
 	let finished_cards_view = document.getElementById('finished_cards_id');
 	let card_origin = find_ancestor(element, "card-origin");
@@ -245,7 +245,7 @@ function ick_finish(element) {
 	close_all_accordions()
 }
 
-function ick_delete(element) {
+function click_delete(element) {
 	console.log('Delete')
 	let card_origin = find_ancestor(element, "card-origin");
 	let card_to_be_removed_index = find_index_for_card(card_origin.open_card,main_doc.open_cards)
@@ -258,7 +258,7 @@ function ick_delete(element) {
 	save_doc(true)
 }
 
-function ick_add(element) {
+function click_add(element) {
 	console.log('add')
 	let card_origin = find_ancestor(element, "card-origin");
 	console.log('behind pos')
@@ -337,7 +337,7 @@ function cancel_all_edits() {
 		'disabled', true)
 }
 
-function ick_add_mode(element) {
+function click_add_mode(element) {
 	let open_cards_view = document.getElementById('open_cards_id')
 	if (element.classList.contains("c-button--active")) {
 		// turn add mode off
@@ -370,7 +370,7 @@ function set_select_card(card_origin,set_select)
 	}
 }
 
-function ick_move(element) {
+function click_move(element) {
 	console.log('move')
 	let card_origin = find_ancestor(element, "card-origin")
 	set_select_card(card_origin, false);
@@ -755,7 +755,7 @@ function show_finished_cards() {
 		'display', 'inline')
 }
 
-function ick_move_mode(element) {
+function click_move_mode(element) {
 	let open_cards_view = document.getElementById('open_cards_id')
 	let card_origin = find_ancestor(element, "card-origin");
 	card_to_be_moved_index = find_index_for_card(card_origin.open_card,main_doc.open_cards)
@@ -810,7 +810,7 @@ function toggle_edit_mode(element,card_origin)
 }
 
 
-function ick_edit(element) {
+function click_edit(element) {
 	//find base card div element
 	let card_origin = find_ancestor(element, "card-origin");
 	toggle_edit_mode(element,card_origin);
@@ -825,7 +825,7 @@ function set_card_display(card_origin, style_display_value)
 	}
 }
 
-function ick_card_header(element)
+function click_card_header(element)
 {
 	let card_origin = find_ancestor(element, "card-origin");
 	// check display
@@ -844,7 +844,7 @@ function create_card_html(card) {
 	return ` 
 	<div class="c-card card-origin u-high" style="margin-top: 8px;">
 	  <div class="c-card__item c-card__item--divider c-card__item--brand"
-	  style="cursor: pointer;" onclick="ick_card_header(this);">
+	  style="cursor: pointer;" onclick="click_card_header(this);">
 	  <div class="o-grid o-grid--demo o-grid--no-gutter">
 	  		<div class="o-grid__cell o-grid__cell--width-70">
 				  <div class="o-grid-text">
@@ -855,13 +855,13 @@ function create_card_html(card) {
 					<div class="o-grid-text u-right">
 						<button type="button" class="c-button display-on-add-mode u-small"
 						style="display:none;margin-top:-10px;margin-bottom:-10px;"
-						onclick="event.stopPropagation();ick_add(this);">
+						onclick="event.stopPropagation();click_add(this);">
 							<i class="material-icons" style="font-size:1em;margin:0;">note_add</i>
 							<i class="material-icons" style="font-size:1em;margin:0;">arrow_downward</i>
 						</button>
 						<button type="button" class="c-button display-on-move-mode u-small"
 						style="display:none;margin-top:-10px;margin-bottom:-10px;"
-						onclick="event.stopPropagation();ick_move(this);">
+						onclick="event.stopPropagation();click_move(this);">
 							<i class="material-icons" style="font-size:1em;margin:0;">swap_vert</i>
 							<i class="material-icons" style="font-size:1em;margin:0;">arrow_downward</i>
 						</button>
@@ -910,26 +910,26 @@ function create_card_html(card) {
 			<div class="o-grid__cell">
 			<div class="o-grid-text u-right">
 				<button type="button" class="c-button unhide-on-edit-mode block-on-finishcard"
-					style="visibility:hidden" onclick="ick_add_mode(this)">
+					style="visibility:hidden" onclick="click_add_mode(this)">
 					<i class="material-icons"
 					style="font-size:1em;">note_add</i></button>
 				<button type="button" class="c-button unhide-on-edit-mode block-on-finishcard"
-					style="visibility:hidden" onclick="ick_delete(this)"><i 
+					style="visibility:hidden" onclick="click_delete(this)"><i 
 					class="material-icons" 
 					style="font-size:1em;">delete</i></button>
 				<button type="button" class="c-button unhide-on-edit-mode block-on-finishcard"
-					style="visibility:hidden" onclick="ick_move_mode(this)"><i 
+					style="visibility:hidden" onclick="click_move_mode(this)"><i 
 					class="material-icons" 
 					style="font-size:1em;">swap_vert</i></button>
 				<button type="button" class="c-button unhide-on-edit-mode block-on-finishcard"
-					style="visibility:hidden" onclick="ick_finish(this)">
+					style="visibility:hidden" onclick="click_finish(this)">
 						<i class="material-icons" 
 						style="font-size:1em;">
 						assignment_turned_in
 					</i>
 				</button>
 				<button type="button" class="c-button block-on-finishcard edit-button"  
-				onclick="ick_edit(this)">
+				onclick="click_edit(this)">
 					<i class="material-icons" 
 						style="font-size:1em;">
 						build
