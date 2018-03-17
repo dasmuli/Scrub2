@@ -296,6 +296,14 @@ function click_add(element) {
 function animation_changed(element)
 {
 	console.log("animation_changed: "+element.checked);
+	if(element.checked)
+	{
+		document.getElementById('animation_status_label_id').innerHTML = "Animation on";
+	}
+	else
+	{
+		document.getElementById('animation_status_label_id').innerHTML = "Animation off";
+	}
 }
 
 function set_display_on_all_children(element, display_style)
