@@ -307,11 +307,15 @@ function close_all_accordions()
 	}
 }
 
-function cancel_all_edits() {
-	if(card_div_element_to_be_moved)
+function unselect_selected_card()
+{
+	if(card_div_element_to_be_moved != undefined)
 	{
 	  set_select_card(card_div_element_to_be_moved,false);
 	}
+}
+
+function cancel_all_edits() {
 	close_all_accordions()  // leads to double click on reopen
 	let open_cards_view = document.getElementById('open_cards_id')
 	set_style_property_for_class_in_children(
@@ -372,7 +376,7 @@ function set_select_card(card_origin,set_select)
 function click_move(element) {
 	console.log('move')
 	let card_origin = find_ancestor(element, "card-origin")
-	set_select_card(card_origin, false);
+	//set_select_card(card_origin, false);
 	console.log('behind pos')
 	// find index for document in front
 	let previous_card_index =
@@ -716,17 +720,20 @@ function hide_all_pages() {
 }
 
 function show_prefences() {
+	unselect_selected_card();
 	hide_all_pages();
 	document.getElementById('preferences_id').style.display = 'inline';
 }
 
 function show_chart() {
+	unselect_selected_card();
 	hide_all_pages();
 	document.getElementById('burndown_chart').style.display = 'inline';
 	drawChart();
 }
 
 function show_open_cards() {
+	unselect_selected_card();
 	console.log('show_open_cards')
 	hide_all_pages()
 	let open_cards_view = document.getElementById('open_cards_id')
@@ -741,6 +748,7 @@ function show_open_cards() {
 }
 
 function show_finished_cards() {
+	unselect_selected_card();
 	console.log('show_finished_cards')
 	hide_all_pages()
 	let finished_cards_view = document.getElementById('finished_cards_id')
@@ -826,6 +834,7 @@ function set_card_display(card_origin, style_display_value)
 
 function click_card_header(element)
 {
+	unselect_selected_card();
 	let card_origin = find_ancestor(element, "card-origin");
 	// check display
 	if(card_origin.children[1].style.display != 'none')
