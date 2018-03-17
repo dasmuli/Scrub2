@@ -293,6 +293,11 @@ function click_add(element) {
 	toggle_edit_mode(card_element.getElementsByClassName('edit-button')[0],card_element);
 }
 
+function animation_changed(element)
+{
+	console.log("animation_changed: "+element.checked);
+}
+
 function set_display_on_all_children(element, display_style)
 {
 	for(var i = 0; i < element.children.length; i++)
