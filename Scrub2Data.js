@@ -172,7 +172,8 @@ function check_data_and_save(card_origin) {
 		main_doc = Automerge.change(main_doc, doc => {
 			doc.open_cards[card_index].title = title_input.value
 		})
-		card_origin.children[0].innerHTML = title_input.value
+		card_origin.getElementsByClassName('card_header_title')[0].innerHTML
+		  = title_input.value;
 	}
 	// check titlechanged
 	if (description_input.value
@@ -285,8 +286,8 @@ function click_add(element) {
 	// leave add mode
 	cancel_all_edits()
 	//save_doc()
-	// open new card for edit
-	set_card_display(card_element,'inline');
+	// open new card for edit breaks buttons,too
+	//set_card_display(card_element,'inline');
 	// this below breaks buttons
 	//toggle_edit_mode(card_element.getElementsByClassName('edit-button')[0],card_element);
 }
@@ -847,7 +848,7 @@ function create_card_html(card) {
 	  style="cursor: pointer;" onclick="click_card_header(this);">
 	  <div class="o-grid o-grid--demo o-grid--no-gutter">
 	  		<div class="o-grid__cell o-grid__cell--width-70">
-				  <div class="o-grid-text">
+				  <div class="o-grid-text card_header_title">
 				  `+ card.title + `  
 	  			  </div>
 			</div>
