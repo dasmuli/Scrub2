@@ -147,15 +147,16 @@
 													</div>
 											</div>
 											<div class="o-grid__cell o-grid__cell--width-10">
-													<div class="o-grid-text">
+													<div class="o-grid-text" id="sync_value_view_id">
 															4
 													</div>
 											</div>
 											<div class="o-grid__cell o-grid__cell--width-50">
-												<input type="range" class="c-range" min="1" max="100" value="4">
+												<input type="range" class="c-range" min="2" max="100" value="4" step="2"
+												onchange="sync_timeout_changed();" oninput="update_view_sync_timeout();"
+												id="sync_value_input_id">
 											</div>
 									<!--<input class="c-field title_input_text" type="text" size="4">
-									
 									<button type="button" class="c-button"
 										onclick="">
 										<i class="material-icons" style="font-size:1em;">
