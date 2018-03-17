@@ -283,6 +283,7 @@ function click_add(element) {
 	let card_element =
 		insert_html(card_origin, raw_html_string);
 	set_card_data_from_doc(card_element, previous_card_index + 1, main_doc.open_cards)
+	set_select_card(card_element,true)
 	// leave add mode
 	cancel_all_edits()
 	//save_doc()
