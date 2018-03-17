@@ -137,23 +137,48 @@
 	<div class="o-grid__cell">
 		<div class="o-grid-text">
 				<!-- Delete all data -->
-				<div class="o-grid o-grid--demo o-grid--center o-grid--no-gutter">
-					<div class="o-grid__cell">
-						<div class="o-grid-text u-right">
-							
+				<div class="o-grid o-grid--demo o-grid--full o-grid--no-gutter">
+					<div class="o-grid__cell o-grid__cell--width-100">
+							<div class="o-grid-text u-right">
+									<div class="o-grid o-grid--demo o-grid--no-gutter">
+											<div class="o-grid__cell">
+													<div class="o-grid-text u-right">
+														Sync timeout
+													</div>
+											</div>
+											<div class="o-grid__cell o-grid__cell--width-10">
+													<div class="o-grid-text">
+															4
+													</div>
+											</div>
+											<div class="o-grid__cell o-grid__cell--width-50">
+												<input type="range" class="c-range" min="1" max="100" value="4">
+											</div>
+									<!--<input class="c-field title_input_text" type="text" size="4">
+									
+									<button type="button" class="c-button"
+										onclick="">
+										<i class="material-icons" style="font-size:1em;">
+										timer
+										</i>
+									</button>-->
+									</div>
+							</div>
 						</div>
-					</div>
-					<div class="o-grid__cell o-grid__cell--width-60">
-						<div class="o-grid-text u-right">
-								Delete all data
-							  <button type="button" class="c-button"
-								  onclick="delete_all_data()">
-								  <i class="material-icons" style="font-size:1em;">
-									delete_forever
-								  </i>
-							  </button>
+						<div class="o-grid__cell o-grid__cell--width-100">
+							<br/>
 						</div>
-					  </div>
+						<div class="o-grid__cell o-grid__cell--width-100">
+								<div class="o-grid-text u-right">
+										Delete all data
+										<button type="button" class="c-button"
+											onclick="delete_all_data()">
+											<i class="material-icons" style="font-size:1em;">
+											delete_forever
+											</i>
+										</button>
+								</div>
+							</div>
 				</div>
 		</div>
 	</div>
