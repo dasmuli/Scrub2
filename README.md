@@ -8,7 +8,7 @@ By finishing a card it is moved to the finished card list and the time of finish
 Using this data, a chart is drawn showing the project progress over time.
 
 <img src="http://tazrabbaz.com/Scrub2/Media/ScreenshotScrub2_Chart.png"
-alt="An example of a chart." style="width: 150px;"/>
+alt="An example of a chart." width="200"/>
 
 ## Getting Started
 
@@ -18,7 +18,7 @@ The app should work without further installation.
 It will use a php / DB server hosted on 1 & 1, Germany.
 
 <img src="http://tazrabbaz.com/Scrub2/Media/ScreenshotScrub2_Chart.png"
-alt="Screenshot of card list" style="width: 150px;"/>
+alt="Screenshot of card list" width="200"/>
 
 ### Prerequisites
 
