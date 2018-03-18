@@ -295,9 +295,8 @@ function click_finish(element) {
 	}
 }
 
-function click_delete(element) {
-	console.log('Delete')
-	let card_origin = find_ancestor(element, "card-origin");
+function delete_card(card_origin)
+{
 	let card_to_be_removed_index = find_index_for_card(card_origin.open_card,main_doc.open_cards)
 	// delete card and following controls
 	card_origin.parentNode.removeChild(card_origin);
@@ -305,7 +304,28 @@ function click_delete(element) {
 	main_doc = Automerge.change(main_doc, doc => {
 		doc.open_cards.deleteAt(card_to_be_removed_index)
 	})
-	save_doc(true)
+	save_doc(true);
+}
+
+function click_delete(element) {
+	console.log('Delete')
+	let card_origin = find_ancestor(element, "card-origin");
+	if(is_animation_on())
+	{
+	  anime({
+		targets: card_origin,
+		scale: 0.0,
+		easing: 'easeInQuad',
+		duration: 500,
+		complete: function(anim) {
+			delete_card(card_origin);
+		  }
+	  });
+	}
+	else
+	{
+		delete_card(card_origin);
+	}
 }
 
 function click_add(element) {
