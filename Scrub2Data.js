@@ -497,10 +497,22 @@ function click_move(element) {
 		card_div_element_to_be_moved,
 		card_origin.nextSibling);
 	// move card in data card
-	main_doc = Automerge.change(main_doc, doc => {
-		doc.open_cards.splice(previous_card_index, 0,    // add at new pos
-			doc.open_cards.splice(card_to_be_moved_index, 1)[0])  // delete at old pos
-	})
+	if(previous_card_index+1 >= main_doc.open_cards.length)
+	{
+		// add to end
+		main_doc = Automerge.change(main_doc, doc => {
+			doc.open_cards.push(
+				doc.open_cards.splice(card_to_be_moved_index, 1)[0]
+			);
+		})
+	}
+	else
+	{
+		main_doc = Automerge.change(main_doc, doc => {
+			doc.open_cards.splice(previous_card_index+1, 0,    // add at new pos
+				doc.open_cards.splice(card_to_be_moved_index, 1)[0]);  // delete at old pos
+		})
+	}
 	// leave add mode
 	cancel_all_edits()
 	save_doc(true)
