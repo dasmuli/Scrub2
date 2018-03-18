@@ -20,6 +20,9 @@ Using the link above, it will synchronize to a php / DB server hosted on 1&1, Ge
 <img src="http://tazrabbaz.com/Scrub2/Media/ScreenshotScrub2_Cards.png"
 alt="Screenshot of card list" width="400"/>
 
+By sharing the synchronization credentials a multi-user and a multi-device workflow
+is possible.
+
 ### Prerequisites
 
 In order to run the php and DB on your own server, you have to install php and Mysql.
