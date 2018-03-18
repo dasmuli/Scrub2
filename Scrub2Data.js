@@ -295,6 +295,12 @@ function click_finish(element) {
 	}
 }
 
+function click_cancel()
+{
+	unselect_selected_card();
+	cancel_all_edits();
+}
+
 function delete_card(card_origin)
 {
 	let card_to_be_removed_index = find_index_for_card(card_origin.open_card,main_doc.open_cards)
@@ -1018,7 +1024,7 @@ function create_card_html(card) {
 						</button>
 						<button type="button" class="c-button display-on-add-mode display-on-move-mode u-small"
 						style="display:none;margin-top:-10px;margin-bottom:-10px;"
-						onclick="event.stopPropagation();cancel_all_edits();">
+						onclick="event.stopPropagation();click_cancel();">
 							<i class="material-icons" style="font-size:1em;">
 							block
 							</i>
