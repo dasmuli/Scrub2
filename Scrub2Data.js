@@ -355,9 +355,19 @@ function click_add(element) {
 	unselect_selected_card();
 	card_div_element_to_be_moved = card_element;
 	set_select_card(card_element,true)
+	if(is_animation_on())
+	{
+	  anime({
+		targets: card_element,
+		scale: [0.0,1.0],
+		easing: 'easeInQuad',
+		duration: 500,
+	  });
+	}
 	// leave add mode
 	cancel_all_edits()
-	//save_doc()
+	//save_doc()  // do not save now - wait for edit end
+	// make this directly editable
 	set_card_display(card_element,'inline');
 	toggle_edit_mode(card_element.getElementsByClassName('edit-button')[0],card_element);
 }
