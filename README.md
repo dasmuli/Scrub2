@@ -49,6 +49,7 @@ In order to setup a synchronization server, you have to:
 * [anime.js](http://animejs.com/) - Could not resist...
 * [Google charts](https://developers.google.com/chart/) - Very nice and clean.
 * [Google material design icons](https://material.io/icons/) - Very nice and clean.
+* [lz-string compression](http://pieroxy.net/blog/pages/lz-string/index.html) - Programmer friendly and set up in 3 minutes
 
 ## Feedback
 
