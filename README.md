@@ -1,7 +1,7 @@
 # Scrub 2
 
 Scrub2 is a planing app for Scrum like development.
-Cards show features to be implemented or bugs that should removed.
+Cards show features to be implemented or bugs that should be removed.
 The priority of a card is indicated by the position in a list,
 the higher the card is the more important it is.
 By finishing a card it is moved to the finished card list and the time of finishing is logged.
@@ -15,7 +15,7 @@ alt="An example of a chart." width="400"/>
 The app can be found [here](http://tazrabbaz.com/Scrub2/Scrub2.htm).
 
 The app should work without further installation.
-Using the link above, it will synchronize to a php / DB server hosted on 1&1, Germany.
+Using the link above, it will synchronize to a php / DB server hosted by 1&1 (Germany).
 
 <img src="http://tazrabbaz.com/Scrub2/Media/ScreenshotScrub2_Cards.png"
 alt="Screenshot of card list" width="400"/>
