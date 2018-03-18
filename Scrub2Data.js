@@ -483,22 +483,29 @@ function click_cancel()
 
 function click_delete(element) {
 	console.log('Delete')
-	let card_origin = find_ancestor(element, "card-origin");
-	if(is_animation_on())
+	if(main_doc.open_cards.length > 1)
 	{
-	  anime({
-		targets: card_origin,
-		scale: 0.0,
-		easing: 'easeInQuad',
-		duration: 500,
-		complete: function(anim) {
+		let card_origin = find_ancestor(element, "card-origin");
+		if(is_animation_on())
+		{
+		anime({
+			targets: card_origin,
+			scale: 0.0,
+			easing: 'easeInQuad',
+			duration: 500,
+			complete: function(anim) {
+				delete_card(card_origin);
+			}
+		});
+		}
+		else
+		{
 			delete_card(card_origin);
-		  }
-	  });
+		}
 	}
 	else
 	{
-		delete_card(card_origin);
+		// Fixme feedback: do not delete last card.
 	}
 }
 
