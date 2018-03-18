@@ -20,10 +20,10 @@
 <!-- Top menue -->
 
 <ul class="c-nav c-nav--inline c-nav--fixed u-high">
-  <li class="c-nav__item"  onclick="show_open_cards()"><i class="material-icons" style="font-size:1em;">mode_edit</i></li>
-  <li class="c-nav__item" onclick="show_chart()"><i class="material-icons" style="font-size:1em;">trending_down</i></li>
-  <li class="c-nav__item" onclick="show_finished_cards()"><i class="material-icons" style="font-size:1em;">assignment_turned_in</i></li>
-  <li class="c-nav__item c-nav__item--right">
+  <li class="c-nav__item"  onclick="show_open_cards();"><i class="material-icons" style="font-size:1em;">mode_edit</i></li>
+  <li class="c-nav__item" onclick="show_chart();"><i class="material-icons" style="font-size:1em;">trending_down</i></li>
+  <li class="c-nav__item" onclick="show_finished_cards();"><i class="material-icons" style="font-size:1em;">assignment_turned_in</i></li>
+  <li class="c-nav__item c-nav__item--right" onclick="show_help();">
 	  <i class="material-icons" style="font-size:1em;">
 		  help
 	  </i>
@@ -58,6 +58,124 @@
 
 	<div id="finished_cards_id" style="display:none">
 	</div>
+
+	<div id="synhronize_id" style="display:none;">
+			<div id="synhronize_step_list_id">
+			</div>
+		</div>
+
+		<div id="help_id" style="display:none">
+				<h1 class="c-heading u-medium">About</h1>
+				<p class="c-paragraph">
+					Scrub2 is a planing app for Scrum like development.
+					Cards show features to be implemented or bugs that should removed.
+					The priority of a card is indicated by the position in a list 
+					- the higher the card is the more important it is.
+					By finishing a card it is moved to the finished card list and the time of finishing is logged.
+					Using this data, a chart is drawn showing the project progress over time.
+				</p>
+				<h1 class="c-heading u-medium">Actions</h1>
+				<p>
+						<ul class="c-list">
+								<li class="c-list__item">
+										<i class="material-icons" style="font-size:1em;">
+												sync
+										</i>
+										Synchronize data with the server possibly merging remote changes.
+										It is possible to collaborate with more people by using the same
+										synchronization credentials. Data is saved local in
+										the browser and network synchronization is optional. When connecting
+										to a new repository, local data is uploaded. When connecting to
+										an existing repository, <span class="c-text--highlight">local data is purged</span>.
+										Local data is not encrypted (planned) and server
+										communication is not encrypted, too.
+								</li>
+								<li class="c-list__item">
+										<i class="material-icons" style="font-size:1em;">
+												mode_edit
+										</i>
+										Edit the card list of open features / bugs.
+										<ul class="c-list">
+												<li class="c-list__item">
+														<i class="material-icons" style="font-size:1em;">
+																build
+														</i>
+													Toggle edit mode of a card. When leaving edit mode,
+													changes are saved on disk.
+												</li>
+												<li class="c-list__item">
+														<i class="material-icons" style="font-size:1em;">
+																note_add
+														</i>
+													Activates add-mode. A position must be selected
+													where a new node will be appended.
+												</li>
+												<li class="c-list__item">
+														<i class="material-icons" style="font-size:1em;">
+																delete
+														</i>
+													Deletes a card.
+												</li>
+												<li class="c-list__item">
+														<i class="material-icons" style="font-size:1em;">
+																swap_vert
+														</i>
+													Changes the card's position in the list.
+												</li>
+												<li class="c-list__item">
+														<i class="material-icons" style="font-size:1em;">
+																assignment_turned_in
+														</i>
+													Moves the card to the finished cards list.
+												</li>
+												<li class="c-list__item">
+														<i class="material-icons" style="font-size:1em;">
+																block
+														</i>
+													Cancels moving or adding of cards.
+												</li>
+											</ul>
+								</li>
+								<li class="c-list__item">
+										<i class="material-icons" style="font-size:1em;">
+												trending_down
+										</i>
+										Opens the page with the project's trending chart.
+								</li>
+								<li class="c-list__item">
+										<i class="material-icons" style="font-size:1em;">
+												assignment_turned_in
+										</i>
+										This button opens the page with finished cards.
+										The only action here is to re-open a card using
+										<i class="material-icons" 
+										style="font-size:1em;">
+										assignment_return
+										</i>.
+								</li>
+								<li class="c-list__item">
+										<i class="material-icons" style="font-size:1em;">
+												settings
+										</i>
+										Display the preferences. The synchronization to the
+										server can be configured by providing a user or group
+										name <i class="material-icons c-icon" 
+										style="font-size:1em;">group_work</i>, a project name
+										<i class="material-icons c-icon" 
+										style="font-size:1em;">assignment</i> and an access token
+										<i class="material-icons c-icon" 
+										style="font-size:1em;">security</i>.
+										Usage is anonymous and no registration is needed.
+										<p class="c-paragraph">
+												In addition, animation can be toggled on and off, the
+												timeout for server synchronization can be changed
+												and the complete local data can be purged.
+												Note that some browsers may remember entries in input fields.
+											</p>
+								</li>
+						</ul>
+				</p>
+			</div>
 </div>
 
 	<!--
@@ -65,11 +183,6 @@
 	-->
 
 <div id="burndown_chart" style="display:none;"></div>
-
-<div id="synhronize_id" style="display:none;">
-	<div id="synhronize_step_list_id">
-	</div>
-</div>
 
 
 <div class="o-grid  o-grid--demo" style="display:none;" id="preferences_id">

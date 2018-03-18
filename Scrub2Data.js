@@ -113,6 +113,7 @@ function delete_all_data() {
 	localStorage.removeItem("has_connect_once");
 	localStorage.removeItem("num_entries");
 	localStorage.removeItem("local_changes");
+	localStorage.removeItem("sync_timeout");
 	location.reload();  // so lazy...
 }
 
@@ -847,6 +848,7 @@ function hide_all_pages() {
 	document.getElementById('burndown_chart').style.display = 'none';
 	document.getElementById('preferences_id').style.display = 'none';
 	document.getElementById('synhronize_id').style.display = 'none';
+	document.getElementById('help_id').style.display = 'none';
 }
 
 function animate_page(page)
@@ -857,9 +859,17 @@ function animate_page(page)
 		anime({
 			targets: page,
 			opacity: 1.0,
-			duration: 2000
+			duration: 2000,
 		  });
 	}
+}
+
+function show_help() {
+	unselect_selected_card();
+	hide_all_pages();
+	let page = document.getElementById('help_id');
+	animate_page(page);
+	page.style.display = 'inline';
 }
 
 function show_prefences() {
