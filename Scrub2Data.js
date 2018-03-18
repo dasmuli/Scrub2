@@ -300,6 +300,11 @@ function click_add(element) {
 	toggle_edit_mode(card_element.getElementsByClassName('edit-button')[0],card_element);
 }
 
+function is_animation_on()
+{
+	return (animation_state == 'Animation on');
+}
+
 function set_animation_state(mode)
 {
 	document.getElementById('animation_status_label_id').innerHTML = mode;
@@ -631,7 +636,9 @@ function synchronize() {
 	console.log('synchronize');
 	hide_all_pages();
 	clear_children(document.getElementById('synhronize_step_list_id'));
-	document.getElementById('synhronize_id').style.display = 'inline';
+	let page = document.getElementById('synhronize_id');
+	animate_page(page);
+	page.style.display = 'inline';
 	add_synchronize_feedback(`<div class="c-alert c-alert--info">
   Synchronization started</div>`);
 	// check organization, projet, access token
@@ -752,32 +759,49 @@ function hide_all_pages() {
 	document.getElementById('synhronize_id').style.display = 'none';
 }
 
+function animate_page(page)
+{
+	if(is_animation_on())
+	{
+		page.style.opacity = "0.0"
+		anime({
+			targets: page,
+			opacity: 1.0,
+			duration: 2000,
+		  });
+	}
+}
+
 function show_prefences() {
 	unselect_selected_card();
 	hide_all_pages();
-	document.getElementById('preferences_id').style.display = 'inline';
+	let page = document.getElementById('preferences_id');
+	animate_page(page);
+	page.style.display = 'inline';
 }
 
 function show_chart() {
 	unselect_selected_card();
 	hide_all_pages();
-	document.getElementById('burndown_chart').style.display = 'inline';
+	let page = document.getElementById('burndown_chart');
+	page.style.display = 'inline';
 	drawChart();
+	animate_page(page);
 }
 
 function show_open_cards() {
 	unselect_selected_card();
-	console.log('show_open_cards')
-	hide_all_pages()
-	let open_cards_view = document.getElementById('open_cards_id')
-	open_cards_view.style.display = 'inline';
-
+	console.log('show_open_cards');
+	hide_all_pages();
+	let open_cards_view = document.getElementById('open_cards_id');
 	set_style_property_for_class_in_children(
 		open_cards_view, '.block-on-finishcard',
 		'display', 'inline')
 	set_style_property_for_class_in_children(
 		open_cards_view, '.display-on-finishcard',
 		'display', 'none')
+	animate_page(open_cards_view);
+	open_cards_view.style.display = 'inline';
 }
 
 function show_finished_cards() {
@@ -785,6 +809,8 @@ function show_finished_cards() {
 	console.log('show_finished_cards')
 	hide_all_pages()
 	let finished_cards_view = document.getElementById('finished_cards_id')
+	finished_cards_view.style.display = 'inline';
+	animate_page(finished_cards_view);
 	finished_cards_view.style.display = 'inline';
 
 	set_style_property_for_class_in_children(
