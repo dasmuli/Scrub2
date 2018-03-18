@@ -8,7 +8,7 @@ By finishing a card it is moved to the finished card list and the time of finish
 Using this data, a chart is drawn showing the project progress over time.
 
 <img src="http://tazrabbaz.com/Scrub2/Media/ScreenshotScrub2_Chart.png"
-alt="An example of a chart." width="200"/>
+alt="An example of a chart." width="400"/>
 
 ## Getting Started
 
@@ -17,8 +17,8 @@ The app can be found [here](http://tazrabbaz.com/Scrub2/Scrub2.htm).
 The app should work without further installation.
 It will use a php / DB server hosted on 1 & 1, Germany.
 
-<img src="http://tazrabbaz.com/Scrub2/Media/ScreenshotScrub2_Chart.png"
-alt="Screenshot of card list" width="200"/>
+<img src="http://tazrabbaz.com/Scrub2/Media/ScreenshotScrub2_Cards.png"
+alt="Screenshot of card list" width="400"/>
 
 ### Prerequisites
 
@@ -38,9 +38,9 @@ In order to setup a synchronization server, you have to:
 1. Create a database and a user on the Mysql-server, for example by using phpmyadmin.
 1. Fill out the mysql_credentials_template.php and rename it to mysql_credentials.php
 1. Copy the complete repository onto the server.
-1. Initialize the database by calling  http://yourserver.org/some/folder/Scrub2/php/init_database.php in a browser.
+1. Initialize the database by calling  `http://yourserver.org/some/folder/Scrub2/php/init_database.php` in a browser.
 1. On success, remove init_database.php.
-1. Call http://yourserver.org/some/folder/Scrub2/Scrub2.htm in your browser.
+1. Call `http://yourserver.org/some/folder/Scrub2/Scrub2.htm` in your browser.
 
 ## Built With
 
