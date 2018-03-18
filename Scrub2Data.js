@@ -9,6 +9,7 @@ var has_connect_once = 'false';
 var num_entries = -1;
 var local_changes = 'false';
 var sync_timeout;
+var animation_state;
 
 function init_data() {
 	main_doc = Automerge.init();
@@ -42,6 +43,12 @@ function init_data() {
 	document.getElementById('sync_value_input_id').value = sync_timeout;
 	document.getElementById('sync_value_view_id').innerHTML = sync_timeout;
 	console.log("sync_timeout: "+sync_timeout);
+	animation_state = localStorage.getItem("animation_state");
+	if(animation_state == undefined)
+	{
+		animation_state = 'Animation off';
+	}
+	set_animation_state(animation_state);
 	if (user_group_name)
 		document.getElementById('user_group_name_id').value = user_group_name;
 	if (project_name)
@@ -293,16 +300,26 @@ function click_add(element) {
 	toggle_edit_mode(card_element.getElementsByClassName('edit-button')[0],card_element);
 }
 
+function set_animation_state(mode)
+{
+	document.getElementById('animation_status_label_id').innerHTML = mode;
+	document.getElementById('animation_checkbox_id').checked = (mode == 'Animation on');
+}
+
 function animation_changed(element)
 {
 	console.log("animation_changed: "+element.checked);
 	if(element.checked)
 	{
 		document.getElementById('animation_status_label_id').innerHTML = "Animation on";
+		localStorage.setItem("animation_state",'Animation on');
+		animation_state = 'Animation on';
 	}
 	else
 	{
 		document.getElementById('animation_status_label_id').innerHTML = "Animation off";
+		localStorage.setItem("animation_state",'Animation off');
+		animation_state = 'Animation off';
 	}
 }
 
