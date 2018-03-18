@@ -1148,6 +1148,7 @@ function drawChart() {
 	var data = google.visualization.arrayToDataTable(
 		data_array
 	);
+	
 
 	var options = {
 		title: 'Burndown chart',
@@ -1157,6 +1158,11 @@ function drawChart() {
 		width: document.getElementById('burndown_chart').parentElement.offsetWidth,
 		vAxis: { minValue: 0 }, // force y=0 in view
 	};
+
+	if(is_animation_on())
+	{
+		options.animation = {"startup": true, duration: 700 };
+	}
 
 	var chart = new google.visualization.LineChart(document.getElementById('burndown_chart'));
 
