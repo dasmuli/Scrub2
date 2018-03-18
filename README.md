@@ -15,7 +15,7 @@ alt="An example of a chart." width="400"/>
 The app can be found [here](http://tazrabbaz.com/Scrub2/Scrub2.htm).
 
 The app should work without further installation.
-It will use a php / DB server hosted on 1 & 1, Germany.
+Using the link above, it will synchronize to a php / DB server hosted on 1&1, Germany.
 
 <img src="http://tazrabbaz.com/Scrub2/Media/ScreenshotScrub2_Cards.png"
 alt="Screenshot of card list" width="400"/>
@@ -61,7 +61,7 @@ required by the websocket is problematic. In addition, the auto-addition of poin
 in conjunction with some heavy animation was difficult to use (read: brutal on cpu).
 Thus, animation in Scrub2 is turned off by default.
 
-I still liked the synchronous actions from webssocket commands, but it is really not
+I still like the synchronous actions from webssocket commands, but it is really not
 necessary. Merging and commmitting on demand is a lot better.
 
 Regarding the future, some TLS, local AES encryption of data before sending it to the
