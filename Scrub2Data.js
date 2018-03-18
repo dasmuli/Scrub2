@@ -236,10 +236,8 @@ function click_return_to_open(element) {
 	close_all_accordions()
 }
 
-function click_finish(element) {
-	console.log('Finish')
-	let finished_cards_view = document.getElementById('finished_cards_id');
-	let card_origin = find_ancestor(element, "card-origin");
+function finish_card(card_origin,finished_cards_view)
+{
 	let card_to_be_finished_index = find_index_for_card(card_origin.open_card,main_doc.open_cards)
 	// move html
 	finished_cards_view.appendChild(card_origin)
@@ -251,6 +249,30 @@ function click_finish(element) {
 	})
 	save_doc(true)
 	close_all_accordions()
+}
+
+function click_finish(element) {
+	console.log('Finish')
+	let finished_cards_view = document.getElementById('finished_cards_id');
+	let card_origin = find_ancestor(element, "card-origin");
+	if(is_animation_on())
+	{
+	  anime({
+		targets: card_origin,
+		translateX: window.innerWidth - card_origin.getBoundingClientRect().left,
+		easing: 'easeInQuad',
+		duration: 500,
+		complete: function(anim) {
+			console.log(anim.completed);
+			card_origin.style.transform = 'translateX(0)';
+			finish_card(card_origin,finished_cards_view);
+		  }
+	  });
+	}
+	else
+	{
+		finish_card(card_origin,finished_cards_view);
+	}
 }
 
 function click_delete(element) {
@@ -767,7 +789,7 @@ function animate_page(page)
 		anime({
 			targets: page,
 			opacity: 1.0,
-			duration: 2000,
+			duration: 2000
 		  });
 	}
 }
