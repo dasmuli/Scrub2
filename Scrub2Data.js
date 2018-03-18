@@ -170,7 +170,7 @@ function download_document() {
 			}
 		}
 	};
-	xmlhttp.open("POST", "scrub_server.php", true);
+	xmlhttp.open("POST", "php/scrub_server.php", true);
 	var params = JSON.stringify({
 		user_group_name: user_group_name,
 		project_name: project_name, access_token: access_token, command: 'download_data'
@@ -215,7 +215,7 @@ function upload() {
 			}
 		}
 	};
-	xmlhttp.open("POST", "scrub_server.php", true);
+	xmlhttp.open("POST", "php/scrub_server.php", true);
 	let serialDoc = LZString.compressToBase64(Automerge.save(main_doc));
 	console.log("Upload size: "+serialDoc.length);
 	var params = JSON.stringify({
@@ -353,8 +353,7 @@ function synchronize() {
 				}
 			}
 		};
-		//xmlhttp.open("GET", "scrub_server.php", true);
-		xmlhttp.open("POST", "scrub_server.php", true);
+		xmlhttp.open("POST", "php/scrub_server.php", true);
 		var params = JSON.stringify({
 			user_group_name: user_group_name,
 			project_name: project_name, access_token: access_token, command: 'get_version'
