@@ -220,10 +220,8 @@ function sync_timeout_changed()
 	console.log('sync_timeout_changed: '+sync_timeout);
 }
 
-function click_return_to_open(element) {
-	console.log('Finish')
-	let open_cards_view = document.getElementById('open_cards_id');
-	let card_origin = find_ancestor(element, "card-origin");
+function return_to_open_card(card_origin,open_cards_view)
+{
 	let card_to_be_finished_index = find_index_for_card(card_origin.open_card,main_doc.finished_cards)
 	// move html
 	open_cards_view.appendChild(card_origin)
@@ -234,6 +232,29 @@ function click_return_to_open(element) {
 	})
 	save_doc(true)
 	close_all_accordions()
+}
+
+function click_return_to_open(element) {
+	console.log('Finish')
+	let open_cards_view = document.getElementById('open_cards_id');
+	let card_origin = find_ancestor(element, "card-origin");
+	if(is_animation_on())
+	{
+	  anime({
+		targets: card_origin,
+		translateX: -(window.innerWidth - card_origin.getBoundingClientRect().left),
+		easing: 'easeInQuad',
+		duration: 500,
+		complete: function(anim) {
+			return_to_open_card(card_origin,open_cards_view);
+			card_origin.style.transform = 'translateX(0)';
+		  }
+	  });
+	}
+	else
+	{
+		return_to_open_card(card_origin,open_cards_view);
+	}
 }
 
 function finish_card(card_origin,finished_cards_view)
@@ -263,9 +284,8 @@ function click_finish(element) {
 		easing: 'easeInQuad',
 		duration: 500,
 		complete: function(anim) {
-			console.log(anim.completed);
-			card_origin.style.transform = 'translateX(0)';
 			finish_card(card_origin,finished_cards_view);
+			card_origin.style.transform = 'translateX(0)';
 		  }
 	  });
 	}
