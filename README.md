@@ -62,7 +62,7 @@ Use test/test/test for synchronization credentials in the app above and add your
 
 I actually used Scrub 1 until know and I like it, but the constant connection that is 
 required by the websocket is problematic. In addition, the auto-addition of points
-in conjunction with some heavy animation was difficult to use (read: brutal on cpu).
+in conjunction with some heavy animation was difficult to use (read: brutal on the CPU).
 Thus, animation in Scrub2 is turned off by default.
 
 I still like the synchronous actions from webssocket commands, but it is really not
