@@ -634,7 +634,7 @@ function click_move(element) {
 		card_div_element_to_be_moved,
 		card_origin.nextSibling);
 	// move card in data card
-	if(previous_card_index+1 >= main_doc.open_cards.length)
+	if(previous_card_index >= main_doc.open_cards.length)
 	{
 		// add to end
 		main_doc = Automerge.change(main_doc, doc => {
@@ -646,7 +646,7 @@ function click_move(element) {
 	else
 	{
 		main_doc = Automerge.change(main_doc, doc => {
-			doc.open_cards.splice(previous_card_index+1, 0,    // add at new pos
+			doc.open_cards.splice(previous_card_index, 0,    // add at new pos
 				doc.open_cards.splice(card_to_be_moved_index, 1)[0]);  // delete at old pos
 		})
 	}
