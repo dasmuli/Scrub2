@@ -104,28 +104,37 @@ function download_file()
 	download(serialDoc,"test.scrub2","application/octet-stream")
 }
 
-function upload_selected_file()
-{
-	var file = document.getElementById('file-input').files[0];
-	console.log("Reading file: "+file.name);
-	readTextFile(file);
+function upload_selected_file( file, mergeData )
+{;
+	readTextFile(file, mergeData);
 }
 
-function readTextFile(file)
+function readTextFile(file, mergeData)
 {
 		var fr = new FileReader();
 		fr.onload = function(e)
 			{
-				upload_file(fr.result);
+				upload_file(fr.result, mergeData);
 			};
 		fr.readAsText(file);
 }
 
-function upload_file(serialData)
+function upload_file(serialData, mergeData)
 {
 	//console.log(serialData);
 	//console.log(LZString.decompressFromUTF16(serialData));
-	main_doc = Automerge.load(LZString.decompressFromUTF16(serialData));
+	if(!mergeData)
+	{
+		console.log("New data");
+		main_doc = Automerge.load(LZString.decompressFromUTF16(serialData));
+	}
+	else
+	{
+		console.log("Merging data");
+		let remote_doc_unserialized = Automerge.load(LZString.decompressFromUTF16(serialData));
+		let test_doc = Automerge.merge(main_doc, remote_doc_unserialized)
+		main_doc = test_doc;
+	}
 	save_doc(false);
 	update_data_view();
 }
@@ -1359,7 +1368,12 @@ function init_data() {
 	document.getElementById('file-input').onchange = function() {
 			// fire the upload here
 			console.log("file selected");
-			upload_selected_file();
+			upload_selected_file( document.getElementById('file-input').files[0], false );
+		};
+		document.getElementById('file-input-merge').onchange = function() {
+			// fire the upload here
+			console.log("file selected");
+			upload_selected_file( document.getElementById('file-input-merge').files[0], true );
 		};
 	if (serialData == undefined) {
 		console.log("Created new doc");
