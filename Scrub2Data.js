@@ -93,6 +93,62 @@ function finish_card(card_origin,finished_cards_view)
 	close_all_accordions()
 }
 
+
+//////////////////////////////////////////////////////////////////////////////
+////////////////////////////     File access     /////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+function download_file()
+{
+	let serialDoc = LZString.compressToUTF16(Automerge.save(main_doc));
+	download(serialDoc,"test.scrub2","application/octet-stream")
+}
+
+function upload_selected_file()
+{
+	var file = document.getElementById('file-input').files[0];
+	console.log("Reading file: "+file.name);
+	readTextFile(file);
+}
+
+function readTextFile(file)
+{
+		var fr = new FileReader();
+		fr.onload = function(e)
+			{
+				upload_file(fr.result);
+			};
+		fr.readAsText(file);
+}
+
+function upload_file(serialData)
+{
+	//console.log(serialData);
+	//console.log(LZString.decompressFromUTF16(serialData));
+	main_doc = Automerge.load(LZString.decompressFromUTF16(serialData));
+	save_doc(false);
+	update_data_view();
+}
+
+
+function download(data, filename, type) {
+    var file = new Blob([data], {type: type});
+    if (window.navigator.msSaveOrOpenBlob) // IE10+
+        window.navigator.msSaveOrOpenBlob(file, filename);
+    else { // Others
+        var a = document.createElement("a"),
+                url = URL.createObjectURL(file);
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function() {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);  
+        }, 0); 
+    }
+}
+
 //////////////////////////////////////////////////////////////////////////////
 ////////////////////////////   Synchronization   /////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
@@ -262,10 +318,11 @@ function check_result_error(resultObj) {
 function synchronize() {
 	console.log('synchronize');
 	hide_all_pages();
-	clear_children(document.getElementById('synhronize_step_list_id'));
+	//clear_children(document.getElementById('synhronize_step_list_id'));
 	let page = document.getElementById('synhronize_id');
 	animate_page(page);
 	page.style.display = 'inline';
+	/*
 	add_synchronize_feedback(`<div class="c-alert c-alert--info">
   Synchronization started</div>`);
 	// check organization, projet, access token
@@ -374,7 +431,7 @@ function synchronize() {
 		<div class="c-alert c-alert--error">
 		Not synchronized
 	  </div>`);
-	}
+	}*/
 }
 
 
@@ -1136,6 +1193,30 @@ function animate_page(page)
 /////////////////////////////////   Utility   ////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 
+var makeCRCTable = function(){
+    var c;
+    var crcTable = [];
+    for(var n =0; n < 256; n++){
+        c = n;
+        for(var k =0; k < 8; k++){
+            c = ((c&1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1));
+        }
+        crcTable[n] = c;
+    }
+    return crcTable;
+}
+
+var crc32 = function(str) {
+    var crcTable = window.crcTable || (window.crcTable = makeCRCTable());
+    var crc = 0 ^ (-1);
+
+    for (var i = 0; i < str.length; i++ ) {
+        crc = (crc >>> 8) ^ crcTable[(crc ^ str.charCodeAt(i)) & 0xFF];
+    }
+
+    return (crc ^ (-1)) >>> 0;
+};
+
 
 /// Returns the newly created card div element
 function append_html(el, str) {
@@ -1275,6 +1356,11 @@ function init_data() {
 		document.getElementById('project_name_id').value = project_name;
 	if (access_token)
 		document.getElementById('access_token_id').value = access_token;
+	document.getElementById('file-input').onchange = function() {
+			// fire the upload here
+			console.log("file selected");
+			upload_selected_file();
+		};
 	if (serialData == undefined) {
 		console.log("Created new doc");
 

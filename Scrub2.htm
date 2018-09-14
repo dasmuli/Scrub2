@@ -8,7 +8,7 @@
 	<script src="automerge.js"></script>
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<script src="lz-string.min.js"></script>
-	<script src="anime.min.js"></script>
+	<script async src="anime.min.js"></script>
 	<script src="Scrub2Data.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="An open source html5 offline Scrum planning app.">
@@ -62,9 +62,42 @@
 	</div>
 
 	<div id="synhronize_id" style="display:none;">
-			<div id="synhronize_step_list_id">
-			</div>
+	    <div>
+				<div class="o-grid o-grid--full o-grid--demo">
+					<div class="o-grid__cell" style="margin-bottom:4px">
+							<button type="button" class="c-button"
+							onclick="download_file()"> 
+							<i class="material-icons" style="font-size:1em;">
+							  cloud_download
+							</i>
+							Download data
+						</button>
+					</div>
+					<div class="o-grid__cell" style="margin-bottom:4px">
+						<button type="button" class="c-button"
+							onclick="">
+							<i class="material-icons" style="font-size:1em;">
+							  call_merge
+							</i>
+							Upload and merge data
+						</button>
+					</div>
+					<div class="o-grid__cell" style="margin-bottom:4px">
+						<button type="button" class="c-button"
+							onclick="document.getElementById('file-input').click();">
+							<i class="material-icons" style="font-size:1em;">
+							  cloud_upload
+							</i>
+							Upload new data
+						</button>
+					</div>
+				</div>
+				<!-- Used to select a file. -->
+				<input id="file-input" type="file" name="name" accept=".scrub2" style="display: none;" />
 		</div>
+		<div id="synhronize_step_list_id">
+		</div>
+	</div>
 
 		<div id="help_id" style="display:none">
 				<h1 class="c-heading u-medium">About</h1>
@@ -311,7 +344,7 @@
 	</div>
   </div>
 
-<!-- Clearly indicate the end -->
+<!-- Clearly indicate the end. -->
 <p style="margin-bottom:1em;">
 </p>
 
