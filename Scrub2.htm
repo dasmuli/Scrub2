@@ -70,7 +70,7 @@
 							<i class="material-icons" style="font-size:1em;">
 							  cloud_download
 							</i>
-							Save data
+							Save data to file
 						</button>
 					</div>
 					<div class="o-grid__cell" style="margin-bottom:4px">
@@ -223,18 +223,8 @@
 
 <div class="o-grid  o-grid--demo" style="display:none;" id="preferences_id">
 	<div class="o-grid__cell">
-	  <div class="o-grid-text">
-			<h1 class="c-heading u-large">Synchronisation</h1>
-		  <div class="o-field o-field--icon-left">
-			<i class="material-icons c-icon" 
-			style="font-size:1em;">group_work</i>
-		   <input class="c-field title_input_text" type="text"
-		   placeholder="User or group name" id="user_group_name_id">
-		  </div>
-	  </div>
-	</div>
-	<div class="o-grid__cell">
 			<div class="o-grid-text">
+					<h1 class="c-heading u-large">Settings</h1>
 				  <div class="o-field o-field--icon-left">
 					  <i class="material-icons c-icon" 
 					  style="font-size:1em;">assignment</i>
@@ -243,16 +233,6 @@
 				  </div>
 			</div>
 		  </div>
-	<div class="o-grid__cell">
-	  <div class="o-grid-text">
-			<div class="o-field o-field--icon-left">
-				<i class="material-icons c-icon" 
-				style="font-size:1em;">security</i>
-				<input class="c-field title_input_text" type="text"
-				placeholder="Access token" id="access_token_id">
-			</div>
-	  </div>
-	</div>
 	<div class="o-grid__cell">
 			<div class="o-grid-text u-right">
 				<!-- Save synchronisation data -->
@@ -303,28 +283,6 @@
 						</div>
 						<div class="o-grid__cell">
 								<br/>
-						</div>
-					<div class="o-grid__cell o-grid__cell--width-100">
-							<div class="o-grid-text u-right">
-									<div class="o-grid o-grid--demo o-grid--no-gutter">
-											<div class="o-grid__cell">
-													<div class="o-grid-text u-right">
-														Sync timeout
-													</div>
-											</div>
-											<div class="o-grid__cell o-grid__cell--width-10">
-													<div class="o-grid-text u-left" id="sync_value_view_id"
-													style="padding-left:0.5em;">
-															4
-													</div>
-											</div>
-											<div class="o-grid__cell o-grid__cell--width-50">
-												<input type="range" class="c-range" min="2" max="100" value="4" step="2"
-												onchange="sync_timeout_changed();" oninput="update_view_sync_timeout();"
-												id="sync_value_input_id">
-											</div>
-									</div>
-							</div>
 						</div>
 						<div class="o-grid__cell o-grid__cell--width-100">
 							<br/>

@@ -98,10 +98,23 @@ function finish_card(card_origin,finished_cards_view)
 ////////////////////////////     File access     /////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 
+function addPadding(str)
+{
+	return String(str).padStart(2,"0");
+}
+
 function download_file()
 {
+	var currentdate = new Date(); 
+	var datetime =
+			"_" +  currentdate.getFullYear() + "_" 
+				+ addPadding((currentdate.getMonth()+1)) + "_"   
+				+ addPadding(currentdate.getDate()) + "_"
+                + addPadding(currentdate.getHours()) + "_"  
+                + addPadding(currentdate.getMinutes());
+                //+ currentdate.getSeconds();
 	let serialDoc = LZString.compressToUTF16(Automerge.save(main_doc));
-	download(serialDoc,"test.scrub2","application/octet-stream")
+	download(serialDoc,project_name+datetime+".scrub2","application/octet-stream")
 }
 
 function upload_selected_file( file, mergeData )
@@ -724,12 +737,8 @@ function click_move(element) {
 // Parameters saving from preferences.
 function save_synch_data() {
 	console.log('save_synch_data');
-	user_group_name = document.getElementById('user_group_name_id').value;
 	project_name = document.getElementById('project_name_id').value;
-	access_token = document.getElementById('access_token_id').value;
-	localStorage.setItem("user_group_name", user_group_name);
 	localStorage.setItem("project_name", project_name);
-	localStorage.setItem("access_token", access_token);
 	// do not mix repositories
 	has_connect_once = 'false';
 	localStorage.setItem("has_connect_once",has_connect_once);
@@ -1327,6 +1336,10 @@ function init_data() {
 		localStorage.getItem("SerializedAutomergeData");
 	user_group_name = localStorage.getItem("user_group_name");
 	project_name = localStorage.getItem("project_name");
+	if(project_name == null)
+	{
+		project_name = "Unnamed_project";
+	}
 	access_token = localStorage.getItem("access_token");
 	has_connect_once = localStorage.getItem("has_connect_once");
 	if(has_connect_once == undefined)
@@ -1345,26 +1358,14 @@ function init_data() {
 		local_changes = 'false';
 	}
 	console.log("local_changes: "+local_changes);
-	sync_timeout = localStorage.getItem("sync_timeout");
-	if(sync_timeout == undefined)
-	{
-		sync_timeout = 4;
-	}
-	document.getElementById('sync_value_input_id').value = sync_timeout;
-	document.getElementById('sync_value_view_id').innerHTML = sync_timeout;
-	console.log("sync_timeout: "+sync_timeout);
 	animation_state = localStorage.getItem("animation_state");
 	if(animation_state == undefined)
 	{
 		animation_state = 'Animation off';
 	}
 	set_animation_state(animation_state);
-	if (user_group_name)
-		document.getElementById('user_group_name_id').value = user_group_name;
 	if (project_name)
 		document.getElementById('project_name_id').value = project_name;
-	if (access_token)
-		document.getElementById('access_token_id').value = access_token;
 	document.getElementById('file-input').onchange = function() {
 			// fire the upload here
 			console.log("file selected");
