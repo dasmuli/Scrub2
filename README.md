@@ -26,7 +26,8 @@ The app runs in the browser, Chrome and Firefox are supported.
 ### Installing
 
 If you just want to run the app locally, copy the .htm, .css and .js
-into a folder and click Scrub2.htm.
+into a folder and click Scrub2.htm. Note that when run in a browser,
+data is saved locally on the machine, not remote on the server.
 
 ## Built With
 
@@ -44,9 +45,7 @@ required by the websocket is problematic. In addition, the auto-addition of poin
 in conjunction with some heavy animation was difficult to use (read: brutal on the CPU).
 Thus, animation in Scrub2 is turned off by default.
 
-I still like the synchronous actions from webssocket commands, but it is really not
-necessary. Merging and commmitting on demand is a lot better.
-
+Last Update:
 I removed the php server synchronisation and changed to file based work. This allows backups
 and sharing with others. Much simpler and more control for the user. Althouth I startet some p2p code,
 very interesting, too.
