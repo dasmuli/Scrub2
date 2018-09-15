@@ -150,6 +150,7 @@ function upload_file(serialData, mergeData)
 	}
 	save_doc(false);
 	update_data_view();
+	show_open_cards();
 }
 
 
