@@ -47,7 +47,7 @@ Thus, animation in Scrub2 is turned off by default.
 
 Last Update:
 I removed the php server synchronisation and changed to file based work. This allows backups
-and sharing with others. Much simpler and more control for the user. Althouth I startet some p2p code,
+and sharing with others. Much simpler and more control for the user. Although I startet some p2p code,
 very interesting, too.
 
 ## Authors
