@@ -15,35 +15,18 @@ alt="An example of a chart." width="400"/>
 The app can be found [here](http://tazrabbaz.com/Scrub2/Scrub2.htm).
 
 The app should work without further installation.
-Using the link above, it will synchronize to a php / DB server hosted by 1&1 (Germany).
 
 <img src="http://tazrabbaz.com/Scrub2/Media/ScreenshotScrub2_Cards.png"
 alt="Screenshot of card list" width="400"/>
 
-By sharing the synchronization credentials a multi-user and a multi-device workflow
-is possible.
-
 ### Prerequisites
 
-In order to run the php and DB on your own server, you have to install php and Mysql.
-
-You can run the app on your local drive without a server.
+The app runs in the browser, Chrome and Firefox are supported.
 
 ### Installing
 
-If you just want to run the app local without synchronization, copy the .htm, .css and .js
+If you just want to run the app locally, copy the .htm, .css and .js
 into a folder and click Scrub2.htm.
-
-## Deployment
-
-In order to setup a synchronization server, you have to:
-
-1. Create a database and a user on the Mysql-server, for example by using phpmyadmin.
-1. Fill out the mysql_credentials_template.php and rename it to mysql_credentials.php
-1. Copy the complete repository onto the server.
-1. Initialize the database by calling  `http://yourserver.org/some/folder/Scrub2/php/init_database.php` in a browser.
-1. On success, remove init_database.php.
-1. Call `http://yourserver.org/some/folder/Scrub2/Scrub2.htm` in your browser.
 
 ## Built With
 
@@ -53,10 +36,6 @@ In order to setup a synchronization server, you have to:
 * [Google charts](https://developers.google.com/chart/) - Very nice and clean.
 * [Google material design icons](https://material.io/icons/) - Very nice and clean.
 * [lz-string compression](http://pieroxy.net/blog/pages/lz-string/index.html) - Programmer friendly and set up in 3 minutes
-
-## Feedback
-
-Use test/test/test for synchronization credentials in the app above and add your ideas.
 
 ## Future and differences to Scrub
 
@@ -68,8 +47,9 @@ Thus, animation in Scrub2 is turned off by default.
 I still like the synchronous actions from webssocket commands, but it is really not
 necessary. Merging and commmitting on demand is a lot better.
 
-Regarding the future, some TLS, local AES encryption of data before sending it to the
-server and a hash based token based on the original access token would be nice.
+I removed the php server synchronisation and changed to file based work. This allows backups
+and sharing with others. Much simpler and more control for the user. Althouth I startet some p2p code,
+very interesting, too.
 
 ## Authors
 
