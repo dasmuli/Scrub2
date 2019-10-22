@@ -7,16 +7,16 @@ the higher the card is the more important it is.
 By finishing a card it is moved to the finished card list and the time of finishing is logged.
 Using this data, a chart is drawn showing the project progress over time.
 
-<img src="http://tazrabbaz.com/Scrub2/Media/ScreenshotScrub2_Chart.png"
+<img src="https://zerozerozero.dd-dns.de/Scrub2/Media/ScreenshotScrub2_Chart.png"
 alt="An example of a chart." width="400"/>
 
 ## Getting Started
 
-The app can be found [here](http://tazrabbaz.com/Scrub2/Scrub2.htm).
+The app can be found [here](https://zerozerozero.dd-dns.de/Scrub2/Scrub2.htm).
 
 The app should work without further installation.
 
-<img src="http://tazrabbaz.com/Scrub2/Media/ScreenshotScrub2_Cards.png"
+<img src="https://zerozerozero.dd-dns.de/Scrub2/Media/ScreenshotScrub2_Cards.png"
 alt="Screenshot of card list" width="400"/>
 
 ### Prerequisites
